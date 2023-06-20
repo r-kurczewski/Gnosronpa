@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 377.85, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &3934887048364758270
@@ -71,8 +71,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Mikan's Account
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cb0f564b87da9654db66cf3369d149e1, type: 2}
-  m_sharedMaterial: {fileID: -6848304461237468559, guid: cb0f564b87da9654db66cf3369d149e1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c46fecc7f4b796c4cbeba526e5491302, type: 2}
+  m_sharedMaterial: {fileID: -969226166217450069, guid: c46fecc7f4b796c4cbeba526e5491302, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

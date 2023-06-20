@@ -1,5 +1,5 @@
+using DG.Tweening;
 using Fangan.ScriptableObjects;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -30,10 +30,27 @@ public class WeakSpot : MonoBehaviour
 	{
 		name = data.name;
 		text.text = string.Format(data.textTemplate, Gradient(data.weakSpotText));
+
 		collider.center = data.collider.center;
 		collider.size = data.collider.extents; // correct
 
+		transform.localPosition = data.startPosition;
 		transform.rotation = Quaternion.Euler(0, 0, data.startRotation);
+
+		transform.DOLocalMove(data.endPosition, data.moveDuration);
+		transform.DORotate(Vector3.forward * data.endRotation, data.rotationDuration);
+		transform.DOScale(new Vector3(data.endScale.x, data.endScale.y, 1), data.scaleDuration);
+
+
+		var seq = DOTween.Sequence();
+		seq.target = transform;
+		seq.AppendInterval(data.durationTime)
+			.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 0, data.disappearTime))
+			.onComplete = () =>
+			{
+				Debug.Log("Destroy");
+				Destroy(gameObject);
+			};
 	}
 
 	private void OnTriggerEnter(Collider other)

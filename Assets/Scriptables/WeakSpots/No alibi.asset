@@ -15,11 +15,17 @@ MonoBehaviour:
   textTemplate: If {0} then
   weakSpotText: nobody has an alibi
   correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
+  startPosition: {x: 0, y: 0}
+  endPosition: {x: 10, y: 10}
+  moveDuration: 5
   startRotation: -14
-  movement: {x: 100, y: 0}
-  rotation: 0
-  movementSpeed: 1000
-  rotationSpeed: 0
+  endRotation: 76
+  rotationDuration: 6
+  startScale: {x: 1, y: 1}
+  endScale: {x: 0.6, y: 0.6}
+  scaleDuration: 4
+  durationTime: 3.5
+  disappearTime: 0.5
   collider:
     m_Center: {x: -41, y: -5, z: 0}
     m_Extent: {x: 564, y: 55, z: 3}
