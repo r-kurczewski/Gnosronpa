@@ -1,16 +1,29 @@
+using Fangan.ScriptableObjects;
+using System;
 using UnityEngine;
 
 public class TruthBullet : MonoBehaviour
 {
-	public float speed;
+	public TruthBulletData data;
+
+	[SerializeField]
+	private float speed;
 
 	private Rigidbody rb;
-
-	public float hitPlane;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
+	}
+
+	private void Start()
+	{
+		Init();
+	}
+
+	private void Init()
+	{
+		name = data.name;
 	}
 
 	private void Update()
