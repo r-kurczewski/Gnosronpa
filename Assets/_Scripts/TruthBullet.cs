@@ -1,5 +1,6 @@
 using Fangan.ScriptableObjects;
 using System;
+using TMPro;
 using UnityEngine;
 
 public class TruthBullet : MonoBehaviour
@@ -10,10 +11,12 @@ public class TruthBullet : MonoBehaviour
 	private float speed;
 
 	private Rigidbody rb;
+	private TMP_Text text;
 
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
+		text = GetComponent<TMP_Text>();
 	}
 
 	private void Start()
@@ -24,6 +27,7 @@ public class TruthBullet : MonoBehaviour
 	private void Init()
 	{
 		name = data.name;
+		text.text = data.bulletName;
 	}
 
 	private void Update()

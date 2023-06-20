@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: MIkan's Account
   m_EditorClassIdentifier: 
   bulletName: Mikan's Account
+  collider:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 25, y: 25, z: 1.5}
