@@ -45,12 +45,12 @@ public class WeakSpot : MonoBehaviour
 		var seq = DOTween.Sequence();
 		seq.target = transform;
 		seq.AppendInterval(data.durationTime)
-		//.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 0, data.disappearTime))
-		//.onComplete = () =>
-		//{
-		//	Debug.Log("Destroy");
-		//	Destroy(gameObject);
-		//};
+		.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 0, data.disappearTime))
+		.onComplete = () =>
+		{
+			Debug.Log("Destroy");
+			Destroy(gameObject);
+		};
 		;
 	}
 

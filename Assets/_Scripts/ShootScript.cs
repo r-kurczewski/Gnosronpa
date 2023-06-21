@@ -33,7 +33,7 @@ public class ShootScript : MonoBehaviour
 	private void OnShoot(InputAction.CallbackContext ctx)
 	{
 		Vector3 mousePos = mousePosition.action.ReadValue<Vector2>();
-		mousePos.z = Camera.main.farClipPlane;
+		mousePos.z = FindObjectOfType<Canvas>().planeDistance;
 		var dstWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
 		var srcPos = new Vector3(Screen.width, 0, Camera.main.nearClipPlane);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,7 @@ public class CustomCursor : MonoBehaviour
 	[SerializeField]
 	private GameObject cursorImageParent;
 
-	[SerializeField] 
+	[SerializeField]
 	private GameObject cursorSpin;
 
 	[SerializeField]
@@ -31,7 +32,7 @@ public class CustomCursor : MonoBehaviour
 			SetCursor();
 
 			Vector3 mouseCords = cursorPosition.action.ReadValue<Vector2>();
-			mouseCords.z = Camera.main.farClipPlane;
+			mouseCords.z = GetComponentInParent<Canvas>().planeDistance;
 			var mousePosInWorldSpace = Camera.main.ScreenToWorldPoint(mouseCords);
 
 			transform.position = mousePosInWorldSpace;
