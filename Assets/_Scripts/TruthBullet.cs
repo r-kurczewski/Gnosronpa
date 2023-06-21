@@ -44,7 +44,7 @@ public class TruthBullet : MonoBehaviour
 
 		var direction = (dstWorldPos - srcWorldPos).normalized;
 		transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0,90,0);
-		rb.AddForce(direction * speed * Time.deltaTime);
+		rb.AddForce(direction * speed);
 	}
 }
 

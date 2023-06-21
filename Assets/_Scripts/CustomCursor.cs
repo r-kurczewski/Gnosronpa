@@ -4,10 +4,16 @@ using UnityEngine.InputSystem;
 public class CustomCursor : MonoBehaviour
 {
 	[SerializeField]
-	private Texture2D cursorTexture;
+	private InputActionReference cursorPosition;
 
 	[SerializeField]
-	private InputActionReference cursorPosition;
+	private GameObject cursorImageParent;
+
+	[SerializeField] 
+	private GameObject cursorSpin;
+
+	[SerializeField]
+	private float spinSpeed;
 
 	private bool IsMouseOverGameWindow
 	{
@@ -20,7 +26,17 @@ public class CustomCursor : MonoBehaviour
 
 	private void Update()
 	{
-		if (IsMouseOverGameWindow) SetCursor();
+		if (IsMouseOverGameWindow)
+		{
+			SetCursor();
+
+			Vector3 mouseCords = cursorPosition.action.ReadValue<Vector2>();
+			mouseCords.z = Camera.main.farClipPlane;
+			var mousePosInWorldSpace = Camera.main.ScreenToWorldPoint(mouseCords);
+
+			transform.position = mousePosInWorldSpace;
+			cursorSpin.transform.rotation *= Quaternion.Euler(0, 0, spinSpeed * Time.deltaTime);
+		}
 		else ResetCursor();
 	}
 
@@ -28,13 +44,16 @@ public class CustomCursor : MonoBehaviour
 	{
 		ResetCursor();
 	}
+
 	private void SetCursor()
 	{
-		Cursor.SetCursor(cursorTexture, new Vector2(cursorTexture.width / 2, cursorTexture.height / 2), CursorMode.Auto);
+		Cursor.visible = false;
+		cursorImageParent.SetActive(true);
 	}
 
 	private void ResetCursor()
 	{
-		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+		cursorImageParent.SetActive(false);
+		Cursor.visible = true;
 	}
 }
