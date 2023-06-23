@@ -36,7 +36,7 @@ public class CustomCursor : MonoBehaviour
 			var mousePosInWorldSpace = Camera.main.ScreenToWorldPoint(mouseCords);
 
 			transform.position = mousePosInWorldSpace;
-			cursorSpin.transform.rotation *= Quaternion.Euler(0, 0, spinSpeed * Time.deltaTime);
+			cursorSpin.transform.rotation *= Quaternion.Euler(0, 0, -spinSpeed * Time.deltaTime);
 		}
 		else ResetCursor();
 	}

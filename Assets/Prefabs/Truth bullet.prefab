@@ -72,7 +72,7 @@ MonoBehaviour:
   m_text: Mikan's Account
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c46fecc7f4b796c4cbeba526e5491302, type: 2}
-  m_sharedMaterial: {fileID: -969226166217450069, guid: c46fecc7f4b796c4cbeba526e5491302, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 57a06ba945fb88146b30180a5aeedc62, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

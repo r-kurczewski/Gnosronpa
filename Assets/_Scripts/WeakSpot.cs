@@ -48,7 +48,7 @@ public class WeakSpot : MonoBehaviour
 		.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 0, data.disappearTime))
 		.onComplete = () =>
 		{
-			Debug.Log("Destroy");
+			DOTween.Kill(transform);
 			Destroy(gameObject);
 		};
 		;
