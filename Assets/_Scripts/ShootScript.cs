@@ -12,13 +12,10 @@ public class ShootScript : MonoBehaviour
 	private GameObject truthBullet;
 
 	[SerializeField]
-	private GameObject castPointer;
-
-	[SerializeField]
 	private Transform canvas;
 
 	[SerializeField]
-	private float bulletSpawnDistance;
+	private float bulletSpeed;
 
 	private void OnEnable()
 	{
@@ -41,6 +38,6 @@ public class ShootScript : MonoBehaviour
 		srcWorldPos.x += AdditionalBulletSpawnOffsetX;
 
 		var bullet = Instantiate(truthBullet, canvas).GetComponent<TruthBullet>();
-		bullet.Shoot(srcWorldPos, dstWorldPos);
+		bullet.Shoot(srcWorldPos, dstWorldPos, bulletSpeed);
 	}
 }
