@@ -9,7 +9,7 @@ public class WeakSpot : MonoBehaviour
 
 	private TMP_Text text;
 
-	new private BoxCollider collider;
+	private BoxCollider boxCollider;
 
 	private Time time;
 
@@ -18,7 +18,7 @@ public class WeakSpot : MonoBehaviour
 	private void Awake()
 	{
 		text = GetComponent<TMP_Text>();
-		collider = GetComponent<BoxCollider>();
+		boxCollider = GetComponent<BoxCollider>();
 	}
 
 	private void Start()
@@ -31,14 +31,14 @@ public class WeakSpot : MonoBehaviour
 		name = data.name;
 		text.text = string.Format(data.textTemplate, Gradient(data.weakSpotText));
 
-		collider.center = data.collider.center;
-		collider.size = data.collider.extents; // correct
+		boxCollider.center = data.collider.center;
+		boxCollider.size = data.collider.extents; // correct
 
 		transform.localPosition = data.startPosition;
 		transform.rotation = Quaternion.Euler(0, 0, data.startRotation);
 
 		transform.DOLocalMove(data.endPosition, data.moveDuration);
-		transform.DORotate(Vector3.forward * data.endRotation, data.rotationDuration);
+		transform.DOLocalRotate(Vector3.forward * data.endRotation, data.rotationDuration);
 		transform.DOScale(new Vector3(data.endScale.x, data.endScale.y, 1), data.scaleDuration);
 
 

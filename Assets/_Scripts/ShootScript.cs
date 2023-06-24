@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 
 public class ShootScript : MonoBehaviour
 {
-	private const int AdditionalBulletSpawnOffsetX = 10;
-
 	[SerializeField]
 	private InputActionReference shoot, mousePosition;
 
@@ -12,10 +10,12 @@ public class ShootScript : MonoBehaviour
 	private GameObject truthBullet;
 
 	[SerializeField]
-	private Transform canvas;
+	private Canvas canvas;
 
 	[SerializeField]
 	private float bulletSpeed;
+
+	private float AdditionalBulletSpawnOffsetX => canvas.planeDistance / 10;
 
 	private void OnEnable()
 	{
@@ -30,14 +30,15 @@ public class ShootScript : MonoBehaviour
 	private void OnShoot(InputAction.CallbackContext ctx)
 	{
 		Vector3 mousePos = mousePosition.action.ReadValue<Vector2>();
-		mousePos.z = FindObjectOfType<Canvas>().planeDistance;
+		mousePos.z = canvas.planeDistance;
 		var dstWorldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
 		var srcPos = new Vector3(Screen.width, 0, Camera.main.nearClipPlane);
 		var srcWorldPos = Camera.main.ScreenToWorldPoint(srcPos);
-		srcWorldPos.x += AdditionalBulletSpawnOffsetX;
+		srcWorldPos += Camera.main.transform.right * AdditionalBulletSpawnOffsetX;
 
-		var bullet = Instantiate(truthBullet, canvas).GetComponent<TruthBullet>();
-		bullet.Shoot(srcWorldPos, dstWorldPos, bulletSpeed);
+		var bullet = Instantiate(truthBullet, canvas.transform).GetComponent<TruthBullet>();
+		var dynamicSpeed = bulletSpeed * canvas.planeDistance;
+		bullet.Shoot(srcWorldPos, dstWorldPos, dynamicSpeed);
 	}
 }
