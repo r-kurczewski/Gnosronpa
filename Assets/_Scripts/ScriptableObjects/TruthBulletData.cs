@@ -6,6 +6,7 @@ namespace Gnosronpa.ScriptableObjects
 	public class TruthBulletData : ScriptableObject
 	{
 		public string bulletName;
+
 		public Bounds collider = new Bounds(Vector3.zero, new Vector3(50, 50, 3));
 	}
 }

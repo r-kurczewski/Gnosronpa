@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Gnosronpa
+namespace Gnosronpa.Utilities
 {
 	public class CharacterPositioning : MonoBehaviour
 	{

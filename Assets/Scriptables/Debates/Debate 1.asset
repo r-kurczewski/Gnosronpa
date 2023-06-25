@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
+  m_Name: Debate 1
+  m_EditorClassIdentifier: 
+  data:
+  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
+    delay: 2
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 7
+      startRotation: {x: 0, y: 90, z: 0}
+      endRotation: {x: 0, y: 100, z: 0}
+      rotationDuration: 1
+  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
+    delay: 6
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 180, z: 0}
+      endRotation: {x: 0, y: 190, z: 0}
+      rotationDuration: 1
+  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
+    delay: 6
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 270, z: 0}
+      endRotation: {x: 0, y: 280, z: 0}
+      rotationDuration: 1
+  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
+    delay: 6
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 10, z: 0}
+      rotationDuration: 1
+  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
+    delay: 6
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 90, z: 0}
+      endRotation: {x: 0, y: 100, z: 0}
+      rotationDuration: 1

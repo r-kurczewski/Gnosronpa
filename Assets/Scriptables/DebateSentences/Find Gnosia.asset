@@ -9,21 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95feb7656ad6b146bdb12b936a3ebf3, type: 3}
+  m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
   m_Name: Find Gnosia
-  m_EditorClassIdentifier: Assembly-CSharp:Assets._Scripts.ScriptableObjects:WeakSpotData
-  textTemplate: there is {0} to find Gnosia
+  m_EditorClassIdentifier: 
+  textTemplate: There is {0} to find Gnosia
   weakSpotText: no way
+  speakingCharacter: {fileID: 0}
   correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
-  startPosition: {x: 0, y: 0}
-  endPosition: {x: 10, y: 10}
-  moveDuration: 5
-  startRotation: -14
-  endRotation: 76
-  rotationDuration: 6
-  startScale: {x: 1, y: 1}
-  endScale: {x: 0.6, y: 0.6}
-  scaleDuration: 4
+  animationData:
+    startPosition: {x: 0, y: 0}
+    endPosition: {x: 10, y: 10}
+    moveDuration: 5
+    startRotation: -14
+    endRotation: 76
+    rotationDuration: 6
+    startScale: {x: 1, y: 1}
+    endScale: {x: 0.6, y: 0.6}
+    scaleDuration: 4
+  appearTime: 0.5
   durationTime: 3.5
   disappearTime: 0.5
   collider:

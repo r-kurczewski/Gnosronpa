@@ -6,6 +6,7 @@ namespace Gnosronpa.ScriptableObjects
 	public class CharacterData : ScriptableObject
 	{
 		public string characterName;
+
 		public Sprite avatar;
 	}
 }
