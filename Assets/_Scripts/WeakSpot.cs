@@ -1,5 +1,5 @@
 using DG.Tweening;
-using Fangan.ScriptableObjects;
+using Gnosronpa.ScriptableObjects;
 using TMPro;
 using UnityEngine;
 

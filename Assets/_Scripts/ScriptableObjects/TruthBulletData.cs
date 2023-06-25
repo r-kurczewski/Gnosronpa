@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Fangan.ScriptableObjects
+namespace Gnosronpa.ScriptableObjects
 {
 	[CreateAssetMenu(fileName = "TruthBullet", menuName = "NonstopDebate/TruthBullet")]
 	public class TruthBulletData : ScriptableObject

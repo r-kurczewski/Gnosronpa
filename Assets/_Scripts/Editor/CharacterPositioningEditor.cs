@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Fangan
+namespace Gnosronpa
 {
    [CustomEditor(typeof(CharacterPositioning))]
     public class CharacterPositioningEditor : Editor

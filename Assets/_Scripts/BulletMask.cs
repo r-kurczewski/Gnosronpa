@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Fangan
+namespace Gnosronpa
 {
 	public class BulletMask : MonoBehaviour
     {

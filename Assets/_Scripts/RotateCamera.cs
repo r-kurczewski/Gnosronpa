@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Fangan
+namespace Gnosronpa
 {
 	public class RotateCamera : MonoBehaviour
     {

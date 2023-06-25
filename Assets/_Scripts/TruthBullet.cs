@@ -1,4 +1,4 @@
-using Fangan.ScriptableObjects;
+using Gnosronpa.ScriptableObjects;
 using System;
 using TMPro;
 using UnityEngine;

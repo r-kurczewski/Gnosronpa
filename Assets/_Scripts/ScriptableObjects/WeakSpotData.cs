@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Fangan.ScriptableObjects
+namespace Gnosronpa.ScriptableObjects
 {
 	[CreateAssetMenu(fileName = "WeakSpot", menuName = "NonstopDebate/WeakSpot")]
 	public class WeakSpotData : ScriptableObject
