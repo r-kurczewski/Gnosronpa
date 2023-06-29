@@ -21,7 +21,7 @@ namespace Gnosronpa
 
 		private void Start()
 		{
-			StartCoroutine(SetRandomCharacters());
+			//StartCoroutine(SetRandomCharacters());
 		}
 
 		public void SetCharacter(CharacterData character)

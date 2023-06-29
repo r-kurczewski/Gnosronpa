@@ -14,16 +14,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
   - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
-    delay: 2
+    statementAnimation:
+      startPosition: {x: 0, y: 0}
+      endPosition: {x: 10, y: 10}
+      moveDuration: 4
+      startRotation: 0
+      endRotation: 20
+      rotationDuration: 4
+      startScale: {x: 0.6, y: 0.6}
+      endScale: {x: 0.8, y: 0.8}
+      scaleDuration: 4
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 0
+      disappearTime: 0.5
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 0}
       endPosition: {x: 0, y: 0, z: 0}
-      moveDuration: 7
+      moveDuration: 0
       startRotation: {x: 0, y: 90, z: 0}
       endRotation: {x: 0, y: 100, z: 0}
       rotationDuration: 1
-  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
-    delay: 6
+    delay: 2
+  - statement: {fileID: 11400000, guid: 2428eac30ff3cf64ab088376744b5114, type: 2}
+    statementAnimation:
+      startPosition: {x: -200, y: -200}
+      endPosition: {x: 100, y: 100}
+      moveDuration: 3
+      startRotation: 30
+      endRotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.7, y: 0.7}
+      endScale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 0
+      disappearTime: 0.5
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 0}
       endPosition: {x: 0, y: 0, z: 0}
@@ -31,8 +58,22 @@ MonoBehaviour:
       startRotation: {x: 0, y: 180, z: 0}
       endRotation: {x: 0, y: 190, z: 0}
       rotationDuration: 1
-  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
     delay: 6
+  - statement: {fileID: 11400000, guid: e995661795292ff41ae48ad745a0ce68, type: 2}
+    statementAnimation:
+      startPosition: {x: 0, y: 0}
+      endPosition: {x: 0, y: 0}
+      moveDuration: 0
+      startRotation: 0
+      endRotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.1, y: 0.1}
+      endScale: {x: 1, y: 1}
+      scaleDuration: 3
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 0
+      disappearTime: 0.5
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 0}
       endPosition: {x: 0, y: 0, z: 0}
@@ -40,21 +81,4 @@ MonoBehaviour:
       startRotation: {x: 0, y: 270, z: 0}
       endRotation: {x: 0, y: 280, z: 0}
       rotationDuration: 1
-  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
     delay: 6
-    cameraAnimation:
-      startPosition: {x: 0, y: 0, z: 0}
-      endPosition: {x: 0, y: 0, z: 0}
-      moveDuration: 0
-      startRotation: {x: 0, y: 0, z: 0}
-      endRotation: {x: 0, y: 10, z: 0}
-      rotationDuration: 1
-  - statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
-    delay: 6
-    cameraAnimation:
-      startPosition: {x: 0, y: 0, z: 0}
-      endPosition: {x: 0, y: 0, z: 0}
-      moveDuration: 0
-      startRotation: {x: 0, y: 90, z: 0}
-      endRotation: {x: 0, y: 100, z: 0}
-      rotationDuration: 1

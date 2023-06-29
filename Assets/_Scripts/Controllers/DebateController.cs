@@ -20,43 +20,51 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private CameraController cameraController;
 
-		private float time;
+		[SerializeField]
+		private CharacterInfo characterInfo;
 
-		private List<StatementConfiguration> statementsQueue;
+		private Queue<StatementConfiguration> statementsQueue;
+
+		private float time;
 
 		private void Awake()
 		{
+			statementsQueue = new Queue<StatementConfiguration>();
 			LoadDebate(data);
 		}
 
 		private void Update()
 		{
-			var statementsToLoad = statementsQueue.Where(x => x.delay <= time).ToList();
-			LoadStatements(statementsToLoad);
+			if (statementsQueue.Count == 0) return;
 
-			var lastStatement = statementsToLoad.LastOrDefault();
-			if (lastStatement != null)
+			var nextStatement = statementsQueue.Peek();
+			if (nextStatement.delay < time)
 			{
-				var seq = cameraController.ApplyCameraAnimation(lastStatement.cameraAnimation);
+				cameraController.ApplyCameraAnimation(nextStatement.cameraAnimation);
+				if (nextStatement.statement)
+				{
+					LoadStatement(nextStatement);
+					characterInfo.SetCharacter(nextStatement.statement.speakingCharacter);
+
+				}
+				statementsQueue.Dequeue();
 				time = 0;
 			}
 
-			statementsToLoad.ForEach(x => statementsQueue.Remove(x));
 			time += Time.deltaTime;
 		}
 
-		private void LoadStatements(IEnumerable<StatementConfiguration> statementsToLoad)
+		private void LoadStatement(StatementConfiguration statementData)
 		{
-			foreach (var statementToLoad in statementsToLoad)
-			{
-				var statement = Instantiate(statementPrefab, debateParent);
-			}
+			var statement = Instantiate(statementPrefab, debateParent).GetComponent<DebateStatement>();
+			statement.Init(statementData);
+
 		}
 
 		public void LoadDebate(DebateData debate)
 		{
 			data = debate;
-			statementsQueue = debate.data.ToList();
+			debate.data.ForEach(statement => statementsQueue.Enqueue(statement));
 		}
 
 		public void Stop()

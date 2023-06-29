@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5869790297090011743}
   - component: {fileID: 2583807685936287934}
   m_Layer: 7
-  m_Name: Weak spot
+  m_Name: Debate Statement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,8 +78,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 2
   m_fontColorGradient:
@@ -193,4 +193,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9cdf47b58d071d4c9bcb3f7fce0d33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
+  data: {fileID: 0}

@@ -7,17 +7,14 @@ namespace Gnosronpa.ScriptableObjects
 	public class DebateStatementData : ScriptableObject
 	{
 		public string textTemplate;
+
 		public string weakSpotText;
 
 		public CharacterData speakingCharacter;
+
+		public DebateStatementData statement;
+
 		public TruthBulletData correctBullet;
-
-		public Animation2DData animationData;
-
-		[Header("Transition")]
-		public float appearTime;
-		public float durationTime;
-		public float disappearTime;
 
 		public Bounds collider;
 	}

@@ -873,7 +873,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1e1341cc4dbc3c34a884183ec2435870, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 60ba7940e5a7cf64087a256188fc2d20, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3749,6 +3749,7 @@ MonoBehaviour:
   debateParent: {fileID: 46455575}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}
   cameraController: {fileID: 519420030}
+  characterInfo: {fileID: 1607292614}
 --- !u!1 &2049863790
 GameObject:
   m_ObjectHideFlags: 0

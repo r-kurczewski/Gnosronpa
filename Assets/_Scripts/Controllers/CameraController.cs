@@ -11,12 +11,9 @@ namespace Gnosronpa.Controllers
 
 		private const float defaultTransitionDuration = 0.2f;
 
-		public Sequence ApplyCameraAnimation(Animation3DData data, Sequence seq = null, bool defaultTransition = true)
+		public void ApplyCameraAnimation(Animation3DData data, bool defaultTransition = true)
 		{
-			if(seq is null)
-			{
-				seq = DOTween.Sequence();
-			}
+			var seq = DOTween.Sequence();
 			
 			if (defaultTransition)
 			{
@@ -38,8 +35,6 @@ namespace Gnosronpa.Controllers
 			{
 				seq.Join(transform.DOLocalRotate(data.endRotation, data.rotationDuration));
 			}
-
-			return seq;
 		}
 	}
 }

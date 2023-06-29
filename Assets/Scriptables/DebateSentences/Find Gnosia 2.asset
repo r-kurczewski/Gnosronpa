@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
-  m_Name: Find Gnosia
+  m_Name: Find Gnosia 2
   m_EditorClassIdentifier: 
-  textTemplate: There is {0} to find Gnosia
-  weakSpotText: no way
-  speakingCharacter: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+  textTemplate: '*SQUEEEK*'
+  weakSpotText: 
+  speakingCharacter: {fileID: 11400000, guid: b3807ff927022844095d2e8becc33567, type: 2}
   statement: {fileID: 0}
   correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
   collider:
