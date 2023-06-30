@@ -15,5 +15,16 @@ namespace Gnosronpa.Common
 		public Vector3 startRotation;
 		public Vector3 endRotation;
 		public float rotationDuration;
+
+		public Animation3DData OffsetBy(Vector3 position, Vector3 rotation)
+		{
+			startPosition += position;
+			endPosition += position;
+
+			startRotation += rotation;
+			endRotation += rotation;
+
+			return this;
+		}
 	}
 }

@@ -14,14 +14,14 @@ namespace Gnosronpa.ScriptableObjects
    [Serializable]
    public class StatementConfiguration
    {
+		public float delay;
+
 		public DebateStatementData statement;
 
 		public Animation2DData statementAnimation;
 
 		public TransitionData statementTransition;
 
-		public Animation3DData cameraAnimation;
-
-		public float delay;
+		public Animation3DData cameraOffset;
 	}
 }

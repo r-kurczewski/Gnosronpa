@@ -11,30 +11,33 @@ namespace Gnosronpa.Controllers
 
 		private const float defaultTransitionDuration = 0.2f;
 
-		public void ApplyCameraAnimation(Animation3DData data, bool defaultTransition = true)
+		public void ApplyCameraAnimation(Animation3DData animationData, GameObject target = null, bool defaultTransition = true)
 		{
+			Vector3 targetLookAtRotation = target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;
+
 			var seq = DOTween.Sequence();
-			
+
 			if (defaultTransition)
 			{
-				seq.Append(transform.DOLocalMove(data.startPosition, defaultTransitionDuration))
-					.Join(transform.DOLocalRotate(data.startRotation, defaultTransitionDuration));
+				seq.Append(transform.DOLocalMove(animationData.startPosition, defaultTransitionDuration))
+					.Join(transform.DOLocalRotate(targetLookAtRotation + animationData.startRotation, defaultTransitionDuration));
 			}
 			else
 			{
-				transform.localPosition = data.startPosition;
-				transform.localRotation = Quaternion.Euler(data.startRotation);
+				transform.localPosition = animationData.startPosition;
+				transform.localRotation = Quaternion.Euler(targetLookAtRotation + animationData.startRotation);
 			}
 
-			if (data.moveDuration > 0)
+			if (animationData.moveDuration > 0)
 			{
-				seq.Append(transform.DOLocalMove(data.endPosition, data.moveDuration));
+				seq.Append(transform.DOLocalMove(animationData.endPosition, animationData.moveDuration));
 			}
 
-			if (data.rotationDuration > 0)
+			if (animationData.rotationDuration > 0)
 			{
-				seq.Join(transform.DOLocalRotate(data.endRotation, data.rotationDuration));
+				seq.Join(transform.DOLocalRotate(targetLookAtRotation + animationData.endRotation, animationData.rotationDuration));
 			}
 		}
+
 	}
 }

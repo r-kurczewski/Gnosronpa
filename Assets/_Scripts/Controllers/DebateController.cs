@@ -40,7 +40,11 @@ namespace Gnosronpa.Controllers
 			var nextStatement = statementsQueue.Peek();
 			if (nextStatement.delay < time)
 			{
-				cameraController.ApplyCameraAnimation(nextStatement.cameraAnimation);
+				var speakingCharacter = GameObject.FindGameObjectsWithTag("Character")
+					.Select(x => x.GetComponent<Character>())
+					.FirstOrDefault(x => x.Data == nextStatement.statement.speakingCharacter);
+
+				cameraController.ApplyCameraAnimation(nextStatement.cameraOffset, speakingCharacter?.gameObject);
 				if (nextStatement.statement)
 				{
 					LoadStatement(nextStatement);
