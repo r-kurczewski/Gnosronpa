@@ -3140,7 +3140,7 @@ MonoBehaviour:
   mousePosition: {fileID: 7521931061456786269, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   truthBullet: {fileID: 3934887048364758267, guid: 6947af81495768a4f98862ddd871372e, type: 3}
   canvas: {fileID: 220746915}
-  bulletSpeed: 75
+  bulletSpeed: 1.5
 --- !u!4 &1645166534
 Transform:
   m_ObjectHideFlags: 0

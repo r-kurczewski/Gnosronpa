@@ -27,6 +27,11 @@ public class ShootScript : MonoBehaviour
 		shoot.action.performed -= OnShoot;
 	}
 
+	private void Update()
+	{
+		//OnShoot(default);
+	}
+
 	private void OnShoot(InputAction.CallbackContext ctx)
 	{
 		Vector3 mousePos = mousePosition.action.ReadValue<Vector2>();
