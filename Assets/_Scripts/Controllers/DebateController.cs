@@ -30,32 +30,37 @@ namespace Gnosronpa.Controllers
 		private void Awake()
 		{
 			statementsQueue = new Queue<StatementConfigurationData>();
-			LoadDebate(data);
+			if(data) LoadDebate(data);
 		}
 
 		private void Update()
 		{
 			if (statementsQueue.Count == 0) return;
 
-			var nextStatement = statementsQueue.Peek();
-			if (nextStatement.delay < time)
+			var statement = statementsQueue.Peek();
+			if (statement.delay < time)
 			{
-				var speakingCharacter = GameObject.FindGameObjectsWithTag("Character")
-					.Select(x => x.GetComponent<Character>())
-					.FirstOrDefault(x => x.Data == nextStatement.statement.speakingCharacter);
-
-				cameraController.ApplyCameraAnimation(nextStatement.cameraOffset, speakingCharacter?.gameObject, false);
-				if (nextStatement.statement)
-				{
-					LoadStatement(nextStatement);
-					characterInfo.SetCharacter(nextStatement.statement.speakingCharacter);
-
-				}
+				LoadAnimation(statement);
 				statementsQueue.Dequeue();
 				time = 0;
 			}
 
 			time += Time.deltaTime;
+		}
+
+		public void LoadAnimation(StatementConfigurationData nextStatement)
+		{
+			var speakingCharacter = GameObject.FindGameObjectsWithTag("Character")
+								.Select(x => x.GetComponent<Character>())
+								.FirstOrDefault(x => x.Data == nextStatement.statement.speakingCharacter);
+
+			cameraController.ApplyCameraAnimation(nextStatement.cameraOffset, speakingCharacter?.gameObject);
+			if (nextStatement.statement)
+			{
+				LoadStatement(nextStatement);
+				characterInfo.SetCharacter(nextStatement.statement.speakingCharacter);
+
+			}
 		}
 
 		private void LoadStatement(StatementConfigurationData statementData)

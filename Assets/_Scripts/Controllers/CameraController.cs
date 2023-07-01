@@ -10,16 +10,15 @@ namespace Gnosronpa.Controllers
 	public class CameraController : MonoBehaviour
 	{
 		[SerializeField]
-		private float speed;
-
 		private Transform cameraTransform;
 
-		private const float defaultTransitionDuration = 0.1f;
+		[SerializeField]
+		private bool transitions;
 
-		private void Awake()
-		{
-			cameraTransform = GetComponentInChildren<Camera>().transform;
-		}
+		[SerializeField]
+		private float defaultTransitionDuration = 0.1f;
+
+		
 
 		/// <summary>
 		/// 
@@ -27,13 +26,13 @@ namespace Gnosronpa.Controllers
 		/// <param name="animationData">AnimationData applied in relation to target</param>
 		/// <param name="target">Target on which the camera will focus</param>
 		/// <param name="defaultTransition">Whether the default camera transition between current and start position and rotation should be used</param>
-		public void ApplyCameraAnimation(Animation3DData animationData, GameObject target = null, bool defaultTransition = true)
+		public void ApplyCameraAnimation(Animation3DData animationData, GameObject target = null)
 		{
-			Vector3 baseRotation = target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;
+			var baseRotation = GetBaseRotation(target);
 
 			var seq = DOTween.Sequence();
 
-			if (defaultTransition)
+			if (transitions)
 			{
 				seq.Append(transform.DOLocalRotate(baseRotation, defaultTransitionDuration))
 					.Join(cameraTransform.DOLocalMove(cameraTransform.InverseTransformDirection(animationData.startPosition), defaultTransitionDuration))
@@ -56,5 +55,16 @@ namespace Gnosronpa.Controllers
 				seq.Join(cameraTransform.DOLocalRotate(animationData.endRotation, animationData.rotationDuration));
 			}
 		}
+
+		public void SetLastStateOfAnimation(Animation3DData animationData, GameObject target = null)
+		{
+			var baseRotation = GetBaseRotation(target);
+
+			transform.localRotation = Quaternion.Euler(baseRotation);
+			cameraTransform.localPosition = animationData?.endPosition ?? Vector3.zero;
+			cameraTransform.localRotation = Quaternion.Euler(animationData?.endRotation ?? Vector3.zero);
+		}
+
+		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;
 	}
 }

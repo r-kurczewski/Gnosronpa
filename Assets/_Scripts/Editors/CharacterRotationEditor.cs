@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Gnosronpa
+namespace Gnosronpa.Editors
 {
    [CustomEditor(typeof(Character))]
     public class CharacterRotationEditor : Editor

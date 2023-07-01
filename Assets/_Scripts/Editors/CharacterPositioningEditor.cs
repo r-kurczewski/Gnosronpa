@@ -2,10 +2,10 @@ using Gnosronpa.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Gnosronpa
+namespace Gnosronpa.Editors
 {
    [CustomEditor(typeof(CharacterPositioning))]
-    public class CharacterPositioningEditor : Editor
+    public class CharacterPositioningEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
       {
