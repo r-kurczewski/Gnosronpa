@@ -27,7 +27,7 @@ namespace Gnosronpa
 			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{bullet.data == data.correctBullet}]");
 		}
 
-		public void Init(StatementConfiguration configuration)
+		public void Init(StatementConfigurationData configuration)
 		{
 			data = configuration.statement;
 			var animation = configuration.statementAnimation;

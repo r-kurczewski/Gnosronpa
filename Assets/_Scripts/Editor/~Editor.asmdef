@@ -1,6 +1,6 @@
 {
     "name": "Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Gnosronpa.Editor",
     "references": [
         "GUID:9f57911955613f34f9c5c9f35173fe09"
     ],

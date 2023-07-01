@@ -23,13 +23,13 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private CharacterInfo characterInfo;
 
-		private Queue<StatementConfiguration> statementsQueue;
+		private Queue<StatementConfigurationData> statementsQueue;
 
 		private float time;
 
 		private void Awake()
 		{
-			statementsQueue = new Queue<StatementConfiguration>();
+			statementsQueue = new Queue<StatementConfigurationData>();
 			LoadDebate(data);
 		}
 
@@ -44,7 +44,7 @@ namespace Gnosronpa.Controllers
 					.Select(x => x.GetComponent<Character>())
 					.FirstOrDefault(x => x.Data == nextStatement.statement.speakingCharacter);
 
-				cameraController.ApplyCameraAnimation(nextStatement.cameraOffset, speakingCharacter?.gameObject);
+				cameraController.ApplyCameraAnimation(nextStatement.cameraOffset, speakingCharacter?.gameObject, false);
 				if (nextStatement.statement)
 				{
 					LoadStatement(nextStatement);
@@ -58,7 +58,7 @@ namespace Gnosronpa.Controllers
 			time += Time.deltaTime;
 		}
 
-		private void LoadStatement(StatementConfiguration statementData)
+		private void LoadStatement(StatementConfigurationData statementData)
 		{
 			var statement = Instantiate(statementPrefab, debateParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
