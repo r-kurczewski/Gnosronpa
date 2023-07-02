@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Debate 1
   m_EditorClassIdentifier: 
   data:
-  - delay: 2
+  - delay: 1
     statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}

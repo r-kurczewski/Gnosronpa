@@ -18,8 +18,6 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private float defaultTransitionDuration = 0.1f;
 
-		
-
 		/// <summary>
 		/// 
 		/// </summary>

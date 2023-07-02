@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Gnosronpa
 {
 	public class Character : MonoBehaviour
-    {
+	{
 		[SerializeField]
 		private CharacterData _data;
 
@@ -23,7 +23,8 @@ namespace Gnosronpa
 
 		public void UpdateRotation()
 		{
-			transform.rotation = Camera.main.transform.rotation;
+			var cameraRotation = Camera.main.transform.rotation.eulerAngles;
+			transform.localRotation = Quaternion.Euler(0, cameraRotation.y, 0);
 		}
 	}
 }
