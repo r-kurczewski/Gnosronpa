@@ -34,6 +34,9 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private InputActionReference mouseClick;
 
+		[SerializeField]
+		private GameObject rightPanel;
+
 		private Sequence seq;
 
 		private Queue<StatementConfigurationData> statementsQueue;
@@ -62,6 +65,7 @@ namespace Gnosronpa.Controllers
 					if (isStartLoopAnimation)
 					{
 						seq.Kill();
+						rightPanel.SetActive(true);
 						isStartLoopAnimation = false;
 					}
 
@@ -83,7 +87,6 @@ namespace Gnosronpa.Controllers
 
 			const int fadeOn = 1;
 			const int fadeOff = 0;
-			float duration = 3;
 			var fadeTime = 0.5f;
 			var fadeDelay = 2;
 
@@ -91,20 +94,27 @@ namespace Gnosronpa.Controllers
 
 			seq = DOTween.Sequence();
 
-			seq.Append(camTransform.DOLocalRotate(spin + 2*skew, duration, RotateMode.FastBeyond360).SetEase(Ease.Linear))
+			seq.Append(camTransform.DOLocalRotate(spin + 2*skew, 3, RotateMode.FastBeyond360).SetEase(Ease.Linear))
 				.Join(cameraFade.DOFade(fadeOn, fadeTime).SetEase(Ease.InOutFlash).SetDelay(fadeDelay))
 				.Append(camTransform.DOLocalMove(zoom, 0))
 				.Join(camTransform.DOLocalRotate(-skew, 0))
 				.Append(cameraFade.DOFade(fadeOff, fadeTime).SetEase(Ease.InOutFlash))
 				.AppendCallback(() => mouseClick.action.performed += OnBulletPick)
-				.Append(camTransform.parent.DOLocalRotate(spin - skew, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue));
+				.Append(camTransform.DOLocalRotate(-skew, 0))
+				.Append(camTransform.parent.DOLocalRotate(spin, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue));
 		}
 
 		private void OnBulletPick(CallbackContext context)
 		{
+			Debug.Log("Click");
 			isPlaying = true;
-			shootScript.enabled = true;
+			EnableShooting();
 			mouseClick.action.performed -= OnBulletPick;
+		}
+
+		private void EnableShooting()
+		{
+			shootScript.gameObject.SetActive(true);
 		}
 
 		public void LoadAnimation(StatementConfigurationData statementData)
@@ -134,23 +144,10 @@ namespace Gnosronpa.Controllers
 			data = debate;
 			debate.data.ForEach(statement => statementsQueue.Enqueue(statement));
 
+			rightPanel.SetActive(false);
+
 			isStartLoopAnimation = true;
 			StartDebateAnimation();
-		}
-
-		public void Stop()
-		{
-			Time.timeScale = 0;
-		}
-
-		public void SetSpeed(float speed)
-		{
-			Time.timeScale = speed;
-		}
-
-		public void Restart()
-		{
-			time = 0;
 		}
 	}
 }
