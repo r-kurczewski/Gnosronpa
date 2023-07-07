@@ -10,17 +10,35 @@ namespace Gnosronpa.Controllers
 {
 	public class DebateController : MonoBehaviour
 	{
+		private const int fadeOn = 1;
+		private const int fadeOff = 0;
+		private const int instant = 0;
+
+		[Header("References")]
+
 		[SerializeField]
 		private DebateData data;
 
 		[SerializeField]
-		private Transform debateParent;
+		private CameraController cameraController;
+
+		[SerializeField]
+		private InputActionReference buttonConfirm;
+
+		[SerializeField]
+		private InputActionReference mouseScroll;
+
+		[SerializeField]
+		private Transform statementsParent;
+
+		[SerializeField]
+		private Transform bulletsParent;
 
 		[SerializeField]
 		private GameObject statementPrefab;
 
 		[SerializeField]
-		private CameraController cameraController;
+		private GameObject bulletLabelPrefab;
 
 		[SerializeField]
 		private CameraFade cameraFade;
@@ -32,84 +50,123 @@ namespace Gnosronpa.Controllers
 		private CharacterInfo characterInfo;
 
 		[SerializeField]
-		private InputActionReference mouseClick;
+		private GameObject debateGUI;
 
 		[SerializeField]
-		private GameObject rightPanel;
+		private BulletGUI bulletGUI;
 
-		private Sequence seq;
+		[Header("State")]
 
-		private Queue<StatementConfigurationData> statementsQueue;
-
+		[SerializeField]
 		private bool isPlaying = false;
 
+		[SerializeField]
 		private bool isStartLoopAnimation;
 
+		[SerializeField]
 		private float time;
+
+		private List<BulletLabel> bulletLabels;
+
+		// Other
+
+		private Sequence loop;
+
+		private Queue<DebateSequenceData> statementsQueue;
 
 		private void Awake()
 		{
-			statementsQueue = new Queue<StatementConfigurationData>();
+			statementsQueue = new Queue<DebateSequenceData>();
 			if (data) LoadDebate(data);
 		}
 
 		private void Update()
 		{
-			if (statementsQueue.Count == 0) return;
+			if (!isPlaying || statementsQueue.Count == 0) return;
 
-			if (isPlaying)
+			var statement = statementsQueue.Peek();
+			if (statement.delay < time)
 			{
-				var statement = statementsQueue.Peek();
-				if (statement.delay < time)
+				if (isStartLoopAnimation)
 				{
-					if (isStartLoopAnimation)
-					{
-						seq.Kill();
-						rightPanel.SetActive(true);
-						isStartLoopAnimation = false;
-					}
-
-					LoadAnimation(statement);
-					statementsQueue.Dequeue();
-					time = 0;
+					loop?.Kill();
+					debateGUI.SetActive(true);
+					isStartLoopAnimation = false;
 				}
 
-				time += Time.deltaTime;
+				PlayAnimation(statement);
+				statementsQueue.Dequeue();
+				time = 0;
 			}
+
+			time += Time.deltaTime;
 		}
 
-		private void StartDebateAnimation()
+		private void PlayDebateStartAnimation()
 		{
-			var camTransform = Camera.main.transform;
+			var ct = Camera.main.transform;
+			var cp = ct.parent;
+
 			var spin = new Vector3(0, -360, 0);
 			var skew = new Vector3(0, 0, 5);
 			var zoom = new Vector3(0, 7, 20);
 
-			const int fadeOn = 1;
-			const int fadeOff = 0;
 			var fadeTime = 0.5f;
-			var fadeDelay = 2;
 
-			camTransform.rotation = Quaternion.Euler(skew);
+			var seq = DOTween.Sequence()
+				.Append(ct.DOLocalRotate(2 * skew, instant))
 
-			seq = DOTween.Sequence();
+				.Append(ct.DOLocalRotate(spin + 2 * skew, 3, RotateMode.FastBeyond360).SetEase(Ease.Linear))
+				.Join(cameraFade.DOFade(fadeOn, fadeTime).SetEase(Ease.InOutFlash).SetDelay(2))
 
-			seq.Append(camTransform.DOLocalRotate(spin + 2*skew, 3, RotateMode.FastBeyond360).SetEase(Ease.Linear))
-				.Join(cameraFade.DOFade(fadeOn, fadeTime).SetEase(Ease.InOutFlash).SetDelay(fadeDelay))
-				.Append(camTransform.DOLocalMove(zoom, 0))
-				.Join(camTransform.DOLocalRotate(-skew, 0))
+				.Append(ct.DOLocalMove(zoom, instant))
+				.Join(ct.DOLocalRotate(-skew, instant))
+
 				.Append(cameraFade.DOFade(fadeOff, fadeTime).SetEase(Ease.InOutFlash))
-				.AppendCallback(() => mouseClick.action.performed += OnBulletPick)
-				.Append(camTransform.DOLocalRotate(-skew, 0))
-				.Append(camTransform.parent.DOLocalRotate(spin, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue));
+
+				.AppendCallback(() => EnableBulletPick())
+				.Join(ct.DOLocalRotate(-skew, instant))
+
+				.AppendCallback(() => PlayLoadingBulletAnimation());
+
+			loop = DOTween.Sequence()
+			.Join(cp.DOLocalRotate(spin, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue));
+		}
+
+		public void EnableBulletPick()
+		{
+			mouseScroll.action.performed += OnBulletChange;
+			buttonConfirm.action.performed += OnBulletPick;
+		}
+
+		private void PlayLoadingBulletAnimation()
+		{
+			debateGUI.SetActive(true);
+
+			bulletGUI.Init(data.bullets);
+			bulletGUI.StartAnimation();
+		}
+
+		private void OnBulletChange(CallbackContext context)
+		{
+			var direction = context.ReadValue<float>();
+			var seq = DOTween.Sequence();
+
+			if (direction > 0)
+			{
+				bulletGUI.MoveUpAnimation();
+			}
+			else if (direction < 0)
+			{
+				bulletGUI.MoveDownAnimation();
+			}
 		}
 
 		private void OnBulletPick(CallbackContext context)
 		{
-			Debug.Log("Click");
 			isPlaying = true;
 			EnableShooting();
-			mouseClick.action.performed -= OnBulletPick;
+			buttonConfirm.action.performed -= OnBulletPick;
 		}
 
 		private void EnableShooting()
@@ -117,13 +174,13 @@ namespace Gnosronpa.Controllers
 			shootScript.gameObject.SetActive(true);
 		}
 
-		public void LoadAnimation(StatementConfigurationData statementData)
+		public void PlayAnimation(DebateSequenceData statementData)
 		{
 			var speakingCharacter = GameObject.FindGameObjectsWithTag("Character")
 								.Select(x => x.GetComponent<Character>())
 								.FirstOrDefault(x => x.Data == statementData.statement.speakingCharacter);
 
-			cameraController.ApplyCameraAnimation(statementData.cameraOffset, speakingCharacter?.gameObject);
+			cameraController.PlayCameraAnimation(statementData.characterRelativeCameraAnimation, speakingCharacter?.gameObject);
 
 			if (statementData.statement)
 			{
@@ -132,22 +189,25 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
-		private void LoadStatement(StatementConfigurationData statementData)
+		private DebateStatement LoadStatement(DebateSequenceData statementData)
 		{
-			var statement = Instantiate(statementPrefab, debateParent).GetComponent<DebateStatement>();
+			var statement = Instantiate(statementPrefab, statementsParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
-
+			return statement;
 		}
 
 		public void LoadDebate(DebateData debate)
 		{
 			data = debate;
-			debate.data.ForEach(statement => statementsQueue.Enqueue(statement));
+			bulletLabels?.ForEach(b => Destroy(b));
+			bulletLabels = new();
 
-			rightPanel.SetActive(false);
+			debate.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
+
+			debateGUI.SetActive(false);
 
 			isStartLoopAnimation = true;
-			StartDebateAnimation();
+			PlayDebateStartAnimation();
 		}
 	}
 }

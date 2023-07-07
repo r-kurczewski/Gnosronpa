@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
+  m_Name: Dev Debug
+  m_EditorClassIdentifier: 
+  bullets:
+  - {fileID: 11400000, guid: ef6924cfaeb7c424a88620f15238273a, type: 2}
+  - {fileID: 11400000, guid: 04d9b14cb2ffb1f4f8015b76001292af, type: 2}
+  - {fileID: 11400000, guid: 7c3ba4321c7177c4799659ec2ee7b0ed, type: 2}
+  - {fileID: 11400000, guid: 028f76c6be0cba443bf81f5f47298fcc, type: 2}
+  - {fileID: 11400000, guid: b2f5bf88a2171b9498de27d85d5f7e4c, type: 2}
+  - {fileID: 11400000, guid: 7869d6148cca6d749b51c08ba6b0dfba, type: 2}
+  - {fileID: 11400000, guid: ca0d3d659f336c544a46d708701ebafd, type: 2}
+  debateSequence: []

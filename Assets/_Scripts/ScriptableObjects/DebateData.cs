@@ -9,11 +9,14 @@ namespace Gnosronpa.ScriptableObjects
 	[CreateAssetMenu(fileName = "Debate", menuName = "NonstopDebate/Debate")]
 	public class DebateData : ScriptableObject
 	{
-		public List<StatementConfigurationData> data;
+		public List<TruthBulletData> bullets;
+
+		[FormerlySerializedAs("data")]
+		public List<DebateSequenceData> debateSequence;
 	}
 
 	[Serializable]
-	public class StatementConfigurationData
+	public class DebateSequenceData
 	{
 		public float delay;
 
@@ -23,6 +26,7 @@ namespace Gnosronpa.ScriptableObjects
 
 		public TransitionData statementTransition;
 
-		public Animation3DData cameraOffset;
+		[FormerlySerializedAs("cameraOffset")]
+		public Animation3DData characterRelativeCameraAnimation;
 	}
 }

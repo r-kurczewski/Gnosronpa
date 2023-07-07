@@ -24,10 +24,10 @@ namespace Gnosronpa
 		private void OnTriggerEnter(Collider other)
 		{
 			var bullet = other.GetComponent<TruthBullet>();
-			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{bullet.data == data.correctBullet}]");
+			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{bullet.IsCorrectBullet(data.correctBullet)}]");
 		}
 
-		public void Init(StatementConfigurationData configuration)
+		public void Init(DebateSequenceData configuration)
 		{
 			data = configuration.statement;
 			var animation = configuration.statementAnimation;

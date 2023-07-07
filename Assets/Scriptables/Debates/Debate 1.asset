@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
   m_Name: Debate 1
   m_EditorClassIdentifier: 
-  data:
+  bullets:
+  - {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
+  - {fileID: 11400000, guid: 3d59d073c73c62148ac8888d696268d1, type: 2}
+  - {fileID: 11400000, guid: 5d38f7c5a4802e44c939c8fce663c644, type: 2}
+  debateSequence:
   - delay: 1
     statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
     statementAnimation:
@@ -29,7 +33,7 @@ MonoBehaviour:
       appearTime: 0.5
       waitingTime: 0
       disappearTime: 0.5
-    cameraOffset:
+    characterRelativeCameraAnimation:
       startPosition: {x: 0, y: 5, z: 10}
       endPosition: {x: 0, y: 5, z: 20}
       moveDuration: 2
@@ -52,7 +56,7 @@ MonoBehaviour:
       appearTime: 0.5
       waitingTime: 0
       disappearTime: 0.5
-    cameraOffset:
+    characterRelativeCameraAnimation:
       startPosition: {x: 0, y: 10, z: 20}
       endPosition: {x: 0, y: 10, z: 25}
       moveDuration: 2
@@ -75,7 +79,7 @@ MonoBehaviour:
       appearTime: 0.5
       waitingTime: 0
       disappearTime: 0.5
-    cameraOffset:
+    characterRelativeCameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 20}
       moveDuration: 3

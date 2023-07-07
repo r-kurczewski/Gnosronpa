@@ -8,14 +8,14 @@ using Gnosronpa.Controllers;
 
 namespace Gnosronpa.Editors
 {
-	[CustomPropertyDrawer(typeof(StatementConfigurationData))]
+	[CustomPropertyDrawer(typeof(DebateSequenceData))]
 	public class StatementConfigurationDataDrawer : PropertyDrawer
 	{
 		public override VisualElement CreatePropertyGUI(SerializedProperty property)
 		{
 			var container = new VisualElement();
 
-			var type = typeof(StatementConfigurationData);
+			var type = typeof(DebateSequenceData);
 
 			foreach (var field in type.GetFields())
 			{
@@ -38,8 +38,8 @@ namespace Gnosronpa.Editors
 				.Select(x => x.GetComponent<Character>())
 				.FirstOrDefault(x => x.Data == statements.prev?.statement.speakingCharacter);
 
-				cameraController.SetLastStateOfAnimation(statements.prev?.cameraOffset, prevSpeakingCharacter?.gameObject);
-				debateController.LoadAnimation(statements.current);
+				cameraController.SetLastStateOfAnimation(statements.prev?.characterRelativeCameraAnimation, prevSpeakingCharacter?.gameObject);
+				debateController.PlayAnimation(statements.current);
 			});
 			button.text = "Play animation";
 
@@ -56,14 +56,14 @@ namespace Gnosronpa.Editors
 			return container;
 		}
 
-		public (StatementConfigurationData current, StatementConfigurationData prev) GetStatementConfigurations(SerializedProperty property)
+		public (DebateSequenceData current, DebateSequenceData prev) GetStatementConfigurations(SerializedProperty property)
 		{
 			var indexStr = property.propertyPath.Split('[').Last();
 			indexStr = indexStr.Remove(indexStr.Length - 1);
 			var index = int.Parse(indexStr);
 
 			var target = property.serializedObject.targetObject as DebateData;
-			return (target.data[index], index - 1 >= 0 ? target.data[index - 1] : null);
+			return (target.debateSequence[index], index - 1 >= 0 ? target.debateSequence[index - 1] : null);
 		}
 	}
 }

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class TruthBullet : MonoBehaviour
 {
-	public TruthBulletData data;
-	private Rigidbody rb;
-	private TMP_Text text;
-	private RectTransform rt;
-
 	[SerializeField]
+	private TruthBulletData data;
+
+	private Rigidbody rb;
+	private RectTransform rt;
+	private TMP_Text text;
+
 	private Vector3 localMoveDirection;
 	private float speed;
 
@@ -18,17 +19,6 @@ public class TruthBullet : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		text = GetComponent<TMP_Text>();
 		rt = GetComponent<RectTransform>();
-	}
-
-	private void Start()
-	{
-		Init();
-	}
-
-	private void Init()
-	{
-		name = data.name;
-		text.text = data.bulletName;
 	}
 
 	private void FixedUpdate()
@@ -46,6 +36,12 @@ public class TruthBullet : MonoBehaviour
 		}
 	}
 
+	public void Init(TruthBulletData data)
+	{
+		name = data.name;
+		text.text = data.bulletName;
+	}
+
 	public void Shoot(Vector3 srcWorldPos, Vector3 dstWorldPos, float speed)
 	{
 		this.speed = speed;
@@ -53,6 +49,11 @@ public class TruthBullet : MonoBehaviour
 
 		var direction = (dstWorldPos - srcWorldPos).normalized;
 		localMoveDirection = transform.parent.InverseTransformDirection(direction);
+	}
+
+	public bool IsCorrectBullet(TruthBulletData data)
+	{
+		return this.data = data;
 	}
 }
 
