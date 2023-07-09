@@ -11,6 +11,7 @@ namespace Gnosronpa
 		private const int maxVisibleBullets = 3;
 		private const float moveY = 80;
 		private const float moveYDuration = 0.3f;
+		private const int instant = 0;
 
 		[SerializeField]
 		private GameObject bulletLabelPrefab;
@@ -33,7 +34,7 @@ namespace Gnosronpa
 		[SerializeField]
 		private bool isAnimating;
 
-		public bool IsAnimating => isAnimating; 
+		public bool IsAnimating => isAnimating;
 
 		public void Init(IEnumerable<TruthBulletData> bulletsData)
 		{
@@ -67,58 +68,71 @@ namespace Gnosronpa
 				// for already visible bullets
 				for (int j = 0; j <= i; j++)
 				{
-					AddMoveYBulletAnimation(seq, bulletLabels[j], i - j + 1, j == 0);
+					var level = i - j + 1;
+					AddMoveYBulletAnimation(seq, bulletLabels[j], level, j == 0);
 				}
 			}
 
 			seq.onComplete += () => isAnimating = false;
 		}
 
-		
-		private void AddMoveYBulletAnimation(Sequence seq, BulletLabel bullet, int level, bool append)
+		private void AddMoveYBulletAnimation(Sequence seq, BulletLabel bullet, int level, bool append = false)
 		{
-			if (level == 0) return;
-
-			//Debug.Log($"Moved {bullet.name} to level {level}");
 			var bt = bullet.transform;
+			var cg = bullet.GetComponent<CanvasGroup>();
 
 			var movement = bt.DOLocalMoveY(GetLevelHeight(level), moveYDuration);
 
+			int? startAnimationIndex = null;
+			Tween fadeEffect = null;
+
+			if (level < 0)
+			{
+				Debug.LogError($"Invalid level [{level}] on [{bullet.name}]", this);
+			}
+			// fade out to bottom
+			else if (level is 0 && bullet.gameObject.activeSelf)
+			{
+				startAnimationIndex = 1;
+				fadeEffect = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0f, moveYDuration);
+				fadeEffect.onComplete += () => bullet.gameObject.SetActive(false);
+			}
+			//fade in from bottom
+			else if (level is 1 && !bullet.gameObject.activeSelf)
+			{
+				startAnimationIndex = 0;
+				bullet.gameObject.SetActive(true);
+				fadeEffect = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 1, moveYDuration);
+			}
+			//fade in from top
+			else if (level is maxVisibleBullets && !bullet.gameObject.activeSelf)
+			{
+				startAnimationIndex = maxVisibleBullets + 1;
+				bullet.gameObject.SetActive(true);
+				fadeEffect = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 1, moveYDuration);
+			}
+			else if (level is maxVisibleBullets + 1 && bullet.gameObject.activeSelf)
+			{
+				//fade out to top
+				startAnimationIndex = maxVisibleBullets;
+				fadeEffect = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0f, moveYDuration);
+				fadeEffect.onComplete += () => bullet.gameObject.SetActive(false);
+			}
+
+			if (startAnimationIndex is not null && fadeEffect is not null)
+			{
+				seq.Join(bt.DOLocalMoveY(GetLevelHeight(startAnimationIndex.Value), instant));
+				seq.Join(fadeEffect);
+			}
+
 			if (append) seq.Append(movement);
 			else seq.Join(movement);
-
-			if (level > maxVisibleBullets && bullet.gameObject.activeSelf)
-			{
-				var startAnimationPos = bullet.transform.localPosition;
-				startAnimationPos.y = GetLevelHeight(maxVisibleBullets);
-				bullet.transform.localPosition = startAnimationPos;
-
-				var cg = bullet.GetComponent<CanvasGroup>();
-				var fadeOut = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration);
-				fadeOut.onStepComplete += () =>
-				{
-					cg.gameObject.SetActive(false);
-				};
-				seq.Join(fadeOut);
-			}
-			else if (level <= maxVisibleBullets && !bullet.gameObject.activeSelf)
-			{
-				var startAnimationPos = bullet.transform.localPosition;
-				startAnimationPos.y = GetLevelHeight(0);
-				bullet.transform.localPosition = startAnimationPos;
-
-				var cg = bullet.GetComponent<CanvasGroup>();
-				cg.gameObject.SetActive(true);
-				var fadeIn = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 1, moveYDuration);
-				seq.Join(fadeIn);
-			}
 		}
 
 		private float GetLevelHeight(int level)
 		{
 			return labelSpawnPos.y + level * moveY;
 		}
-
 
 		private BulletLabel LoadBulletLabel(TruthBulletData bulletData)
 		{
@@ -138,7 +152,7 @@ namespace Gnosronpa
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				var newLevel = (selectedIndex - i + 3 + bulletLabels.Count) % bulletLabels.Count;
-				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel, i == 0);
+				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel);
 			}
 			selectedIndex = (selectedIndex + 1) % bulletLabels.Count;
 
@@ -154,8 +168,8 @@ namespace Gnosronpa
 			var seq = DOTween.Sequence();
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
-				var newLevel = (selectedIndex - i + bulletLabels.Count) % bulletLabels.Count + 1;
-				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel, i == 0);
+				var newLevel = (selectedIndex - i + 1 + bulletLabels.Count) % bulletLabels.Count;
+				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel);
 			}
 			selectedIndex = (selectedIndex - 1 + bulletLabels.Count) % bulletLabels.Count;
 
