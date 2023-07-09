@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Gnosronpa
+namespace Gnosronpa.Controllers
 {
-	public class BulletGUI : MonoBehaviour
+	public class BulletControllwe : MonoBehaviour, IRefreshable
 	{
 		private const int maxVisibleBullets = 3;
 		private const float moveY = 80;
@@ -34,7 +34,12 @@ namespace Gnosronpa
 		[SerializeField]
 		private bool isAnimating;
 
+		[SerializeField]
+		private AudioClip bulletLoadSound;
+
 		public bool IsAnimating => isAnimating;
+
+		public TruthBulletData SelectedBullet => bulletLabels[selectedIndex].Data;
 
 		public void Init(IEnumerable<TruthBulletData> bulletsData)
 		{
@@ -49,6 +54,7 @@ namespace Gnosronpa
 
 		public void StartAnimation()
 		{
+			if (isAnimating) return;
 			isAnimating = true;
 
 			var moveLeftTo = -462;
@@ -56,14 +62,13 @@ namespace Gnosronpa
 
 			var outOfScreenRight = new Vector3(550, -150, 0);
 
-			var loadedBullets = new List<BulletLabel>();
 			var seq = DOTween.Sequence();
 
 			// for all bullets
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				seq.Append(bulletLabels[i].transform.DOLocalMoveX(moveLeftTo, moveLeftDuration));
-				loadedBullets.Add(bulletLabels[i]);
+				seq.AppendCallback(() => AudioController.instance.PlaySound(bulletLoadSound));
 
 				// for already visible bullets
 				for (int j = 0; j <= i; j++)
@@ -74,6 +79,77 @@ namespace Gnosronpa
 			}
 
 			seq.onComplete += () => isAnimating = false;
+		}
+
+		public void MoveUpAnimation()
+		{
+			if (isAnimating) return;
+			isAnimating = true;
+
+			var seq = DOTween.Sequence();
+			for (int i = 0; i < bulletLabels.Count; i++)
+			{
+				var newLevel = (selectedIndex - i + 3 + bulletLabels.Count) % bulletLabels.Count;
+				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel);
+			}
+			selectedIndex = (selectedIndex + 1) % bulletLabels.Count;
+
+			seq.onComplete += () => isAnimating = false;
+		}
+
+		public void MoveDownAnimation()
+		{
+			if (isAnimating) return;
+			isAnimating = true;
+
+			var seq = DOTween.Sequence();
+			for (int i = 0; i < bulletLabels.Count; i++)
+			{
+				var newLevel = (selectedIndex - i + 1 + bulletLabels.Count) % bulletLabels.Count;
+				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel);
+			}
+			selectedIndex = (selectedIndex - 1 + bulletLabels.Count) % bulletLabels.Count;
+
+			seq.onComplete += () => isAnimating = false;
+		}
+
+		public void HideBulletPickMenu()
+		{
+			if (isAnimating) return;
+			isAnimating = true;
+
+			var outOfScreenRight = -950;
+			var duration = 0.3f;
+			var delay = 0.04f;
+
+			var seq = DOTween.Sequence();
+
+			var animationStartingBullet = selectedIndex - maxVisibleBullets / 2;
+			for (int i = 0; i < bulletLabels.Count; i++)
+			{
+				var currentIndex = (animationStartingBullet + i + bulletLabels.Count) % bulletLabels.Count;
+				seq.Join(bulletLabels[currentIndex].transform.DOLocalMoveX(outOfScreenRight, duration).SetDelay(i * delay));
+			}
+
+			seq.onComplete += () =>
+			{
+				bulletLabelsParent.gameObject.SetActive(false);
+				isAnimating = false;
+			};
+		}
+		public void ShowSelectedBulletPanel()
+		{
+			selectedBulletLabel.gameObject.SetActive(true);
+		}
+
+		public void HideSelectedBulletPanel()
+		{
+			selectedBulletLabel.gameObject.SetActive(false);
+		}
+
+		public void Refresh()
+		{
+			selectedBulletLabel.Init(bulletLabels[selectedIndex].Data);
 		}
 
 		private void AddMoveYBulletAnimation(Sequence seq, BulletLabel bullet, int level, bool append = false)
@@ -118,20 +194,14 @@ namespace Gnosronpa
 				fadeEffect = DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0f, moveYDuration);
 				fadeEffect.onComplete += () => bullet.gameObject.SetActive(false);
 			}
+			if (append) seq.Append(movement);
+			else seq.Join(movement);
 
 			if (startAnimationIndex is not null && fadeEffect is not null)
 			{
 				seq.Join(bt.DOLocalMoveY(GetLevelHeight(startAnimationIndex.Value), instant));
 				seq.Join(fadeEffect);
 			}
-
-			if (append) seq.Append(movement);
-			else seq.Join(movement);
-		}
-
-		private float GetLevelHeight(int level)
-		{
-			return labelSpawnPos.y + level * moveY;
 		}
 
 		private BulletLabel LoadBulletLabel(TruthBulletData bulletData)
@@ -142,38 +212,9 @@ namespace Gnosronpa
 			return bulletLabel;
 		}
 
-		public void MoveUpAnimation()
+		private float GetLevelHeight(int level)
 		{
-			if (isAnimating) return;
-
-			isAnimating = true;
-
-			var seq = DOTween.Sequence();
-			for (int i = 0; i < bulletLabels.Count; i++)
-			{
-				var newLevel = (selectedIndex - i + 3 + bulletLabels.Count) % bulletLabels.Count;
-				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel);
-			}
-			selectedIndex = (selectedIndex + 1) % bulletLabels.Count;
-
-			seq.onComplete += () => isAnimating = false;
-		}
-
-		public void MoveDownAnimation()
-		{
-			if (isAnimating) return;
-
-			isAnimating = true;
-
-			var seq = DOTween.Sequence();
-			for (int i = 0; i < bulletLabels.Count; i++)
-			{
-				var newLevel = (selectedIndex - i + 1 + bulletLabels.Count) % bulletLabels.Count;
-				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel);
-			}
-			selectedIndex = (selectedIndex - 1 + bulletLabels.Count) % bulletLabels.Count;
-
-			seq.onComplete += () => isAnimating = false;
+			return labelSpawnPos.y + level * moveY;
 		}
 	}
 }

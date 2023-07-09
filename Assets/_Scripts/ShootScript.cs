@@ -1,10 +1,11 @@
+using Gnosronpa.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ShootScript : MonoBehaviour
 {
 	[SerializeField]
-	private InputActionReference shoot, mousePosition;
+	private InputActionReference mousePosition;
 
 	[SerializeField]
 	private GameObject truthBullet;
@@ -17,17 +18,7 @@ public class ShootScript : MonoBehaviour
 
 	private float AdditionalBulletSpawnOffsetX => canvas.planeDistance / 10;
 
-	private void OnEnable()
-	{
-		shoot.action.performed += OnShoot;
-	}
-
-	private void OnDisable()
-	{
-		shoot.action.performed -= OnShoot;
-	}
-
-	private void OnShoot(InputAction.CallbackContext ctx)
+	public void Shoot(TruthBulletData bulletData)
 	{
 		Vector3 mousePos = mousePosition.action.ReadValue<Vector2>();
 		mousePos.z = canvas.planeDistance;
@@ -38,6 +29,7 @@ public class ShootScript : MonoBehaviour
 		srcWorldPos += Camera.main.transform.right * AdditionalBulletSpawnOffsetX;
 
 		var bullet = Instantiate(truthBullet, canvas.transform).GetComponent<TruthBullet>();
+		bullet.Init(bulletData);
 		var dynamicSpeed = bulletSpeed * canvas.planeDistance;
 		bullet.Shoot(srcWorldPos, dstWorldPos, dynamicSpeed);
 	}

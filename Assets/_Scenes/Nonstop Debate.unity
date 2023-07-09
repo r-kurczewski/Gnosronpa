@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1020806342}
-  m_IndirectSpecularColor: {r: 0.010486943, g: 0.05298245, b: 0.15319028, a: 1}
+  m_IndirectSpecularColor: {r: 0.030116338, g: 0.07868221, b: 0.16928008, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -731,8 +731,9 @@ GameObject:
   m_Component:
   - component: {fileID: 357588252}
   - component: {fileID: 357588253}
+  - component: {fileID: 357588254}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: Audio Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -771,7 +772,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -849,6 +850,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &357588254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357588251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6d11a11527e6e4d89115104c5bcfc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 357588253}
 --- !u!4 &359701179 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1e5fb92740b96f44ebc78cc066b99c50, type: 3}
@@ -1929,7 +1943,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 50, y: 50}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 288}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &827687496
 MonoBehaviour:
@@ -2274,7 +2288,7 @@ GameObject:
   - component: {fileID: 1074893610}
   - component: {fileID: 1074893611}
   m_Layer: 5
-  m_Name: BulletGUI
+  m_Name: BulletController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2321,6 +2335,7 @@ MonoBehaviour:
   selectedIndex: 0
   bulletLabels: []
   isAnimating: 0
+  bulletLoadSound: {fileID: 8300000, guid: 2fb0cad3478775a4f815e39306a497f3, type: 3}
 --- !u!1 &1079968974 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7059870668660101784, guid: 4cc928983f4d52647acede4128ed8870, type: 3}
@@ -3219,7 +3234,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c58bd36809c284d92ece89e556dc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shoot: {fileID: -6240823983734169260, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   mousePosition: {fileID: 7521931061456786269, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   truthBullet: {fileID: 3934887048364758267, guid: 6947af81495768a4f98862ddd871372e, type: 3}
   canvas: {fileID: 220746915}
@@ -3257,7 +3271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1677106259
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3608,8 +3622,8 @@ RectTransform:
   m_Father: {fileID: 1474894458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3948,10 +3962,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 223067903d146f24a900bc93bdc187ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 123278c7b5e29f945bbd4ada68951dfa, type: 2}
+  data: {fileID: 11400000, guid: 709bbdba48d415a439638c07469cdb25, type: 2}
   cameraController: {fileID: 1371867603}
   buttonConfirm: {fileID: -6240823983734169260, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   mouseScroll: {fileID: 2805303670844433148, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
+  shoot: {fileID: 0}
   statementsParent: {fileID: 46455575}
   bulletsParent: {fileID: 1074893610}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}
@@ -3959,8 +3974,9 @@ MonoBehaviour:
   cameraFade: {fileID: 1073098762}
   shootScript: {fileID: 1645166533}
   characterInfo: {fileID: 1607292614}
+  rightPanel: {fileID: 1677106258}
   debateGUI: {fileID: 1681735286}
-  bulletGUI: {fileID: 1074893611}
+  bulletController: {fileID: 1074893611}
   isPlaying: 0
   isStartLoopAnimation: 0
   time: 0
@@ -4132,8 +4148,8 @@ RectTransform:
   m_Father: {fileID: 476110837}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4466,15 +4482,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4524,10 +4540,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8020041756199209042, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: ae9e4983951f89640a8fe52d7768d171, type: 3}
+      objectReference: {fileID: 21300000, guid: c2c41fd4d035e1548ada40115df1b816, type: 3}
+    - target: {fileID: 8020041756199209042, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9917376
+      objectReference: {fileID: 0}
+    - target: {fileID: 8020041756199209042, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8020041756199209042, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8020041756199209042, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_Material
       value: 
@@ -4592,6 +4624,10 @@ PrefabInstance:
       propertyPath: walls.Array.data[13]
       value: 
       objectReference: {fileID: 396218398}
+    - target: {fileID: 8774420622296547422, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

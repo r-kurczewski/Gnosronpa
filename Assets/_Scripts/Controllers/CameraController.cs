@@ -23,7 +23,6 @@ namespace Gnosronpa.Controllers
 		/// </summary>
 		/// <param name="animationData">AnimationData applied in relation to target</param>
 		/// <param name="target">Target on which the camera will focus</param>
-		/// <param name="defaultTransition">Whether the default camera transition between current and start position and rotation should be used</param>
 		public void PlayCameraAnimation(Animation3DData animationData, GameObject target = null)
 		{
 			var baseRotation = GetBaseRotation(target);

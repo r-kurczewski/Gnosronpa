@@ -13,6 +13,8 @@ namespace Gnosronpa
 		[SerializeField]
 		private TMP_Text label;
 
+		public TruthBulletData Data => data;
+
 		public void Init(TruthBulletData bulletData)
 		{
 			data = bulletData;

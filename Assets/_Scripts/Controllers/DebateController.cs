@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
@@ -29,6 +30,9 @@ namespace Gnosronpa.Controllers
 		private InputActionReference mouseScroll;
 
 		[SerializeField]
+		private InputActionReference shoot;
+
+		[SerializeField]
 		private Transform statementsParent;
 
 		[SerializeField]
@@ -50,10 +54,14 @@ namespace Gnosronpa.Controllers
 		private CharacterInfo characterInfo;
 
 		[SerializeField]
-		private GameObject debateGUI;
+		private GameObject rightPanel;
 
 		[SerializeField]
-		private BulletGUI bulletGUI;
+		private GameObject debateGUI;
+
+		[FormerlySerializedAs("bulletGUI")]
+		[SerializeField]
+		private BulletControllwe bulletController;
 
 		[Header("State")]
 
@@ -65,8 +73,6 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private float time;
-
-		private List<BulletLabel> bulletLabels;
 
 		// Other
 
@@ -90,7 +96,7 @@ namespace Gnosronpa.Controllers
 				if (isStartLoopAnimation)
 				{
 					loop?.Kill();
-					debateGUI.SetActive(true);
+					rightPanel.gameObject.SetActive(true);
 					isStartLoopAnimation = false;
 				}
 
@@ -143,8 +149,8 @@ namespace Gnosronpa.Controllers
 		{
 			debateGUI.SetActive(true);
 
-			bulletGUI.Init(data.bullets);
-			bulletGUI.StartAnimation();
+			bulletController.Init(data.bullets);
+			bulletController.StartAnimation();
 		}
 
 		private void OnBulletChange(CallbackContext context)
@@ -154,24 +160,28 @@ namespace Gnosronpa.Controllers
 
 			if (direction > 0)
 			{
-				bulletGUI.MoveUpAnimation();
+				bulletController.MoveUpAnimation();
 			}
 			else if (direction < 0)
 			{
-				bulletGUI.MoveDownAnimation();
+				bulletController.MoveDownAnimation();
 			}
 		}
 
 		private void OnBulletPick(CallbackContext context)
 		{
+			bulletController.HideBulletPickMenu();
+			bulletController.ShowSelectedBulletPanel();
+			bulletController.Refresh();
+
 			isPlaying = true;
-			EnableShooting();
 			buttonConfirm.action.performed -= OnBulletPick;
+			buttonConfirm.action.performed += OnShoot;
 		}
 
-		private void EnableShooting()
+		private void OnShoot(CallbackContext context)
 		{
-			shootScript.gameObject.SetActive(true);
+			shootScript.Shoot(bulletController.SelectedBullet);
 		}
 
 		public void PlayAnimation(DebateSequenceData statementData)
@@ -199,8 +209,6 @@ namespace Gnosronpa.Controllers
 		public void LoadDebate(DebateData debate)
 		{
 			data = debate;
-			bulletLabels?.ForEach(b => Destroy(b));
-			bulletLabels = new();
 
 			debate.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
 
