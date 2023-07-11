@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 82e9fb8957a377346908b11beb0418a6, type: 2}
   m_Color: {r: 0.34509805, g: 0.31764707, b: 0.34117648, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_text: Stella's Report
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5f95fdbb9bc72241a6d3a6c4b91d826, type: 2}
-  m_sharedMaterial: {fileID: 2617878057729584418, guid: b5f95fdbb9bc72241a6d3a6c4b91d826, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 78b662c23579ab948abf9394285f62be, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

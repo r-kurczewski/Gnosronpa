@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
-  m_Name: Find Gnosia 1
+  m_Name: SQUEEK
   m_EditorClassIdentifier: 
-  textTemplate: '*pointing to {0}*'
-  weakSpotText: Otome
-  speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
+  textTemplate: '*SQUEEEK*'
+  weakSpotText: 
+  speakingCharacter: {fileID: 11400000, guid: b3807ff927022844095d2e8becc33567, type: 2}
   statement: {fileID: 0}
-  correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
+  correctBullet: {fileID: 0}
   collider:
     m_Center: {x: -41, y: -5, z: 0}
     m_Extent: {x: 564, y: 55, z: 3}

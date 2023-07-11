@@ -1,10 +1,10 @@
 using DG.Tweening;
 using Gnosronpa.ScriptableObjects;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
@@ -59,9 +59,8 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private GameObject debateGUI;
 
-		[FormerlySerializedAs("bulletGUI")]
 		[SerializeField]
-		private BulletControllwe bulletController;
+		private BulletController bulletController;
 
 		[Header("State")]
 
@@ -82,14 +81,46 @@ namespace Gnosronpa.Controllers
 
 		private void Awake()
 		{
-			statementsQueue = new Queue<DebateSequenceData>();
-			if (data) LoadDebate(data);
+			if (data) Init(data);
 		}
 
-		private void Update()
+		public void Init(DebateData debate)
 		{
-			if (!isPlaying || statementsQueue.Count == 0) return;
+			data = debate;
+			statementsQueue = new Queue<DebateSequenceData>();
+			debate.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
 
+			debateGUI.SetActive(false);
+
+			isStartLoopAnimation = true;
+			StartCoroutine(Debate());
+			bulletController.OnBulletMenuHidingEnd.AddListener(() => OnBulletPick(default));
+		}
+
+		private IEnumerator Debate()
+		{
+			Debug.Log("Starting debate...");
+			var animation = PlayDebateStartAnimation();
+			yield return new WaitWhile(animation.IsActive);
+
+			Debug.Log("Loading bullets...");
+			animation = PlayLoadingBulletAnimation();
+			yield return new WaitWhile(animation.IsActive);
+
+			EnableBulletPick();
+			Debug.Log("Waiting for bullet pick...");
+
+			yield return new WaitUntil(() => isPlaying);
+
+			while (statementsQueue.Any())
+			{
+				LoadNewSentences();
+				yield return null;
+			}
+		}
+
+		private void LoadNewSentences()
+		{
 			var statement = statementsQueue.Peek();
 			if (statement.delay < time)
 			{
@@ -108,7 +139,7 @@ namespace Gnosronpa.Controllers
 			time += Time.deltaTime;
 		}
 
-		private void PlayDebateStartAnimation()
+		private Sequence PlayDebateStartAnimation()
 		{
 			var ct = Camera.main.transform;
 			var cp = ct.parent;
@@ -129,42 +160,44 @@ namespace Gnosronpa.Controllers
 				.Join(ct.DOLocalRotate(-skew, instant))
 
 				.Append(cameraFade.DOFade(fadeOff, fadeTime).SetEase(Ease.InOutFlash))
-
-				.AppendCallback(() => EnableBulletPick())
 				.Join(ct.DOLocalRotate(-skew, instant))
 
-				.AppendCallback(() => PlayLoadingBulletAnimation());
+				.AppendCallback(() =>
+				{
+					loop = DOTween.Sequence()
+					.Join(cp.DOLocalRotate(spin, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue));
+				});
 
-			loop = DOTween.Sequence()
-			.Join(cp.DOLocalRotate(spin, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue));
+			return seq;
 		}
 
-		public void EnableBulletPick()
+		private void EnableBulletPick()
 		{
 			mouseScroll.action.performed += OnBulletChange;
 			buttonConfirm.action.performed += OnBulletPick;
+			buttonConfirm.action.performed -= OnShoot;
 		}
 
-		private void PlayLoadingBulletAnimation()
+		private Sequence PlayLoadingBulletAnimation()
 		{
 			debateGUI.SetActive(true);
 
 			bulletController.Init(data.bullets);
-			bulletController.StartAnimation();
+			return bulletController.StartAnimation();
 		}
 
 		private void OnBulletChange(CallbackContext context)
 		{
 			var direction = context.ReadValue<float>();
-			var seq = DOTween.Sequence();
+			EnableBulletPick();
 
 			if (direction > 0)
 			{
-				bulletController.MoveUpAnimation();
+				bulletController.ChangeBulletUp();
 			}
 			else if (direction < 0)
 			{
-				bulletController.MoveDownAnimation();
+				bulletController.ChangeBulletDown();
 			}
 		}
 
@@ -172,7 +205,8 @@ namespace Gnosronpa.Controllers
 		{
 			bulletController.HideBulletPickMenu();
 			bulletController.ShowSelectedBulletPanel();
-			bulletController.Refresh();
+
+			Debug.Log($"Picked bullet: {bulletController.SelectedBullet.bulletName}");
 
 			isPlaying = true;
 			buttonConfirm.action.performed -= OnBulletPick;
@@ -204,18 +238,6 @@ namespace Gnosronpa.Controllers
 			var statement = Instantiate(statementPrefab, statementsParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
 			return statement;
-		}
-
-		public void LoadDebate(DebateData debate)
-		{
-			data = debate;
-
-			debate.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
-
-			debateGUI.SetActive(false);
-
-			isStartLoopAnimation = true;
-			PlayDebateStartAnimation();
 		}
 	}
 }

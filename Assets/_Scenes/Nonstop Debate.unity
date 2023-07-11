@@ -1250,8 +1250,8 @@ Transform:
   m_GameObject: {fileID: 511121497}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4, y: -47.900005, z: -9.5}
-  m_LocalScale: {x: 456.7585, y: 4.567585, z: 456.7585}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 474.99997, y: 4.7499995, z: 474.99997}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 386480275}
   m_RootOrder: -1
@@ -2328,14 +2328,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02602f82bbba870458fa9bb8cbb8d5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnBulletMenuHidingStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBulletMenuHidingEnd:
+    m_PersistentCalls:
+      m_Calls: []
   bulletLabelPrefab: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
   labelSpawnPos: {x: 550, y: -160, z: 0}
   selectedBulletLabel: {fileID: 1817275695}
   bulletLabelsParent: {fileID: 431949050}
-  selectedIndex: 0
-  bulletLabels: []
-  isAnimating: 0
   bulletLoadSound: {fileID: 8300000, guid: 2fb0cad3478775a4f815e39306a497f3, type: 3}
+  selectedIndex: 0
+  isMenuOpen: 0
+  hideMenuTimer: 0
+  bulletLabels: []
 --- !u!1 &1079968974 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7059870668660101784, guid: 4cc928983f4d52647acede4128ed8870, type: 3}
@@ -3966,7 +3973,7 @@ MonoBehaviour:
   cameraController: {fileID: 1371867603}
   buttonConfirm: {fileID: -6240823983734169260, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   mouseScroll: {fileID: 2805303670844433148, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
-  shoot: {fileID: 0}
+  shoot: {fileID: -6240823983734169260, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   statementsParent: {fileID: 46455575}
   bulletsParent: {fileID: 1074893610}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}

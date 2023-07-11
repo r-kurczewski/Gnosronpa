@@ -1,17 +1,29 @@
 using DG.Tweening;
 using Gnosronpa.ScriptableObjects;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Gnosronpa.Controllers
 {
-	public class BulletControllwe : MonoBehaviour, IRefreshable
+	public class BulletController : MonoBehaviour, IRefreshable
 	{
 		private const int maxVisibleBullets = 3;
+		private const int instant = 0;
+		private const float hideMenuTime = 1f;
+
 		private const float moveY = 80;
 		private const float moveYDuration = 0.3f;
-		private const int instant = 0;
+		private const int bulletsPosX = -462;
+		private const float nextBulletAnimationDelay = 0.04f;
+
+		public UnityEvent OnBulletMenuHidingStart;
+
+		public UnityEvent OnBulletMenuHidingEnd;
+
+		[Header("References")]
 
 		[SerializeField]
 		private GameObject bulletLabelPrefab;
@@ -26,18 +38,27 @@ namespace Gnosronpa.Controllers
 		private Transform bulletLabelsParent;
 
 		[SerializeField]
+		private AudioClip bulletLoadSound;
+
+		[Header("State")]
+
+		[SerializeField]
 		private int selectedIndex;
+
+		[SerializeField]
+		private bool isMenuOpen;
+
+		[SerializeField]
+		private float hideMenuTimer;
 
 		[SerializeField]
 		private List<BulletLabel> bulletLabels;
 
-		[SerializeField]
-		private bool isAnimating;
+		private Sequence seq;
 
-		[SerializeField]
-		private AudioClip bulletLoadSound;
+		private Coroutine hideMenuCoroutine;
 
-		public bool IsAnimating => isAnimating;
+		private bool AnimationPlaying => seq?.IsActive() ?? false && seq.IsPlaying();
 
 		public TruthBulletData SelectedBullet => bulletLabels[selectedIndex].Data;
 
@@ -52,17 +73,14 @@ namespace Gnosronpa.Controllers
 			selectedIndex = bulletLabels.Count - maxVisibleBullets / 2 - 1;
 		}
 
-		public void StartAnimation()
+		public Sequence StartAnimation()
 		{
-			if (isAnimating) return;
-			isAnimating = true;
-
-			var moveLeftTo = -462;
+			var moveLeftTo = bulletsPosX;
 			var moveLeftDuration = 0.3f;
 
 			var outOfScreenRight = new Vector3(550, -150, 0);
 
-			var seq = DOTween.Sequence();
+			seq = DOTween.Sequence();
 
 			// for all bullets
 			for (int i = 0; i < bulletLabels.Count; i++)
@@ -77,16 +95,24 @@ namespace Gnosronpa.Controllers
 					AddMoveYBulletAnimation(seq, bulletLabels[j], level, j == 0);
 				}
 			}
+			seq.onComplete += () => isMenuOpen = true;
 
-			seq.onComplete += () => isAnimating = false;
+			return seq;
 		}
 
-		public void MoveUpAnimation()
+		public Sequence ChangeBulletUp()
 		{
-			if (isAnimating) return;
-			isAnimating = true;
+			if (AnimationPlaying) return default;
 
-			var seq = DOTween.Sequence();
+			if (!isMenuOpen)
+			{
+				seq = ShowBulletPickMenu();
+				return seq;
+			}
+
+			seq = DOTween.Sequence();
+			seq.AppendCallback(() => HideMenuAfterTime(hideMenuTime));
+
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				var newLevel = (selectedIndex - i + 3 + bulletLabels.Count) % bulletLabels.Count;
@@ -94,15 +120,22 @@ namespace Gnosronpa.Controllers
 			}
 			selectedIndex = (selectedIndex + 1) % bulletLabels.Count;
 
-			seq.onComplete += () => isAnimating = false;
+			return seq;
 		}
 
-		public void MoveDownAnimation()
+		public Sequence ChangeBulletDown()
 		{
-			if (isAnimating) return;
-			isAnimating = true;
+			if (AnimationPlaying) return default;
 
-			var seq = DOTween.Sequence();
+			if (!isMenuOpen)
+			{
+				seq = ShowBulletPickMenu();
+				return seq;
+			}
+
+			seq = DOTween.Sequence();
+			seq.AppendCallback(() => HideMenuAfterTime(hideMenuTime));
+
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				var newLevel = (selectedIndex - i + 1 + bulletLabels.Count) % bulletLabels.Count;
@@ -110,19 +143,47 @@ namespace Gnosronpa.Controllers
 			}
 			selectedIndex = (selectedIndex - 1 + bulletLabels.Count) % bulletLabels.Count;
 
-			seq.onComplete += () => isAnimating = false;
+			return seq;
 		}
 
-		public void HideBulletPickMenu()
+		public Sequence ShowBulletPickMenu()
 		{
-			if (isAnimating) return;
-			isAnimating = true;
+			if (AnimationPlaying) return default;
+
+			if (isMenuOpen) return default;
+
+			seq = DOTween.Sequence();
+			bulletLabelsParent.gameObject.SetActive(true);
+
+			var firstVisibleIndexUnclamped = selectedIndex - maxVisibleBullets / 2;
+			var lastVisibleIndex = (firstVisibleIndexUnclamped + maxVisibleBullets + bulletLabels.Count) % bulletLabels.Count;
+			for (int i = 0; i < bulletLabels.Count; i++)
+			{
+				var currentIndex = (firstVisibleIndexUnclamped + i + bulletLabels.Count) % bulletLabels.Count;
+				var delay = i < maxVisibleBullets ? i * nextBulletAnimationDelay : 0;
+				seq.Join(bulletLabels[currentIndex].transform.DOLocalMoveX(bulletsPosX, 0.3f).SetDelay(delay));
+			}
+			seq.AppendCallback(() =>
+			{
+				isMenuOpen = true;
+				HideMenuAfterTime(hideMenuTime);
+			});
+
+			return seq;
+		}
+
+		public Sequence HideBulletPickMenu()
+		{
+			if (AnimationPlaying) return default;
+
+			if (!isMenuOpen) return default;
 
 			var outOfScreenRight = -950;
 			var duration = 0.3f;
-			var delay = 0.04f;
+			var delay = nextBulletAnimationDelay;
 
-			var seq = DOTween.Sequence();
+			seq = DOTween.Sequence();
+			seq.AppendCallback(OnBulletMenuHidingStart.Invoke);
 
 			var animationStartingBullet = selectedIndex - maxVisibleBullets / 2;
 			for (int i = 0; i < bulletLabels.Count; i++)
@@ -134,8 +195,13 @@ namespace Gnosronpa.Controllers
 			seq.onComplete += () =>
 			{
 				bulletLabelsParent.gameObject.SetActive(false);
-				isAnimating = false;
+				isMenuOpen = false;
+				OnBulletMenuHidingEnd.Invoke();
 			};
+
+			Refresh();
+
+			return seq;
 		}
 		public void ShowSelectedBulletPanel()
 		{
@@ -215,6 +281,27 @@ namespace Gnosronpa.Controllers
 		private float GetLevelHeight(int level)
 		{
 			return labelSpawnPos.y + level * moveY;
+		}
+
+		private void HideMenuAfterTime(float time)
+		{
+			hideMenuTimer = time;
+			if (hideMenuCoroutine is null)
+			{
+				hideMenuCoroutine = StartCoroutine(IHideMenuAfterTime());
+			}
+		}
+
+		private IEnumerator IHideMenuAfterTime()
+		{
+			while (hideMenuTimer > 0)
+			{
+				hideMenuTimer -= Time.deltaTime;
+				yield return null;
+			}
+
+			HideBulletPickMenu();
+			hideMenuCoroutine = null;
 		}
 	}
 }
