@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
-  m_Name: Find Gnosia
+  m_Name: Jonas Doubt B
   m_EditorClassIdentifier: 
-  speakingCharacter: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
-  statementType: 1
-  textTemplate: There is {0} to find Gnosia
-  weakSpotText: no way
-  correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
+  speakingCharacter: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
+  statementType: 0
+  textTemplate: "Come, don't hold it all in<br> - share with us\u2026"
+  weakSpotText: 
+  correctBullet: {fileID: 0}
   collider:
-    m_Center: {x: -41, y: -5, z: 0}
-    m_Extent: {x: 564, y: 55, z: 3}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}

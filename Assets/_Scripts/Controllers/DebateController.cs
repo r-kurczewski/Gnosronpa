@@ -1,19 +1,36 @@
 using DG.Tweening;
+using Gnosronpa.Common;
 using Gnosronpa.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
 {
 	public class DebateController : MonoBehaviour
 	{
+		#region consts
+
 		private const int fadeOn = 1;
 		private const int fadeOff = 0;
 		private const int instant = 0;
+
+		private const float rewindSpeed = 4;
+		private const float rewindPitch = 1.3f;
+
+		private const float defaultSpeed = 1;
+		private const float defaultPitch = 1;
+
+		private const float slowdownSpeed = 0.5f;
+		private const float slowdownPitch = 0.9f;
+
+		#endregion
+
+		#region references
 
 		[Header("References")]
 
@@ -30,7 +47,10 @@ namespace Gnosronpa.Controllers
 		private InputActionReference mouseScroll;
 
 		[SerializeField]
-		private InputActionReference shoot;
+		private InputActionReference leftCtrl;
+
+		[SerializeField]
+		private InputActionReference space;
 
 		[SerializeField]
 		private Transform statementsParent;
@@ -62,6 +82,12 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private BulletController bulletController;
 
+		[SerializeField]
+		private TimeSlider timeSlider;
+
+		[SerializeField]
+		private CharacterData playableCharacter;
+
 		[Header("State")]
 
 		[SerializeField]
@@ -73,7 +99,16 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private float time;
 
+		[SerializeField]
+		private bool developerMode;
+
+		#endregion
+
 		// Other
+
+		[FormerlySerializedAs("defaultCameraBehaviour")]
+		[SerializeField]
+		private Animation3DData endLoopCameraPosition;
 
 		private Sequence loop;
 
@@ -97,29 +132,94 @@ namespace Gnosronpa.Controllers
 			bulletController.OnBulletMenuHidingEnd.AddListener(() => OnBulletPick(default));
 		}
 
+		public void PlayAnimation(DebateSequenceData statementData)
+		{
+			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
+
+			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter?.gameObject);
+
+			if (statementData.statement)
+			{
+				LoadStatement(statementData);
+				characterInfo.SetCharacter(statementData.statement.speakingCharacter);
+			}
+		}
+
+		private static Character TryGetCharacter(CharacterData characterData)
+		{
+			return GameObject.FindGameObjectsWithTag("Character")
+				.Select(x => x.GetComponent<Character>())
+				.FirstOrDefault(x => x.Data == characterData);
+		}
+
 		private IEnumerator Debate()
 		{
 			Debug.Log("Starting debate...");
-			var animation = PlayDebateStartAnimation();
-			yield return new WaitWhile(animation.IsActive);
+
+			if (!developerMode)
+			{
+				var animation = PlayDebateStartAnimation();
+				yield return new WaitWhile(animation.IsActive);
+			}
 
 			Debug.Log("Loading bullets...");
-			animation = PlayLoadingBulletAnimation();
-			yield return new WaitWhile(animation.IsActive);
+			debateGUI.SetActive(true);
+			bulletController.Init(data.bullets);
+
+			if (!developerMode)
+			{
+				var animation = PlayLoadingBulletAnimation();
+				yield return new WaitWhile(animation.IsActive);
+			}
 
 			EnableBulletPick();
 			Debug.Log("Waiting for bullet pick...");
 
-			yield return new WaitUntil(() => isPlaying);
-
-			while (statementsQueue.Any())
+			if (!developerMode)
 			{
-				LoadNewSentences();
-				yield return null;
+				yield return new WaitUntil(() => isPlaying);
+			}
+			else
+			{
+				OnBulletPick(default);
+				isPlaying = true;
+			}
+
+
+			EnableDebateRewind();
+			EnableDebateSlowdown();
+
+			while (isPlaying)
+			{
+				while (statementsQueue.Any())
+				{
+					var sentence = TryLoadNewSentence();
+					if (sentence != null)
+					{
+						var sliderPosition = (float)(data.debateSequence.IndexOf(sentence) + 1) / (data.debateSequence.Count);
+						timeSlider.SetPosition(sliderPosition);
+					}
+					yield return null;
+				}
+
+				DebateSequenceData lastLoadedSequence = data.debateSequence.Last();
+				yield return new WaitForSeconds(lastLoadedSequence.SequenceDuration);
+
+				if (!developerMode) ResetDebateLoop();
+
+				Debug.Log("Loop finished");
 			}
 		}
 
-		private void LoadNewSentences()
+		private void ResetDebateLoop()
+		{
+			timeSlider.SetPosition(0);
+			characterInfo.SetCharacter(playableCharacter);
+			cameraController.PlayCameraAnimation(endLoopCameraPosition, TryGetCharacter(playableCharacter)?.gameObject);
+			data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
+		}
+
+		private DebateSequenceData TryLoadNewSentence()
 		{
 			var statement = statementsQueue.Peek();
 			if (statement.delay < time)
@@ -127,16 +227,19 @@ namespace Gnosronpa.Controllers
 				if (isStartLoopAnimation)
 				{
 					loop?.Kill();
-					rightPanel.gameObject.SetActive(true);
+					rightPanel.SetActive(true);
+					characterInfo.SetCharacter(null);
 					isStartLoopAnimation = false;
 				}
 
 				PlayAnimation(statement);
 				statementsQueue.Dequeue();
 				time = 0;
+				return statement;
 			}
 
 			time += Time.deltaTime;
+			return default;
 		}
 
 		private Sequence PlayDebateStartAnimation()
@@ -180,9 +283,7 @@ namespace Gnosronpa.Controllers
 
 		private Sequence PlayLoadingBulletAnimation()
 		{
-			debateGUI.SetActive(true);
 
-			bulletController.Init(data.bullets);
 			return bulletController.StartAnimation();
 		}
 
@@ -218,26 +319,41 @@ namespace Gnosronpa.Controllers
 			shootScript.Shoot(bulletController.SelectedBullet);
 		}
 
-		public void PlayAnimation(DebateSequenceData statementData)
-		{
-			var speakingCharacter = GameObject.FindGameObjectsWithTag("Character")
-								.Select(x => x.GetComponent<Character>())
-								.FirstOrDefault(x => x.Data == statementData.statement.speakingCharacter);
-
-			cameraController.PlayCameraAnimation(statementData.characterRelativeCameraAnimation, speakingCharacter?.gameObject);
-
-			if (statementData.statement)
-			{
-				LoadStatement(statementData);
-				characterInfo.SetCharacter(statementData.statement.speakingCharacter);
-			}
-		}
-
 		private DebateStatement LoadStatement(DebateSequenceData statementData)
 		{
 			var statement = Instantiate(statementPrefab, statementsParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
 			return statement;
+		}
+
+		private void EnableDebateRewind()
+		{
+			leftCtrl.action.started += SetDebateRewindSpeed;
+			leftCtrl.action.canceled += SetDebateNormalSpeed;
+		}
+
+		private void EnableDebateSlowdown()
+		{
+			space.action.started += SetDebateSlowdownSpeed;
+			space.action.canceled += SetDebateNormalSpeed;
+		}
+
+		private void SetDebateNormalSpeed(CallbackContext context)
+		{
+			Time.timeScale = defaultSpeed;
+			AudioController.instance.SetPitch(defaultPitch);
+		}
+
+		private void SetDebateRewindSpeed(CallbackContext context)
+		{
+			Time.timeScale = rewindSpeed;
+			AudioController.instance.SetPitch(rewindPitch);
+		}
+
+		private void SetDebateSlowdownSpeed(CallbackContext context)
+		{
+			Time.timeScale = slowdownSpeed;
+			AudioController.instance.SetPitch(slowdownPitch);
 		}
 	}
 }

@@ -38,7 +38,7 @@ namespace Gnosronpa.Editors
 				.Select(x => x.GetComponent<Character>())
 				.FirstOrDefault(x => x.Data == statements.prev?.statement.speakingCharacter);
 
-				cameraController.SetLastStateOfAnimation(statements.prev?.characterRelativeCameraAnimation, prevSpeakingCharacter?.gameObject);
+				cameraController.SetLastStateOfAnimation(statements.prev?.cameraAnimation, prevSpeakingCharacter?.gameObject);
 				debateController.PlayAnimation(statements.current);
 			});
 			button.text = "Play animation";

@@ -8,7 +8,10 @@ public class ShootScript : MonoBehaviour
 	private InputActionReference mousePosition;
 
 	[SerializeField]
-	private GameObject truthBullet;
+	private GameObject truthBulletPrefab;
+
+	[SerializeField]
+	private Transform truthBulletParent;
 
 	[SerializeField]
 	private Canvas canvas;
@@ -28,7 +31,7 @@ public class ShootScript : MonoBehaviour
 		var srcWorldPos = Camera.main.ScreenToWorldPoint(srcPos);
 		srcWorldPos += Camera.main.transform.right * AdditionalBulletSpawnOffsetX;
 
-		var bullet = Instantiate(truthBullet, canvas.transform).GetComponent<TruthBullet>();
+		var bullet = Instantiate(truthBulletPrefab, truthBulletParent).GetComponent<TruthBullet>();
 		bullet.Init(bulletData);
 		var dynamicSpeed = bulletSpeed * canvas.planeDistance;
 		bullet.Shoot(srcWorldPos, dstWorldPos, dynamicSpeed);

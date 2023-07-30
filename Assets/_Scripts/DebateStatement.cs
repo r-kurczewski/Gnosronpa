@@ -2,6 +2,7 @@ using DG.Tweening;
 using Gnosronpa.ScriptableObjects;
 using TMPro;
 using UnityEngine;
+using static Gnosronpa.ScriptableObjects.DebateStatementData;
 
 namespace Gnosronpa
 {
@@ -14,6 +15,10 @@ namespace Gnosronpa
 
 		private BoxCollider boxCollider;
 
+		public delegate void TruthBulletHitBehaviour(TruthBullet bullet);
+
+		public event TruthBulletHitBehaviour OnCorrectBulletHit;
+
 		private string Gradient(string text) => $"<gradient=\"Weak spot\">{text}</gradient>";
 
 		private void Awake()
@@ -21,23 +26,34 @@ namespace Gnosronpa
 			text = GetComponent<TMP_Text>();
 			boxCollider = GetComponent<BoxCollider>();
 		}
+
 		private void OnTriggerEnter(Collider other)
 		{
 			var bullet = other.GetComponent<TruthBullet>();
-			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{bullet.IsCorrectBullet(data.correctBullet)}]");
+			var isCorrect = IsCorrectBullet(bullet.Data);
+			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{isCorrect}]");
+			if (isCorrect) OnCorrectBulletHit?.Invoke(bullet);
 		}
 
-		public void Init(DebateSequenceData configuration)
+		public void Init(DebateSequenceData data)
 		{
-			data = configuration.statement;
-			var animation = configuration.statementAnimation;
-			var transition = configuration.statementTransition;
+			this.data = data.statement;
+			var animation = data.statementAnimation;
+			var transition = data.statementTransition;
 
-			name = data.name;
-			text.text = string.Format(data.textTemplate, Gradient(data.weakSpotText));
+			name = this.data.name;
 
-			boxCollider.center = data.collider.center;
-			boxCollider.size = data.collider.extents; // correct
+			if (data.statement.statementType == StatementType.Normal)
+			{
+				text.text = this.data.textTemplate;
+				boxCollider.enabled = false;
+			}
+			else
+			{
+				text.text = string.Format(this.data.textTemplate, Gradient(this.data.weakSpotText));
+				boxCollider.center = this.data.collider.center;
+				boxCollider.size = this.data.collider.extents; // correct behaviour
+			}
 
 			transform.localPosition = animation.startPosition;
 			transform.localRotation = Quaternion.Euler(0, 0, animation.startRotation);
@@ -68,6 +84,11 @@ namespace Gnosronpa
 				DOTween.Kill(transform);
 				Destroy(gameObject);
 			};
+		}
+
+		public bool IsCorrectBullet(TruthBulletData data)
+		{
+			return this.data.correctBullet == data;
 		}
 	}
 }

@@ -111,6 +111,8 @@ namespace Gnosronpa.Controllers
 			}
 
 			seq = DOTween.Sequence();
+			seq.SetUpdate(true);
+
 			seq.AppendCallback(() => HideMenuAfterTime(hideMenuTime));
 
 			for (int i = 0; i < bulletLabels.Count; i++)
@@ -134,6 +136,8 @@ namespace Gnosronpa.Controllers
 			}
 
 			seq = DOTween.Sequence();
+			seq.SetUpdate(true);
+
 			seq.AppendCallback(() => HideMenuAfterTime(hideMenuTime));
 
 			for (int i = 0; i < bulletLabels.Count; i++)
@@ -152,8 +156,10 @@ namespace Gnosronpa.Controllers
 
 			if (isMenuOpen) return default;
 
-			seq = DOTween.Sequence();
 			bulletLabelsParent.gameObject.SetActive(true);
+
+			seq = DOTween.Sequence();
+			seq.SetUpdate(true);
 
 			var firstVisibleIndexUnclamped = selectedIndex - maxVisibleBullets / 2;
 			var lastVisibleIndex = (firstVisibleIndexUnclamped + maxVisibleBullets + bulletLabels.Count) % bulletLabels.Count;
@@ -183,6 +189,8 @@ namespace Gnosronpa.Controllers
 			var delay = nextBulletAnimationDelay;
 
 			seq = DOTween.Sequence();
+			seq.SetUpdate(true);
+
 			seq.AppendCallback(OnBulletMenuHidingStart.Invoke);
 
 			var animationStartingBullet = selectedIndex - maxVisibleBullets / 2;
@@ -215,7 +223,7 @@ namespace Gnosronpa.Controllers
 
 		public void Refresh()
 		{
-			selectedBulletLabel.Init(bulletLabels[selectedIndex].Data);
+			selectedBulletLabel.Init(bulletLabels[selectedIndex].Data, "Selected");
 		}
 
 		private void AddMoveYBulletAnimation(Sequence seq, BulletLabel bullet, int level, bool append = false)
@@ -294,9 +302,10 @@ namespace Gnosronpa.Controllers
 
 		private IEnumerator IHideMenuAfterTime()
 		{
-			while (hideMenuTimer > 0)
+			// This way waiting time counter can be reset after player input ex. bullet change
+			while(hideMenuTimer > 0)
 			{
-				hideMenuTimer -= Time.deltaTime;
+				hideMenuTimer -= Time.unscaledDeltaTime;
 				yield return null;
 			}
 

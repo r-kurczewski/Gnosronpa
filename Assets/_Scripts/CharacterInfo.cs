@@ -26,8 +26,11 @@ namespace Gnosronpa
 
 		public void SetCharacter(CharacterData character)
 		{
-			label.text = character.characterName;
-			avatar.sprite = character.avatar;
+			label.enabled = character is not null;
+			avatar.enabled = character is not null;
+
+			label.text = character?.characterName;
+			avatar.sprite = character?.avatar;
 		}
 
 		private IEnumerator SetRandomCharacters()

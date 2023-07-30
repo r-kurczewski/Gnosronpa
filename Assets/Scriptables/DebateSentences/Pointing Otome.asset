@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
   m_Name: Pointing Otome
   m_EditorClassIdentifier: 
+  speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
+  statementType: 1
   textTemplate: '*pointing to {0}*'
   weakSpotText: Otome
-  speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
-  statement: {fileID: 0}
   correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
   collider:
     m_Center: {x: -41, y: -5, z: 0}

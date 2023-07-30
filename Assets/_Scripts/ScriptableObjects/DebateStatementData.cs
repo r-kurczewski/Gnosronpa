@@ -1,5 +1,4 @@
-﻿using Gnosronpa.Common;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Gnosronpa.ScriptableObjects
 {
@@ -8,6 +7,8 @@ namespace Gnosronpa.ScriptableObjects
 	{
 		public CharacterData speakingCharacter;
 
+		public StatementType statementType;
+
 		public string textTemplate;
 
 		public string weakSpotText;
@@ -15,5 +16,12 @@ namespace Gnosronpa.ScriptableObjects
 		public TruthBulletData correctBullet;
 
 		public Bounds collider;
+
+		public enum StatementType
+		{
+			Normal,
+			WeakSpot,
+			Noise,
+		}
 	}
 }

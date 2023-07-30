@@ -15,11 +15,11 @@ namespace Gnosronpa
 
 		public TruthBulletData Data => data;
 
-		public void Init(TruthBulletData bulletData)
+		public void Init(TruthBulletData bulletData, string name = null)
 		{
 			data = bulletData;
 
-			name = data.bulletName;
+			this.name = name ?? data.bulletName;
 			label.text = data.bulletName;
 		}
 	}

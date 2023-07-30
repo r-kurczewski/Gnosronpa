@@ -26,7 +26,27 @@ namespace Gnosronpa.ScriptableObjects
 
 		public TransitionData statementTransition;
 
-		[FormerlySerializedAs("cameraOffset")]
-		public Animation3DData characterRelativeCameraAnimation;
+		/// <summary>
+		/// Relative to speaking character in the statement
+		/// </summary>
+		[FormerlySerializedAs("characterRelativeCameraAnimation")]
+		public Animation3DData cameraAnimation;
+
+		public float SequenceDuration
+		{
+			get
+			{
+				var ca = cameraAnimation;
+				var cameraAnimationDuration = Mathf.Max(ca.moveDuration, ca.rotationDuration);
+
+				var sa = statementAnimation;
+				var statementAnimationDuration = Mathf.Max(sa.moveDuration, sa.rotationDuration, sa.scaleDuration);
+
+				var st = statementTransition;
+				var statementTransitionDuration = st.waitingTime + st.disappearTime;
+
+				return Mathf.Max(cameraAnimationDuration, statementAnimationDuration + statementTransitionDuration);
+			}
+		}
 	}
 }

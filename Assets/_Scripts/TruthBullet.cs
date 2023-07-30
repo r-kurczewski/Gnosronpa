@@ -14,6 +14,8 @@ public class TruthBullet : MonoBehaviour
 	private Vector3 localMoveDirection;
 	private float speed;
 
+	public TruthBulletData Data => data;
+
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -38,6 +40,7 @@ public class TruthBullet : MonoBehaviour
 
 	public void Init(TruthBulletData data)
 	{
+		this.data = data;
 		name = data.name;
 		text.text = data.bulletName;
 	}
@@ -49,11 +52,6 @@ public class TruthBullet : MonoBehaviour
 
 		var direction = (dstWorldPos - srcWorldPos).normalized;
 		localMoveDirection = transform.parent.InverseTransformDirection(direction);
-	}
-
-	public bool IsCorrectBullet(TruthBulletData data)
-	{
-		return this.data = data;
 	}
 }
 

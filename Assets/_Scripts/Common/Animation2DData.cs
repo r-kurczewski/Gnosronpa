@@ -17,7 +17,7 @@ namespace Gnosronpa.Common
 		public float rotationDuration;
 
 		[Header("Scale")]
-		public Vector2 startScale;
+		public Vector2 startScale = Vector2.one;
 		public Vector2 endScale;
 		public float scaleDuration;
 	}

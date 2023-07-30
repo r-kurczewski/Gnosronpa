@@ -35,9 +35,9 @@ MonoBehaviour:
       appearTime: 0.5
       waitingTime: 0
       disappearTime: 0.5
-    characterRelativeCameraAnimation:
-      startPosition: {x: 0, y: 5, z: 10}
-      endPosition: {x: 0, y: 5, z: 20}
+    cameraAnimation:
+      startPosition: {x: 0, y: 10, z: 10}
+      endPosition: {x: 0, y: 10, z: 20}
       moveDuration: 2
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
@@ -46,7 +46,7 @@ MonoBehaviour:
     statement: {fileID: 11400000, guid: 2428eac30ff3cf64ab088376744b5114, type: 2}
     statementAnimation:
       startPosition: {x: -200, y: -200}
-      endPosition: {x: 100, y: 100}
+      endPosition: {x: 100, y: -26.795}
       moveDuration: 3
       startRotation: 30
       endRotation: 0
@@ -56,16 +56,16 @@ MonoBehaviour:
       scaleDuration: 0
     statementTransition:
       appearTime: 0.5
-      waitingTime: 0
+      waitingTime: 1
       disappearTime: 0.5
-    characterRelativeCameraAnimation:
+    cameraAnimation:
       startPosition: {x: 0, y: 10, z: 20}
       endPosition: {x: 0, y: 10, z: 25}
       moveDuration: 2
       startRotation: {x: -5, y: 0, z: 0}
       endRotation: {x: -10, y: 0, z: 0}
       rotationDuration: 3
-  - delay: 6
+  - delay: 5
     statement: {fileID: 11400000, guid: e995661795292ff41ae48ad745a0ce68, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}
@@ -74,17 +74,63 @@ MonoBehaviour:
       startRotation: 0
       endRotation: 0
       rotationDuration: 0
-      startScale: {x: 0.1, y: 0.1}
-      endScale: {x: 1, y: 1}
+      startScale: {x: 0.3, y: 0.3}
+      endScale: {x: 1.2, y: 1.2}
       scaleDuration: 3
     statementTransition:
       appearTime: 0.5
-      waitingTime: 0
+      waitingTime: 0.5
       disappearTime: 0.5
-    characterRelativeCameraAnimation:
+    cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 20}
       moveDuration: 3
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: -10, y: 0, z: 10}
       rotationDuration: 3
+  - delay: 5
+    statement: {fileID: 11400000, guid: 4a64e8fd93855b448886ea382d951fe5, type: 2}
+    statementAnimation:
+      startPosition: {x: -100, y: 200}
+      endPosition: {x: 50, y: 200}
+      moveDuration: 3
+      startRotation: 0
+      endRotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.8, y: 0.8}
+      endScale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 1
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 3, z: 10}
+      endPosition: {x: 0, y: 5, z: 20}
+      moveDuration: 2
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: -20, y: 0, z: 10}
+      rotationDuration: 2
+  - delay: 3
+    statement: {fileID: 11400000, guid: e345abae323791d479da765180d7db4a, type: 2}
+    statementAnimation:
+      startPosition: {x: -100, y: -50}
+      endPosition: {x: 50, y: -50}
+      moveDuration: 4
+      startRotation: 0
+      endRotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.8, y: 0.8}
+      endScale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 0
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 5, z: 20}
+      endPosition: {x: 0, y: 0, z: 25}
+      moveDuration: 1
+      startRotation: {x: -20, y: 0, z: 10}
+      endRotation: {x: -30, y: 0, z: -10}
+      rotationDuration: 1

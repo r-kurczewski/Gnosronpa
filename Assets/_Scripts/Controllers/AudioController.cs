@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers
@@ -11,5 +12,10 @@ namespace Gnosronpa.Controllers
       {
          audioSource.PlayOneShot(clip);
       }
-    }
+
+		public void SetPitch(float pitch)
+		{
+         audioSource.pitch = pitch;
+		}
+	}
 }

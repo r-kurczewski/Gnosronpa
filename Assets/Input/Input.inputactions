@@ -6,7 +6,7 @@
             "id": "6a8c1e55-519a-41b9-a19f-819d2843a6fe",
             "actions": [
                 {
-                    "name": "LeftClick",
+                    "name": "Confirm",
                     "type": "Button",
                     "id": "10f5d7bf-4d06-41f0-bb14-68eebdddb970",
                     "expectedControlType": "Button",
@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MousePos",
+                    "name": "CursorPos",
                     "type": "Value",
                     "id": "dfdd6c8d-0dbc-4eff-974f-a4ea6cf10784",
                     "expectedControlType": "Vector2",
@@ -31,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Rewind",
+                    "type": "Button",
+                    "id": "90b12413-4079-4658-a2d3-76a83e985604",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Slowdown",
+                    "type": "Button",
+                    "id": "b0cb2570-0dfe-46cc-ae25-e9d95712a539",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -41,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftClick",
+                    "action": "Confirm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -52,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MousePos",
+                    "action": "CursorPos",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -88,6 +106,28 @@
                     "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1b49ca4a-ff61-446a-b6b9-01eeb46dafae",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rewind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "baa92124-a50c-44d3-924e-cdc18dab869d",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Slowdown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
