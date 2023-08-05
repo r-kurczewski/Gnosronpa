@@ -4022,6 +4022,8 @@ MonoBehaviour:
   bulletsParent: {fileID: 1074893610}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}
   bulletLabelPrefab: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+  counterAnimationPrefab: {fileID: 4850683306774207522, guid: bf300a118cdc3f141b6d6368fd2e0341, type: 3}
+  counterAnimationParent: {fileID: 220746912}
   cameraFade: {fileID: 1073098762}
   shootScript: {fileID: 1645166533}
   characterInfo: {fileID: 1607292614}

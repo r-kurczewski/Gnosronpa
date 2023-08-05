@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakingCharacter: {fileID: 11400000, guid: b3807ff927022844095d2e8becc33567, type: 2}
   statementType: 0
-  textTemplate: SQUEEEK
+  textTemplate: '*SQUEEEK*'
   weakSpotText: 
   correctBullet: {fileID: 0}
   collider:

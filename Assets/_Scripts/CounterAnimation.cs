@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Gnosronpa.Controllers;
 using UnityEngine;
 
 namespace Gnosronpa
@@ -19,6 +20,12 @@ namespace Gnosronpa
 		[SerializeField]
 		private Transform counterShadow;
 
+		[SerializeField]
+		private AudioClip dialogue;
+
+		[SerializeField]
+		private AudioClip sound;
+
 		private void Start()
 		{
 			Init();
@@ -32,13 +39,18 @@ namespace Gnosronpa
 			var cg = GetComponent<CanvasGroup>();
 
 			var seq = DOTween.Sequence()
+				.AppendCallback(() =>
+				{
+					AudioController.instance.PlaySound(sound);
+					AudioController.instance.PlaySound(dialogue);
+				})
 				.Append(transform.DOLocalMove(animationEndPos, 0.15f).SetEase(Ease.OutFlash))
 				.Join(DOTween.Shake(() => shakeParent.localPosition, (vector) =>
 				{
 					vector.x = shakeParent.localPosition.x;
 					shakeParent.localPosition = vector;
 				},
-				duration: 2.5f, strength: 7, vibrato: 20, randomness: 0, ignoreZAxis: true, fadeOut: false, ShakeRandomnessMode.Full))
+				duration: 2f, strength: 7, vibrato: 20, randomness: 0, ignoreZAxis: true, fadeOut: false, ShakeRandomnessMode.Full))
 
 				.Append(transform.DOScale(1.3f, 0.5f))
 				.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, 0.2f));

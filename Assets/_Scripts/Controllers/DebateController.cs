@@ -65,6 +65,12 @@ namespace Gnosronpa.Controllers
 		private GameObject bulletLabelPrefab;
 
 		[SerializeField]
+		private CounterAnimation counterAnimationPrefab;
+
+		[SerializeField]
+		private Transform counterAnimationParent;
+
+		[SerializeField]
 		private CameraFade cameraFade;
 
 		[SerializeField]
@@ -184,7 +190,6 @@ namespace Gnosronpa.Controllers
 				OnBulletPick(default);
 				isPlaying = true;
 			}
-
 
 			EnableDebateRewind();
 			EnableDebateSlowdown();
@@ -323,7 +328,18 @@ namespace Gnosronpa.Controllers
 		{
 			var statement = Instantiate(statementPrefab, statementsParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
+			statement.OnCorrectBulletHit += PlayCounterAnimation;
 			return statement;
+		}
+
+		private void PlayCounterAnimation(TruthBullet bullet)
+		{
+			var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
+			foreach (var truthBullet in GameObject.FindGameObjectsWithTag("TruthBullet"))
+			{
+				truthBullet.SetActive(false);
+				Destroy(truthBullet);
+			}
 		}
 
 		private void EnableDebateRewind()

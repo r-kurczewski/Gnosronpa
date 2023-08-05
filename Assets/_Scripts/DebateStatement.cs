@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Gnosronpa.ScriptableObjects;
+using System;
 using TMPro;
 using UnityEngine;
 using static Gnosronpa.ScriptableObjects.DebateStatementData;
@@ -8,16 +9,16 @@ namespace Gnosronpa
 {
 	public class DebateStatement : MonoBehaviour
 	{
+		public delegate void TruthBulletHitBehaviour(TruthBullet bullet);
+
+		public event TruthBulletHitBehaviour OnCorrectBulletHit;
+
 		[SerializeField]
 		private DebateStatementData data;
 
 		private TMP_Text text;
 
 		private BoxCollider boxCollider;
-
-		public delegate void TruthBulletHitBehaviour(TruthBullet bullet);
-
-		public event TruthBulletHitBehaviour OnCorrectBulletHit;
 
 		private string Gradient(string text) => $"<gradient=\"Weak spot\">{text}</gradient>";
 
@@ -31,9 +32,15 @@ namespace Gnosronpa
 		{
 			var bullet = other.GetComponent<TruthBullet>();
 			var isCorrect = IsCorrectBullet(bullet.Data);
+
+			if (isCorrect)
+			{
+				OnCorrectBulletHit?.Invoke(bullet);
+			}
+
 			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{isCorrect}]");
-			if (isCorrect) OnCorrectBulletHit?.Invoke(bullet);
 		}
+
 
 		public void Init(DebateSequenceData data)
 		{
