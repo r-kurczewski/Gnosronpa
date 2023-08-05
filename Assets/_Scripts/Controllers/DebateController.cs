@@ -112,7 +112,6 @@ namespace Gnosronpa.Controllers
 
 		// Other
 
-		[FormerlySerializedAs("defaultCameraBehaviour")]
 		[SerializeField]
 		private Animation3DData endLoopCameraPosition;
 
@@ -335,6 +334,7 @@ namespace Gnosronpa.Controllers
 		private void PlayCounterAnimation(TruthBullet bullet)
 		{
 			var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
+
 			foreach (var truthBullet in GameObject.FindGameObjectsWithTag("TruthBullet"))
 			{
 				truthBullet.SetActive(false);
