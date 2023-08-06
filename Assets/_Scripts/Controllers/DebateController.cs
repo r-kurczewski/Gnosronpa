@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
@@ -94,6 +93,14 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private CharacterData playableCharacter;
 
+		[SerializeField]
+		private ScreenshotScript screenshotScript;
+
+		[SerializeField]
+		private LieAnimation lieAnimation;
+
+		#endregion
+
 		[Header("State")]
 
 		[SerializeField]
@@ -108,7 +115,7 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private bool developerMode;
 
-		#endregion
+
 
 		// Other
 
@@ -195,7 +202,7 @@ namespace Gnosronpa.Controllers
 
 			while (isPlaying)
 			{
-				while (statementsQueue.Any())
+				while (isPlaying && statementsQueue.Any())
 				{
 					var sentence = TryLoadNewSentence();
 					if (sentence != null)
@@ -205,6 +212,8 @@ namespace Gnosronpa.Controllers
 					}
 					yield return null;
 				}
+
+				if (!isPlaying) yield break;
 
 				DebateSequenceData lastLoadedSequence = data.debateSequence.Last();
 				yield return new WaitForSeconds(lastLoadedSequence.SequenceDuration);
@@ -333,8 +342,21 @@ namespace Gnosronpa.Controllers
 
 		private void PlayCounterAnimation(TruthBullet bullet)
 		{
+			isPlaying = false;
+
+			// TODO: Hide cursor, Debate GUI
+			PauseDebate();
+			screenshotScript.TakeScreenshot();
+
 			var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
 
+			counterAnimation.OnAnimationEnd += () =>
+			{
+				Destroy(counterAnimation.gameObject);
+				lieAnimation.PlayAnimation();
+			};
+
+			// temporary when gui is visible
 			foreach (var truthBullet in GameObject.FindGameObjectsWithTag("TruthBullet"))
 			{
 				truthBullet.SetActive(false);
@@ -342,6 +364,10 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
+		private void PauseDebate()
+		{
+			Time.timeScale = 0;
+		}
 		private void EnableDebateRewind()
 		{
 			leftCtrl.action.started += SetDebateRewindSpeed;

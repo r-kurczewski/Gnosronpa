@@ -294,10 +294,7 @@ namespace Gnosronpa.Controllers
 		private void HideMenuAfterTime(float time)
 		{
 			hideMenuTimer = time;
-			if (hideMenuCoroutine is null)
-			{
-				hideMenuCoroutine = StartCoroutine(IHideMenuAfterTime());
-			}
+			hideMenuCoroutine ??= StartCoroutine(IHideMenuAfterTime());
 		}
 
 		private IEnumerator IHideMenuAfterTime()

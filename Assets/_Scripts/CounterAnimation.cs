@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Gnosronpa.Controllers;
+using System;
 using UnityEngine;
 
 namespace Gnosronpa
@@ -7,6 +8,7 @@ namespace Gnosronpa
 	[SelectionBase]
 	public class CounterAnimation : MonoBehaviour
 	{
+		public event TweenCallback OnAnimationEnd;
 
 		[SerializeField]
 		private Transform shakeParent;
@@ -52,15 +54,11 @@ namespace Gnosronpa
 				},
 				duration: 2f, strength: 7, vibrato: 20, randomness: 0, ignoreZAxis: true, fadeOut: false, ShakeRandomnessMode.Full))
 
-				.Append(transform.DOScale(1.3f, 0.5f))
+				.Append(transform.DOScale(1.3f, 0.2f))
 				.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, 0.2f));
 
+			seq.SetUpdate(true);
 			seq.onComplete += OnAnimationEnd;
-		}
-
-		private void OnAnimationEnd()
-		{
-			Destroy(gameObject);
 		}
 	}
 }
