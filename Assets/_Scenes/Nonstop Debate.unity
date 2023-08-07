@@ -765,7 +765,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60ba7940e5a7cf64087a256188fc2d20, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1e1341cc4dbc3c34a884183ec2435870, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3977,6 +3977,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
   m_PrefabInstance: {fileID: 299740530902536819}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1874376606 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8379715550941698929, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+  m_PrefabInstance: {fileID: 299740530902536819}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ca1b892c42c5a478d2eeed77f6ba17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1887417986
 GameObject:
   m_ObjectHideFlags: 0
@@ -4229,6 +4240,7 @@ MonoBehaviour:
   playableCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
   screenshotScript: {fileID: 595946391}
   lieAnimation: {fileID: 595946395}
+  customCursor: {fileID: 1874376606}
   isPlaying: 0
   isStartLoopAnimation: 0
   time: 0

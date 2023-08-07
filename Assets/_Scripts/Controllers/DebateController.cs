@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
@@ -99,6 +100,9 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private LieAnimation lieAnimation;
 
+		[SerializeField]
+		private CustomCursor customCursor;
+
 		#endregion
 
 		[Header("State")]
@@ -115,8 +119,6 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private bool developerMode;
 
-
-
 		// Other
 
 		[SerializeField]
@@ -131,6 +133,11 @@ namespace Gnosronpa.Controllers
 			if (data) Init(data);
 		}
 
+		private void OnDisable()
+		{
+			ClearAllUserInputEvents();
+		}
+
 		public void Init(DebateData debate)
 		{
 			data = debate;
@@ -141,7 +148,7 @@ namespace Gnosronpa.Controllers
 
 			isStartLoopAnimation = true;
 			StartCoroutine(Debate());
-			bulletController.OnBulletMenuHidingEnd.AddListener(() => OnBulletPick(default));
+			bulletController.OnBulletMenuHidingEnd.AddListener(() => OnBulletPick());
 		}
 
 		public void PlayAnimation(DebateSequenceData statementData)
@@ -193,7 +200,7 @@ namespace Gnosronpa.Controllers
 			}
 			else
 			{
-				OnBulletPick(default);
+				OnBulletPick();
 				isPlaying = true;
 			}
 
@@ -296,11 +303,10 @@ namespace Gnosronpa.Controllers
 
 		private Sequence PlayLoadingBulletAnimation()
 		{
-
 			return bulletController.StartAnimation();
 		}
 
-		private void OnBulletChange(CallbackContext context)
+		private void OnBulletChange(CallbackContext context = default)
 		{
 			var direction = context.ReadValue<float>();
 			EnableBulletPick();
@@ -315,7 +321,7 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
-		private void OnBulletPick(CallbackContext context)
+		private void OnBulletPick(CallbackContext context = default)
 		{
 			bulletController.HideBulletPickMenu();
 			bulletController.ShowSelectedBulletPanel();
@@ -327,7 +333,7 @@ namespace Gnosronpa.Controllers
 			buttonConfirm.action.performed += OnShoot;
 		}
 
-		private void OnShoot(CallbackContext context)
+		private void OnShoot(CallbackContext context = default)
 		{
 			shootScript.Shoot(bulletController.SelectedBullet);
 		}
@@ -342,26 +348,46 @@ namespace Gnosronpa.Controllers
 
 		private void PlayCounterAnimation(TruthBullet bullet)
 		{
-			isPlaying = false;
+			StartCoroutine(IPlayCounterAnimation());
 
-			// TODO: Hide cursor, Debate GUI
-			PauseDebate();
-			screenshotScript.TakeScreenshot();
-
-			var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
-
-			counterAnimation.OnAnimationEnd += () =>
+			IEnumerator IPlayCounterAnimation()
 			{
-				Destroy(counterAnimation.gameObject);
-				lieAnimation.PlayAnimation();
-			};
+				isPlaying = false;
+				debateGUI.SetActive(false);
+				customCursor.gameObject.SetActive(false);
+				PauseDebate();
+				ClearAllUserInputEvents();
+				SetDebateNormalSpeed();
 
-			// temporary when gui is visible
-			foreach (var truthBullet in GameObject.FindGameObjectsWithTag("TruthBullet"))
-			{
-				truthBullet.SetActive(false);
-				Destroy(truthBullet);
+				screenshotScript.TakeScreenshot();
+				yield return null; // wait for finishing the screenshot
+
+				var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
+
+				counterAnimation.OnAnimationEnd += () =>
+				{
+					lieAnimation.OnAnimationEnd += () =>
+					{
+						cameraFade.DOFade(fadeOn, 0.75f)
+						.SetEase(Ease.InOutFlash)
+						.SetUpdate(true)
+						.onComplete += () =>
+						{
+							RestartDebateScene();
+						};
+					};
+					lieAnimation.PlayAnimation();
+
+					Destroy(counterAnimation.gameObject);
+				};
 			}
+		}
+
+		private void RestartDebateScene()
+		{
+			DOTween.Clear();
+			Time.timeScale = 1;
+			SceneManager.LoadScene(0);
 		}
 
 		private void PauseDebate()
@@ -380,22 +406,36 @@ namespace Gnosronpa.Controllers
 			space.action.canceled += SetDebateNormalSpeed;
 		}
 
-		private void SetDebateNormalSpeed(CallbackContext context)
+		private void SetDebateNormalSpeed(CallbackContext context = default)
 		{
 			Time.timeScale = defaultSpeed;
 			AudioController.instance.SetPitch(defaultPitch);
 		}
 
-		private void SetDebateRewindSpeed(CallbackContext context)
+		private void SetDebateRewindSpeed(CallbackContext context = default)
 		{
 			Time.timeScale = rewindSpeed;
 			AudioController.instance.SetPitch(rewindPitch);
 		}
 
-		private void SetDebateSlowdownSpeed(CallbackContext context)
+		private void SetDebateSlowdownSpeed(CallbackContext context = default)
 		{
 			Time.timeScale = slowdownSpeed;
 			AudioController.instance.SetPitch(slowdownPitch);
+		}
+
+		private void ClearAllUserInputEvents()
+		{
+			leftCtrl.action.started -= SetDebateRewindSpeed;
+			leftCtrl.action.canceled -= SetDebateNormalSpeed;
+
+			space.action.started -= SetDebateSlowdownSpeed;
+			space.action.canceled -= SetDebateNormalSpeed;
+
+			buttonConfirm.action.performed -= OnBulletPick;
+			buttonConfirm.action.performed -= OnShoot;
+
+			mouseScroll.action.performed -= OnBulletChange;
 		}
 	}
 }

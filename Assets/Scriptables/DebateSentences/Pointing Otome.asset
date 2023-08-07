@@ -16,7 +16,7 @@ MonoBehaviour:
   statementType: 1
   textTemplate: '*pointing to {0}*'
   weakSpotText: Otome
-  correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
+  correctBullet: {fileID: 0}
   collider:
     m_Center: {x: -41, y: -5, z: 0}
     m_Extent: {x: 564, y: 55, z: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
   m_Name: Find Gnosia
   m_EditorClassIdentifier: 
-  speakingCharacter: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+  speakingCharacter: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
   statementType: 1
   textTemplate: There is {0} to find Gnosia
   weakSpotText: no way
