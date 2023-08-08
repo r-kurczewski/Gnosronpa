@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Gnosronpa.Controllers;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,10 +12,23 @@ namespace Gnosronpa
 		public event TweenCallback OnAnimationEnd;
 
 		[SerializeField]
-		private RawImage image;
+		private AudioClip lieSound;
 
 		[SerializeField]
-		private AudioClip lieSound;
+		private GraphicType graphicType;
+
+		private Material LieMaterial
+		{
+			get
+			{
+				switch (graphicType)
+				{
+					case GraphicType.SpriteRenderer: return GetComponent<SpriteRenderer>().material;
+					case GraphicType.Image: return GetComponent<Graphic>().material;
+					default: return null;
+				}
+			}
+		}
 
 		private void OnDestroy()
 		{
@@ -29,17 +41,19 @@ namespace Gnosronpa
 			ResetAnimationProgress();
 
 			var tween = DOTween.To(
-				() => image.material.GetFloat(AnimationProgressField),
-				(v) => image.material.SetFloat(AnimationProgressField, v),
-				endValue: 0.5f, duration: 1.5f)
-				.SetEase(Ease.Linear)
+				() => LieMaterial.GetFloat(AnimationProgressField),
+				(v) => LieMaterial.SetFloat(AnimationProgressField, v),
+				endValue: 1f, duration: 2f)
+				.SetEase(Ease.InOutSine)
 				.SetUpdate(true)
 				.onComplete += OnAnimationEnd;
 		}
 
 		private void ResetAnimationProgress()
 		{
-			image.material.SetFloat(AnimationProgressField, 0f);
+			LieMaterial.SetFloat(AnimationProgressField, 0f);
 		}
+
+		private enum GraphicType { SpriteRenderer, Image }
 	}
 }

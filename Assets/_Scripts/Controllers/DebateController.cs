@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
@@ -359,14 +360,32 @@ namespace Gnosronpa.Controllers
 				ClearAllUserInputEvents();
 				SetDebateNormalSpeed();
 
-				screenshotScript.TakeScreenshot();
-				yield return null; // wait for finishing the screenshot
+				bool lieAnimationOnCharacter = !space.action.IsPressed();
+
+				LieAnimation chosenLieAnimation = null;
+				if (lieAnimationOnCharacter)
+				{
+					var speakingCharacter = data.debateSequence
+						.Single(x => x.statement.correctBullet == bullet.Data)
+						.statement.speakingCharacter;
+
+					chosenLieAnimation = GameObject.FindGameObjectsWithTag("Character")
+						.Select(x => x.GetComponent<Character>())
+						.Single(x => x.Data == speakingCharacter)
+						.GetComponent<LieAnimation>();
+				}
+				else
+				{
+					chosenLieAnimation = lieAnimation;
+					screenshotScript.TakeScreenshot();
+					yield return null; // wait for finishing the screenshot
+				}
 
 				var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
 
 				counterAnimation.OnAnimationEnd += () =>
 				{
-					lieAnimation.OnAnimationEnd += () =>
+					chosenLieAnimation.OnAnimationEnd += () =>
 					{
 						cameraFade.DOFade(fadeOn, 0.75f)
 						.SetEase(Ease.InOutFlash)
@@ -376,7 +395,7 @@ namespace Gnosronpa.Controllers
 							RestartDebateScene();
 						};
 					};
-					lieAnimation.PlayAnimation();
+					chosenLieAnimation.PlayAnimation();
 
 					Destroy(counterAnimation.gameObject);
 				};

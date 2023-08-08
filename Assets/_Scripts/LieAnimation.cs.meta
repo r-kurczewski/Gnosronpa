@@ -3,7 +3,9 @@ guid: dd636c2a83b6bcd4cb5e6f8be8d1b924
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - lieMaterial: {fileID: 2100000, guid: 0fd34f5372f4b1742aa97dacbc9d3889, type: 2}
+  - lieSound: {fileID: 8300000, guid: 6a0e42495797b4448ae10b45f89aa5e6, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -99,7 +99,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AnimationProgress: 0.5
+    - _AnimationProgress: 0
     - _AnimationSpeed: 0.5
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -127,7 +127,7 @@ Material:
     - _ReceiveShadows: 1
     - _RingSize: 0.4
     - _Size: 0.3
-    - _Smoothness: 0.081
+    - _Smoothness: 0.03
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -146,7 +146,8 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RingSpawnPosition: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _NoiseSize: {r: 300, g: 300, b: 0, a: 0}
+    - _RingSpawnPosition: {r: 0.5, g: 0.65, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5887446797164389970

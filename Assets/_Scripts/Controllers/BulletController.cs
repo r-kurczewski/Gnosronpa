@@ -56,7 +56,9 @@ namespace Gnosronpa.Controllers
 
 		private Sequence seq;
 
+#pragma warning disable IDE0052
 		private Coroutine hideMenuCoroutine;
+#pragma warning restore IDE0052
 
 		private bool AnimationPlaying => seq?.IsActive() ?? false && seq.IsPlaying();
 
@@ -309,5 +311,6 @@ namespace Gnosronpa.Controllers
 			HideBulletPickMenu();
 			hideMenuCoroutine = null;
 		}
+
 	}
 }

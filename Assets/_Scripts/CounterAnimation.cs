@@ -52,7 +52,7 @@ namespace Gnosronpa
 					vector.x = shakeParent.localPosition.x;
 					shakeParent.localPosition = vector;
 				},
-				duration: 2f, strength: 7, vibrato: 20, randomness: 0, ignoreZAxis: true, fadeOut: false, ShakeRandomnessMode.Full))
+				duration: 2f, strength: 10, vibrato: 20, randomness: 0, ignoreZAxis: true, fadeOut: false, ShakeRandomnessMode.Full))
 
 				.Append(transform.DOScale(1.3f, 0.2f))
 				.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, 0.2f));
