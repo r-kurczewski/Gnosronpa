@@ -18,6 +18,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d5e249fcae25bc4294a397439e614b3, type: 2}
   - {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
   - {fileID: 11400000, guid: 2061875d0cdd0154594a981872e306d0, type: 2}
+  debateHint:
+    speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+    message: "We've been blindly trusting Gina's opinions. Can we really trust Gina\u2026?
+      Let's reassess this, carefully."
+    cameraAnimation:
+      startPosition: {x: 0, y: 8, z: 20}
+      endPosition: {x: 0, y: 8, z: 25}
+      moveDuration: 0.5
+      startRotation: {x: -15, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
   debateSequence:
   - delay: 2
     statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}

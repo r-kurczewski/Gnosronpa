@@ -21,12 +21,12 @@ namespace Gnosronpa
 		{
 			get
 			{
-				switch (graphicType)
+				return graphicType switch
 				{
-					case GraphicType.SpriteRenderer: return GetComponent<SpriteRenderer>().material;
-					case GraphicType.Image: return GetComponent<Graphic>().material;
-					default: return null;
-				}
+					GraphicType.SpriteRenderer => GetComponent<SpriteRenderer>().material,
+					GraphicType.Image => GetComponent<Graphic>().material,
+					_ => null,
+				};
 			}
 		}
 
@@ -43,8 +43,8 @@ namespace Gnosronpa
 			var tween = DOTween.To(
 				() => LieMaterial.GetFloat(AnimationProgressField),
 				(v) => LieMaterial.SetFloat(AnimationProgressField, v),
-				endValue: 1f, duration: 2f)
-				.SetEase(Ease.InOutSine)
+				endValue: 1f, duration: 2.5f)
+				.SetEase(Ease.InOutCubic)
 				.SetUpdate(true)
 				.onComplete += OnAnimationEnd;
 		}

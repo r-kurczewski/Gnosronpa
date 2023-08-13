@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Gnosronpa.Common;
 using Gnosronpa.ScriptableObjects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,16 +43,19 @@ namespace Gnosronpa.Controllers
 		private CameraController cameraController;
 
 		[SerializeField]
-		private InputActionReference buttonConfirm;
+		private InputActionReference inputShoot;
 
 		[SerializeField]
-		private InputActionReference mouseScroll;
+		private InputActionReference inputScroll;
 
 		[SerializeField]
-		private InputActionReference leftCtrl;
+		private InputActionReference inputRewind;
 
 		[SerializeField]
-		private InputActionReference space;
+		private InputActionReference inputSlowmode;
+
+		[SerializeField]
+		private InputActionReference inputHideHint;
 
 		[SerializeField]
 		private Transform statementsParent;
@@ -93,9 +97,6 @@ namespace Gnosronpa.Controllers
 		private TimeSlider timeSlider;
 
 		[SerializeField]
-		private CharacterData playableCharacter;
-
-		[SerializeField]
 		private ScreenshotScript screenshotScript;
 
 		[SerializeField]
@@ -103,6 +104,9 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private CustomCursor customCursor;
+
+		[SerializeField]
+		private DialogBox hintMessage;
 
 		#endregion
 
@@ -118,12 +122,12 @@ namespace Gnosronpa.Controllers
 		private float time;
 
 		[SerializeField]
+		private float restartLoopDelay;
+
+		[SerializeField]
 		private bool developerMode;
 
 		// Other
-
-		[SerializeField]
-		private Animation3DData endLoopCameraPosition;
 
 		private Sequence loop;
 
@@ -156,7 +160,7 @@ namespace Gnosronpa.Controllers
 		{
 			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
 
-			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter?.gameObject);
+			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter.gameObject);
 
 			if (statementData.statement)
 			{
@@ -174,6 +178,8 @@ namespace Gnosronpa.Controllers
 
 		private IEnumerator Debate()
 		{
+			rightPanel.SetActive(false);
+
 			Debug.Log("Starting debate...");
 
 			if (!developerMode)
@@ -192,7 +198,10 @@ namespace Gnosronpa.Controllers
 				yield return new WaitWhile(animation.IsActive);
 			}
 
+			DisableBulletShoot();
 			EnableBulletPick();
+			EnableBulletChange();
+
 			Debug.Log("Waiting for bullet pick...");
 
 			if (!developerMode)
@@ -210,6 +219,11 @@ namespace Gnosronpa.Controllers
 
 			while (isPlaying)
 			{
+				EnableBulletShoot();
+				EnableBulletChange();
+				EnableDebateRewind();
+				EnableDebateSlowdown();
+
 				while (isPlaying && statementsQueue.Any())
 				{
 					var sentence = TryLoadNewSentence();
@@ -226,17 +240,40 @@ namespace Gnosronpa.Controllers
 				DebateSequenceData lastLoadedSequence = data.debateSequence.Last();
 				yield return new WaitForSeconds(lastLoadedSequence.SequenceDuration);
 
-				if (!developerMode) ResetDebateLoop();
+				DisableBulletShoot();
+				DisableBulletChange();
+				DisableDebateRewind();
+				DisableDebateSlowdown();
 
-				Debug.Log("Loop finished");
+				SetDebateNormalSpeed();
+
+				yield return new WaitForSecondsRealtime(restartLoopDelay);
+
+				debateGUI.SetActive(false);
+				ShowHint(data.debateHint);
+
+				yield return new WaitUntil(inputHideHint.action.WasPerformedThisFrame);
+
+				hintMessage.SetVisibility(false);
+				debateGUI.SetActive(true);
+
+				if (!developerMode) ResetDebateLoop();
 			}
+		}
+
+		private void ShowHint(DebateHintData hintData)
+		{
+			hintMessage.SetTitle(hintData.speakingCharacter.characterName);
+			hintMessage.SetMessage(hintData.message);
+			hintMessage.SetVisibility(true);
+			hintMessage.RevealText();
+			characterInfo.SetCharacter(hintData.speakingCharacter);
+			cameraController.PlayCameraAnimation(hintData.cameraAnimation, TryGetCharacter(hintData.speakingCharacter).gameObject);
 		}
 
 		private void ResetDebateLoop()
 		{
 			timeSlider.SetPosition(0);
-			characterInfo.SetCharacter(playableCharacter);
-			cameraController.PlayCameraAnimation(endLoopCameraPosition, TryGetCharacter(playableCharacter)?.gameObject);
 			data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
 		}
 
@@ -297,9 +334,22 @@ namespace Gnosronpa.Controllers
 
 		private void EnableBulletPick()
 		{
-			mouseScroll.action.performed += OnBulletChange;
-			buttonConfirm.action.performed += OnBulletPick;
-			buttonConfirm.action.performed -= OnShoot;
+			inputShoot.action.performed += OnBulletPick;
+		}
+
+		private void DisableBulletPick()
+		{
+			inputShoot.action.performed -= OnBulletPick;
+		}
+
+		private void EnableBulletChange()
+		{
+			inputScroll.action.performed += OnBulletChange;
+		}
+
+		private void DisableBulletShoot()
+		{
+			inputShoot.action.performed -= OnShoot;
 		}
 
 		private Sequence PlayLoadingBulletAnimation()
@@ -330,8 +380,8 @@ namespace Gnosronpa.Controllers
 			Debug.Log($"Picked bullet: {bulletController.SelectedBullet.bulletName}");
 
 			isPlaying = true;
-			buttonConfirm.action.performed -= OnBulletPick;
-			buttonConfirm.action.performed += OnShoot;
+			inputShoot.action.performed -= OnBulletPick;
+			EnableBulletShoot();
 		}
 
 		private void OnShoot(CallbackContext context = default)
@@ -349,57 +399,40 @@ namespace Gnosronpa.Controllers
 
 		private void PlayCounterAnimation(TruthBullet bullet)
 		{
-			StartCoroutine(IPlayCounterAnimation());
+			isPlaying = false;
+			debateGUI.SetActive(false);
+			customCursor.gameObject.SetActive(false);
+			PauseDebate();
+			ClearAllUserInputEvents();
+			SetDebateNormalSpeed();
 
-			IEnumerator IPlayCounterAnimation()
+			var speakingCharacter = data.debateSequence
+				.Single(x => x.statement.correctBullet == bullet.Data)
+				.statement.speakingCharacter;
+
+			var chosenLieAnimation = GameObject.FindGameObjectsWithTag("Character")
+				.Select(x => x.GetComponent<Character>())
+				.Single(x => x.Data == speakingCharacter)
+				.GetComponent<LieAnimation>();
+
+			var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
+
+			counterAnimation.OnAnimationEnd += () =>
 			{
-				isPlaying = false;
-				debateGUI.SetActive(false);
-				customCursor.gameObject.SetActive(false);
-				PauseDebate();
-				ClearAllUserInputEvents();
-				SetDebateNormalSpeed();
-
-				bool lieAnimationOnCharacter = !space.action.IsPressed();
-
-				LieAnimation chosenLieAnimation = null;
-				if (lieAnimationOnCharacter)
+				chosenLieAnimation.OnAnimationEnd += () =>
 				{
-					var speakingCharacter = data.debateSequence
-						.Single(x => x.statement.correctBullet == bullet.Data)
-						.statement.speakingCharacter;
-
-					chosenLieAnimation = GameObject.FindGameObjectsWithTag("Character")
-						.Select(x => x.GetComponent<Character>())
-						.Single(x => x.Data == speakingCharacter)
-						.GetComponent<LieAnimation>();
-				}
-				else
-				{
-					chosenLieAnimation = lieAnimation;
-					screenshotScript.TakeScreenshot();
-					yield return null; // wait for finishing the screenshot
-				}
-
-				var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
-
-				counterAnimation.OnAnimationEnd += () =>
-				{
-					chosenLieAnimation.OnAnimationEnd += () =>
+					cameraFade.DOFade(fadeOn, 0.75f)
+					.SetEase(Ease.InOutFlash)
+					.SetUpdate(true)
+					.onComplete += () =>
 					{
-						cameraFade.DOFade(fadeOn, 0.75f)
-						.SetEase(Ease.InOutFlash)
-						.SetUpdate(true)
-						.onComplete += () =>
-						{
-							RestartDebateScene();
-						};
+						RestartDebateScene();
 					};
-					chosenLieAnimation.PlayAnimation();
-
-					Destroy(counterAnimation.gameObject);
 				};
-			}
+				chosenLieAnimation.PlayAnimation();
+
+				Destroy(counterAnimation.gameObject);
+			};
 		}
 
 		private void RestartDebateScene()
@@ -413,16 +446,39 @@ namespace Gnosronpa.Controllers
 		{
 			Time.timeScale = 0;
 		}
+
+		public void EnableBulletShoot()
+		{
+			inputShoot.action.performed += OnShoot;
+		}
+
 		private void EnableDebateRewind()
 		{
-			leftCtrl.action.started += SetDebateRewindSpeed;
-			leftCtrl.action.canceled += SetDebateNormalSpeed;
+			inputRewind.action.started += SetDebateRewindSpeed;
+			inputRewind.action.canceled += SetDebateNormalSpeed;
 		}
 
 		private void EnableDebateSlowdown()
 		{
-			space.action.started += SetDebateSlowdownSpeed;
-			space.action.canceled += SetDebateNormalSpeed;
+			inputSlowmode.action.started += SetDebateSlowdownSpeed;
+			inputSlowmode.action.canceled += SetDebateNormalSpeed;
+		}
+
+		private void DisableDebateRewind()
+		{
+			inputRewind.action.started -= SetDebateRewindSpeed;
+			inputRewind.action.canceled -= SetDebateNormalSpeed;
+		}
+
+		private void DisableDebateSlowdown()
+		{
+			inputSlowmode.action.started -= SetDebateSlowdownSpeed;
+			inputSlowmode.action.canceled -= SetDebateNormalSpeed;
+		}
+
+		private void DisableBulletChange()
+		{
+			inputScroll.action.performed -= OnBulletChange;
 		}
 
 		private void SetDebateNormalSpeed(CallbackContext context = default)
@@ -445,16 +501,11 @@ namespace Gnosronpa.Controllers
 
 		private void ClearAllUserInputEvents()
 		{
-			leftCtrl.action.started -= SetDebateRewindSpeed;
-			leftCtrl.action.canceled -= SetDebateNormalSpeed;
-
-			space.action.started -= SetDebateSlowdownSpeed;
-			space.action.canceled -= SetDebateNormalSpeed;
-
-			buttonConfirm.action.performed -= OnBulletPick;
-			buttonConfirm.action.performed -= OnShoot;
-
-			mouseScroll.action.performed -= OnBulletChange;
+			DisableDebateRewind();
+			DisableDebateSlowdown();
+			DisableBulletPick();
+			DisableBulletShoot();
+			DisableBulletChange();
 		}
 	}
 }

@@ -20,6 +20,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b2f5bf88a2171b9498de27d85d5f7e4c, type: 2}
   - {fileID: 11400000, guid: 7869d6148cca6d749b51c08ba6b0dfba, type: 2}
   - {fileID: 11400000, guid: ca0d3d659f336c544a46d708701ebafd, type: 2}
+  debateHint:
+    speakingCharacter: {fileID: 0}
+    message: 
+    cameraAnimation:
+      startPosition: {x: 0, y: 8, z: 20}
+      endPosition: {x: 0, y: 8, z: 26}
+      moveDuration: 0.5
+      startRotation: {x: -15, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
   debateSequence:
   - delay: 0
     statement: {fileID: 11400000, guid: 06ef1fad80f07fc4282ce8a4f9a28fbc, type: 2}
@@ -37,10 +47,10 @@ MonoBehaviour:
       appearTime: 0
       waitingTime: 0
       disappearTime: 0
-    characterRelativeCameraAnimation:
-      startPosition: {x: 0, y: 8, z: 25}
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
       endPosition: {x: 0, y: 0, z: 0}
       moveDuration: 0
-      startRotation: {x: -15, y: 0, z: 0}
+      startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0

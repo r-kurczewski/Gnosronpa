@@ -6,7 +6,7 @@
             "id": "6a8c1e55-519a-41b9-a19f-819d2843a6fe",
             "actions": [
                 {
-                    "name": "Confirm",
+                    "name": "Shoot",
                     "type": "Button",
                     "id": "10f5d7bf-4d06-41f0-bb14-68eebdddb970",
                     "expectedControlType": "Button",
@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HideHint",
+                    "type": "Button",
+                    "id": "968d265b-ef2e-4ad3-9e72-ad622924d18d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -59,7 +68,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Confirm",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -126,6 +135,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Slowdown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "355ab9fb-333f-4d48-acd5-fca70b010d05",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HideHint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

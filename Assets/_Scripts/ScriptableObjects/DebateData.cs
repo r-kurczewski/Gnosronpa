@@ -11,8 +11,21 @@ namespace Gnosronpa.ScriptableObjects
 	{
 		public List<TruthBulletData> bullets;
 
-		[FormerlySerializedAs("data")]
+		public DebateHintData debateHint;
+
 		public List<DebateSequenceData> debateSequence;
+
+	}
+
+	[Serializable]
+	public class DebateHintData
+	{
+		public CharacterData speakingCharacter;
+
+		[TextArea] 
+		public string message;
+
+		public Animation3DData cameraAnimation;
 	}
 
 	[Serializable]
@@ -29,7 +42,6 @@ namespace Gnosronpa.ScriptableObjects
 		/// <summary>
 		/// Relative to speaking character in the statement
 		/// </summary>
-		[FormerlySerializedAs("characterRelativeCameraAnimation")]
 		public Animation3DData cameraAnimation;
 
 		public float SequenceDuration
