@@ -20,10 +20,7 @@ namespace Gnosronpa.ScriptableObjects
 	[Serializable]
 	public class DebateHintData
 	{
-		public CharacterData speakingCharacter;
-
-		[TextArea] 
-		public string message;
+		public List<DialogMessage> messages;
 
 		public Animation3DData cameraAnimation;
 	}

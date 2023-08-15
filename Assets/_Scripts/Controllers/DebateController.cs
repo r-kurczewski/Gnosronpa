@@ -1,14 +1,12 @@
 using DG.Tweening;
 using Gnosronpa.Common;
 using Gnosronpa.ScriptableObjects;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
@@ -55,7 +53,7 @@ namespace Gnosronpa.Controllers
 		private InputActionReference inputSlowmode;
 
 		[SerializeField]
-		private InputActionReference inputHideHint;
+		private InputActionReference inputNextDialog;
 
 		[SerializeField]
 		private Transform statementsParent;
@@ -106,7 +104,7 @@ namespace Gnosronpa.Controllers
 		private CustomCursor customCursor;
 
 		[SerializeField]
-		private DialogBox hintMessage;
+		private DialogBox dialogBox;
 
 		#endregion
 
@@ -122,7 +120,7 @@ namespace Gnosronpa.Controllers
 		private float time;
 
 		[SerializeField]
-		private float restartLoopDelay;
+		private float hintDelay;
 
 		[SerializeField]
 		private bool developerMode;
@@ -148,6 +146,9 @@ namespace Gnosronpa.Controllers
 			data = debate;
 			statementsQueue = new Queue<DebateSequenceData>();
 			debate.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
+
+			dialogBox.OnMessagesEnded += OnMessageEnded;
+			dialogBox.OnMessageChanged += OnMessageChanged;
 
 			debateGUI.SetActive(false);
 
@@ -223,6 +224,7 @@ namespace Gnosronpa.Controllers
 				EnableBulletChange();
 				EnableDebateRewind();
 				EnableDebateSlowdown();
+				DisableSkipDialogMessage();
 
 				while (isPlaying && statementsQueue.Any())
 				{
@@ -235,7 +237,7 @@ namespace Gnosronpa.Controllers
 					yield return null;
 				}
 
-				if (!isPlaying) yield break;
+				if (!isPlaying || developerMode) yield break;
 
 				DebateSequenceData lastLoadedSequence = data.debateSequence.Last();
 				yield return new WaitForSeconds(lastLoadedSequence.SequenceDuration);
@@ -247,28 +249,54 @@ namespace Gnosronpa.Controllers
 
 				SetDebateNormalSpeed();
 
-				yield return new WaitForSecondsRealtime(restartLoopDelay);
+				yield return new WaitForSecondsRealtime(hintDelay);
 
 				debateGUI.SetActive(false);
-				ShowHint(data.debateHint);
+				dialogBox.SetVisibility(true);
 
-				yield return new WaitUntil(inputHideHint.action.WasPerformedThisFrame);
+				data.debateHint.messages.ForEach((msg) => dialogBox.AddMessage(msg));
 
-				hintMessage.SetVisibility(false);
-				debateGUI.SetActive(true);
+				dialogBox.LoadNextMessage(playSound: false);
+				EnableSkipDialogMessage();
 
-				if (!developerMode) ResetDebateLoop();
+				yield return new WaitWhile(() => dialogBox.gameObject.activeSelf);
 			}
 		}
 
-		private void ShowHint(DebateHintData hintData)
+		private void EnableSkipDialogMessage()
 		{
-			hintMessage.SetTitle(hintData.speakingCharacter.characterName);
-			hintMessage.SetMessage(hintData.message);
-			hintMessage.SetVisibility(true);
-			hintMessage.RevealText();
-			characterInfo.SetCharacter(hintData.speakingCharacter);
-			cameraController.PlayCameraAnimation(hintData.cameraAnimation, TryGetCharacter(hintData.speakingCharacter).gameObject);
+			inputNextDialog.action.performed += OnNextDialogMessage;
+		}
+
+		private void DisableSkipDialogMessage()
+		{
+			inputNextDialog.action.performed -= OnNextDialogMessage;
+		}
+
+		private void OnNextDialogMessage(CallbackContext context = default)
+		{
+			if (dialogBox.MessageContentDisplayed)
+			{
+				dialogBox.LoadNextMessage();
+			}
+			else
+			{
+				dialogBox.ForceDisplayMessage();
+			}
+		}
+
+		private void OnMessageChanged(DialogMessage msg)
+		{
+			characterInfo.SetCharacter(msg.speakingCharacter);
+			cameraController.PlayCameraAnimation(msg.cameraAnimation, TryGetCharacter(msg.speakingCharacter).gameObject);
+		}
+
+		private void OnMessageEnded()
+		{
+			dialogBox.SetVisibility(false);
+			debateGUI.SetActive(true);
+
+			if (!developerMode) ResetDebateLoop();
 		}
 
 		private void ResetDebateLoop()
@@ -506,6 +534,7 @@ namespace Gnosronpa.Controllers
 			DisableBulletPick();
 			DisableBulletShoot();
 			DisableBulletChange();
+			DisableSkipDialogMessage();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Gnosronpa.Common
 {
@@ -8,17 +9,20 @@ namespace Gnosronpa.Common
 	{
 		[Header("Move")]
 		public Vector2 startPosition;
-		public Vector2 endPosition;
+		[FormerlySerializedAs("endPosition")]
+		public Vector2 move;
 		public float moveDuration;
 
 		[Header("Rotation")]
 		public float startRotation;
-		public float endRotation;
+		[FormerlySerializedAs("endRotation")]
+		public float rotation;
 		public float rotationDuration;
 
 		[Header("Scale")]
 		public Vector2 startScale = Vector2.one;
-		public Vector2 endScale;
+		[FormerlySerializedAs("endScale")]
+		public Vector2 scale;
 		public float scaleDuration;
 	}
 }

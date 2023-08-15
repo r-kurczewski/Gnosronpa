@@ -214,3 +214,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 0}
+  incorrectHitSound: {fileID: 8300000, guid: 5e8236ca00983ab46a218cb074bd6fba, type: 3}
+  correctHitSound: {fileID: 8300000, guid: d3ddade50e8f4474c8c590fce887d24b, type: 3}

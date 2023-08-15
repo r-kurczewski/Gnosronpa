@@ -56,11 +56,17 @@ namespace Gnosronpa.Controllers
 
 		private Sequence seq;
 
-#pragma warning disable IDE0052
 		private Coroutine hideMenuCoroutine;
-#pragma warning restore IDE0052
 
 		private bool AnimationPlaying => seq?.IsActive() ?? false && seq.IsPlaying();
+
+		private void OnDisable()
+		{
+			if (hideMenuCoroutine is not null) StopCoroutine(hideMenuCoroutine);
+
+			HideBulletPickMenu();
+			hideMenuCoroutine = null;
+		}
 
 		public TruthBulletData SelectedBullet => bulletLabels[selectedIndex].Data;
 
@@ -297,20 +303,19 @@ namespace Gnosronpa.Controllers
 		{
 			hideMenuTimer = time;
 			hideMenuCoroutine ??= StartCoroutine(IHideMenuAfterTime());
-		}
 
-		private IEnumerator IHideMenuAfterTime()
-		{
-			// This way waiting time counter can be reset after player input ex. bullet change
-			while(hideMenuTimer > 0)
+			IEnumerator IHideMenuAfterTime()
 			{
-				hideMenuTimer -= Time.unscaledDeltaTime;
-				yield return null;
+				// This way waiting time counter can be reset after player input ex. bullet change
+				while (hideMenuTimer > 0)
+				{
+					hideMenuTimer -= Time.unscaledDeltaTime;
+					yield return null;
+				}
+
+				HideBulletPickMenu();
+				hideMenuCoroutine = null;
 			}
-
-			HideBulletPickMenu();
-			hideMenuCoroutine = null;
 		}
-
 	}
 }

@@ -1,4 +1,9 @@
+using Gnosronpa.Common;
+using Gnosronpa.Controllers;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +11,12 @@ namespace Gnosronpa
 {
 	public class DialogBox : MonoBehaviour
 	{
+		public event Action<DialogMessage> OnMessageChanged;
+
+		public event Action<DialogMessage> OnMessageContentDisplayed;
+
+		public event Action OnMessagesEnded;
+
 		[SerializeField]
 		private TMP_Text title;
 
@@ -16,17 +27,67 @@ namespace Gnosronpa
 		private float characterLoadDelay;
 
 		[SerializeField]
-		private bool textLoaded;
+		private AudioClip messageLoadSound;
+		
+		[SerializeField]
+		private bool messageContentDisplayed;
 
-		public bool TextLoaded => textLoaded;
+		private Queue<DialogMessage> messages = new();
 
-		public void RevealText()
+		private Coroutine revealTextCoroutine;
+
+		public bool MessageContentDisplayed => messageContentDisplayed;
+
+
+		[SerializeField]
+		private DialogMessage currentMessage;
+
+		public void AddMessage(DialogMessage message)
 		{
-			StartCoroutine(IRevealText());
+			messages.Enqueue(message);
+		}
+
+		public void SetVisibility(bool visibility)
+		{
+			gameObject.SetActive(visibility);
+		}
+
+		public void LoadNextMessage(bool playSound = true)
+		{
+			if(playSound) AudioController.instance.PlaySound(messageLoadSound);
+
+			if (!messages.Any())
+			{
+				OnMessagesEnded?.Invoke();
+				return;
+			}
+
+			currentMessage = messages.Dequeue();
+
+			messageContentDisplayed = false;
+			SetTitle(currentMessage.speakingCharacter.characterName);
+			SetMessage(currentMessage.messageText);
+			RevealText();
+
+			OnMessageChanged?.Invoke(currentMessage);
+		}
+
+		public void ForceDisplayMessage()
+		{
+			StopCoroutine(revealTextCoroutine);
+			
+			message.maxVisibleCharacters = message.textInfo.characterCount;
+			
+			messageContentDisplayed = true;
+			OnMessageContentDisplayed?.Invoke(currentMessage);
+		}
+
+		private void RevealText()
+		{
+			revealTextCoroutine = StartCoroutine(IRevealText());
 
 			IEnumerator IRevealText()
 			{
-				textLoaded = false;
 				message.ForceMeshUpdate();
 
 				var totalCharacters = message.textInfo.characterCount;
@@ -39,24 +100,19 @@ namespace Gnosronpa
 					visibleCharacters++;
 					yield return characterLoadDelay;
 				}
-
-				textLoaded = true;
+				OnMessageContentDisplayed?.Invoke(currentMessage);
+				messageContentDisplayed = true;
 			}
 		}
-		
-		public void SetTitle(string title)
+
+		private void SetTitle(string title)
 		{
 			this.title.text = title;
 		}
 
-		public void SetMessage(string message)
+		private void SetMessage(string message)
 		{
 			this.message.text = message;
-		}
-
-		public void SetVisibility(bool visibility)
-		{
-			gameObject.SetActive(visibility);
 		}
 	}
 }

@@ -1,9 +1,11 @@
 using DG.Tweening;
+using DG.Tweening.Core;
+using Gnosronpa.Assets._Scripts.Common;
+using Gnosronpa.Controllers;
 using Gnosronpa.ScriptableObjects;
-using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using static Gnosronpa.ScriptableObjects.DebateStatementData;
 
 namespace Gnosronpa
 {
@@ -15,6 +17,12 @@ namespace Gnosronpa
 
 		[SerializeField]
 		private DebateStatementData data;
+
+		[SerializeField]
+		private AudioClip incorrectHitSound;
+
+		[SerializeField]
+		private AudioClip correctHitSound;
 
 		private TMP_Text text;
 
@@ -35,10 +43,33 @@ namespace Gnosronpa
 
 			if (isCorrect)
 			{
-				OnCorrectBulletHit?.Invoke(bullet);
+				OnCorrectHit(bullet);
+			}
+			else
+			{
+				OnIncorrectHit(bullet);
 			}
 
 			Debug.Log($"[{name}] hit with [{bullet.name}], correct: [{isCorrect}]");
+		}
+
+		private void OnCorrectHit(TruthBullet bullet)
+		{
+			StartCoroutine(ICorrectHit(bullet));
+
+			IEnumerator ICorrectHit(TruthBullet bullet)
+			{
+				//AudioController.instance.PlaySound(correctHitSound);
+				//yield return new WaitForSecondsRealtime(correctHitSound.length);
+				OnCorrectBulletHit?.Invoke(bullet);
+				yield return null;
+			}
+		}
+
+		private void OnIncorrectHit(TruthBullet bullet)
+		{
+			AudioController.instance.PlaySound(incorrectHitSound);
+			transform.BlendableShake(Vector3.one * 8, 1f, 5);
 		}
 
 
@@ -50,17 +81,9 @@ namespace Gnosronpa
 
 			name = this.data.name;
 
-			if (data.statement.statementType == StatementType.Normal)
-			{
-				text.text = this.data.textTemplate;
-				boxCollider.enabled = false;
-			}
-			else
-			{
-				text.text = string.Format(this.data.textTemplate, Gradient(this.data.weakSpotText));
-				boxCollider.center = this.data.collider.center;
-				boxCollider.size = this.data.collider.extents; // correct behaviour
-			}
+			text.text = string.Format(this.data.textTemplate, Gradient(this.data.weakSpotText));
+			boxCollider.center = this.data.collider.center;
+			boxCollider.size = this.data.collider.extents; // correct behaviour
 
 			transform.localPosition = animation.startPosition;
 			transform.localRotation = Quaternion.Euler(0, 0, animation.startRotation);
@@ -71,17 +94,17 @@ namespace Gnosronpa
 
 			if (animation.moveDuration > 0)
 			{
-				seq.Join(transform.DOLocalMove(animation.endPosition, animation.moveDuration));
+				seq.Join(transform.DOBlendableLocalMoveBy(animation.move, animation.moveDuration));
 			}
 
 			if (animation.rotationDuration > 0)
 			{
-				seq.Join(transform.DOLocalRotate(Vector3.forward * animation.endRotation, animation.rotationDuration));
+				seq.Join(transform.DOBlendableLocalRotateBy(Vector3.forward * animation.rotation, animation.rotationDuration));
 			}
 
 			if (animation.scaleDuration > 0)
 			{
-				seq.Join(transform.DOScale(new Vector3(animation.endScale.x, animation.endScale.y, 1), animation.scaleDuration));
+				seq.Join(transform.DOBlendableScaleBy(new Vector3(animation.scale.x, animation.scale.y, 1), animation.scaleDuration));
 			}
 
 			seq.AppendInterval(transition.waitingTime)

@@ -2775,7 +2775,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter
+  m_text: Enter / LMB
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a7eafc59a6ed97a40b11630d0739417f, type: 2}
   m_sharedMaterial: {fileID: 5618729114146523640, guid: a7eafc59a6ed97a40b11630d0739417f, type: 2}
@@ -2802,11 +2802,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 10
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
-  m_enableAutoSizing: 1
-  m_fontSizeMin: 10
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 8
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -3515,14 +3515,22 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 329.00662
       objectReference: {fileID: 0}
+    - target: {fileID: 5094196747462693446, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 40.000015
+      objectReference: {fileID: 0}
     - target: {fileID: 6332363437147780324, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_Name
-      value: HintMessage
+      value: DialogBox
       objectReference: {fileID: 0}
     - target: {fileID: 6332363437147780324, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7266549160843331831, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: messageLoadSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0990ef82a832e8540baf5b9ee461b441, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4866,7 +4874,7 @@ MonoBehaviour:
   inputScroll: {fileID: 2805303670844433148, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputRewind: {fileID: -925155489392383504, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputSlowmode: {fileID: 5230133188502322826, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
-  inputHideHint: {fileID: 4643884041679450791, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
+  inputNextDialog: {fileID: 4643884041679450791, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   statementsParent: {fileID: 46455575}
   bulletsParent: {fileID: 1074893610}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}
@@ -4883,11 +4891,11 @@ MonoBehaviour:
   screenshotScript: {fileID: 595946391}
   lieAnimation: {fileID: 595946395}
   customCursor: {fileID: 1874376606}
-  hintMessage: {fileID: 78969553}
+  dialogBox: {fileID: 78969553}
   isPlaying: 0
   isStartLoopAnimation: 0
   time: 0
-  restartLoopDelay: 0.5
+  hintDelay: 0.5
   developerMode: 0
 --- !u!1 &2049863790
 GameObject:

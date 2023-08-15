@@ -19,9 +19,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
   - {fileID: 11400000, guid: 2061875d0cdd0154594a981872e306d0, type: 2}
   debateHint:
-    speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
-    message: "We've been blindly trusting Gina's opinions. Can we really trust Gina\u2026?
-      Let's reassess this, carefully."
+    messages:
+    - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+      messageText: "We've been blindly trusting Gina's opinions. Can we really trust
+        Gina\u2026?"
+      cameraAnimation:
+        startPosition: {x: 0, y: 8, z: 20}
+        endPosition: {x: 0, y: 8, z: 25}
+        moveDuration: 0.5
+        startRotation: {x: -15, y: 0, z: 0}
+        endRotation: {x: 0, y: 0, z: 0}
+        rotationDuration: 0
+    - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+      messageText: ' Let''s reassess this, carefully.'
+      cameraAnimation:
+        startPosition: {x: 0, y: 8, z: 25}
+        endPosition: {x: 0, y: 0, z: 0}
+        moveDuration: 0
+        startRotation: {x: -15, y: 0, z: 0}
+        endRotation: {x: 0, y: 0, z: 0}
+        rotationDuration: 0
     cameraAnimation:
       startPosition: {x: 0, y: 8, z: 20}
       endPosition: {x: 0, y: 8, z: 25}
@@ -34,13 +51,13 @@ MonoBehaviour:
     statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}
-      endPosition: {x: 10, y: 10}
-      moveDuration: 4
+      move: {x: 0, y: 0}
+      moveDuration: 0
       startRotation: 0
-      endRotation: 20
+      rotation: 20
       rotationDuration: 4
       startScale: {x: 0.6, y: 0.6}
-      endScale: {x: 0.8, y: 0.8}
+      scale: {x: 0.25, y: 0.25}
       scaleDuration: 4
     statementTransition:
       appearTime: 0.5
@@ -49,7 +66,7 @@ MonoBehaviour:
     cameraAnimation:
       startPosition: {x: 0, y: 10, z: 10}
       endPosition: {x: 0, y: 10, z: 20}
-      moveDuration: 2
+      moveDuration: 4
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
@@ -57,13 +74,13 @@ MonoBehaviour:
     statement: {fileID: 11400000, guid: 2428eac30ff3cf64ab088376744b5114, type: 2}
     statementAnimation:
       startPosition: {x: -200, y: -200}
-      endPosition: {x: 100, y: -26.795}
+      move: {x: 300, y: 173.205}
       moveDuration: 3
       startRotation: 30
-      endRotation: 0
+      rotation: 0
       rotationDuration: 0
       startScale: {x: 0.7, y: 0.7}
-      endScale: {x: 0, y: 0}
+      scale: {x: 0, y: 0}
       scaleDuration: 0
     statementTransition:
       appearTime: 0.5
@@ -80,13 +97,13 @@ MonoBehaviour:
     statement: {fileID: 11400000, guid: e995661795292ff41ae48ad745a0ce68, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}
-      endPosition: {x: 0, y: 0}
+      move: {x: 0, y: 0}
       moveDuration: 0
       startRotation: 0
-      endRotation: 0
+      rotation: 0
       rotationDuration: 0
       startScale: {x: 0.3, y: 0.3}
-      endScale: {x: 1.2, y: 1.2}
+      scale: {x: 0.9, y: 0.9}
       scaleDuration: 3
     statementTransition:
       appearTime: 0.5
@@ -103,13 +120,13 @@ MonoBehaviour:
     statement: {fileID: 11400000, guid: 4a64e8fd93855b448886ea382d951fe5, type: 2}
     statementAnimation:
       startPosition: {x: -100, y: 200}
-      endPosition: {x: 50, y: 200}
+      move: {x: 150, y: 0}
       moveDuration: 3
       startRotation: 0
-      endRotation: 0
+      rotation: 0
       rotationDuration: 0
       startScale: {x: 0.8, y: 0.8}
-      endScale: {x: 0, y: 0}
+      scale: {x: 0, y: 0}
       scaleDuration: 0
     statementTransition:
       appearTime: 0.5
@@ -126,13 +143,13 @@ MonoBehaviour:
     statement: {fileID: 11400000, guid: e345abae323791d479da765180d7db4a, type: 2}
     statementAnimation:
       startPosition: {x: -100, y: -50}
-      endPosition: {x: 50, y: -50}
+      move: {x: 150, y: 0}
       moveDuration: 4
       startRotation: 0
-      endRotation: 0
+      rotation: 0
       rotationDuration: 0
       startScale: {x: 0.8, y: 0.8}
-      endScale: {x: 0, y: 0}
+      scale: {x: 0, y: 0}
       scaleDuration: 0
     statementTransition:
       appearTime: 0.5
