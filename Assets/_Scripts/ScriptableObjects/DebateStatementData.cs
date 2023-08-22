@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Gnosronpa.ScriptableObjects
 {
@@ -15,7 +16,9 @@ namespace Gnosronpa.ScriptableObjects
 
 		public TruthBulletData correctBullet;
 
-		public Bounds collider;
+		public ColliderData textCollider;
+
+		public ColliderData weakSpotCollider;
 
 		public enum StatementType
 		{
@@ -23,5 +26,13 @@ namespace Gnosronpa.ScriptableObjects
 			WeakSpot,
 			Noise,
 		}
+
+		[Serializable]
+		public class ColliderData
+		{
+			public Vector2 center;
+			public Vector2 size;
+		}
+
 	}
 }

@@ -63,5 +63,10 @@ namespace Gnosronpa.Controllers
 		}
 
 		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;
+
+		private void OnDrawGizmos()
+		{
+			Gizmos.DrawCube(transform.position, Vector3.one);
+		}
 	}
 }

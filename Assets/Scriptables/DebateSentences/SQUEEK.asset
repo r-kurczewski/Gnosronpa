@@ -17,6 +17,9 @@ MonoBehaviour:
   textTemplate: '*SQUEEEK*'
   weakSpotText: 
   correctBullet: {fileID: 0}
-  collider:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  textCollider:
+    center: {x: 0, y: 0}
+    size: {x: 420, y: 55}
+  weakSpotCollider:
+    center: {x: 0, y: 0}
+    size: {x: 0, y: 0}

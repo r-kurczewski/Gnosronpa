@@ -150,37 +150,20 @@ namespace Gnosronpa.Controllers
 			dialogBox.OnMessagesEnded += OnMessageEnded;
 			dialogBox.OnMessageChanged += OnMessageChanged;
 
+			bulletController.OnBulletMenuHidingEnd.AddListener(() => OnBulletPick());
+
 			debateGUI.SetActive(false);
+			rightPanel.SetActive(false);
+			customCursor.gameObject.SetActive(true);
 
 			isStartLoopAnimation = true;
+
 			StartCoroutine(Debate());
-			bulletController.OnBulletMenuHidingEnd.AddListener(() => OnBulletPick());
-		}
-
-		public void PlayAnimation(DebateSequenceData statementData)
-		{
-			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
-
-			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter.gameObject);
-
-			if (statementData.statement)
-			{
-				LoadStatement(statementData);
-				characterInfo.SetCharacter(statementData.statement.speakingCharacter);
-			}
-		}
-
-		private static Character TryGetCharacter(CharacterData characterData)
-		{
-			return GameObject.FindGameObjectsWithTag("Character")
-				.Select(x => x.GetComponent<Character>())
-				.FirstOrDefault(x => x.Data == characterData);
+			
 		}
 
 		private IEnumerator Debate()
 		{
-			rightPanel.SetActive(false);
-
 			Debug.Log("Starting debate...");
 
 			if (!developerMode)
@@ -190,6 +173,7 @@ namespace Gnosronpa.Controllers
 			}
 
 			Debug.Log("Loading bullets...");
+			customCursor.gameObject.SetActive(true);
 			debateGUI.SetActive(true);
 			bulletController.Init(data.bullets);
 
@@ -261,6 +245,26 @@ namespace Gnosronpa.Controllers
 
 				yield return new WaitWhile(() => dialogBox.gameObject.activeSelf);
 			}
+		}
+
+		public void PlayAnimation(DebateSequenceData statementData)
+		{
+			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
+
+			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter.gameObject);
+
+			if (statementData.statement)
+			{
+				LoadStatement(statementData);
+				characterInfo.SetCharacter(statementData.statement.speakingCharacter);
+			}
+		}
+
+		private static Character TryGetCharacter(CharacterData characterData)
+		{
+			return GameObject.FindGameObjectsWithTag("Character")
+				.Select(x => x.GetComponent<Character>())
+				.FirstOrDefault(x => x.Data == characterData);
 		}
 
 		private void EnableSkipDialogMessage()

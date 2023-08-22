@@ -20,3 +20,9 @@ MonoBehaviour:
   collider:
     m_Center: {x: -41, y: -5, z: 0}
     m_Extent: {x: 564, y: 55, z: 3}
+  textCollider:
+    center: {x: 5.5, y: -6}
+    size: {x: 990, y: 40}
+  weakSpotCollider:
+    center: {x: -95, y: -6}
+    size: {x: 230, y: 40}
