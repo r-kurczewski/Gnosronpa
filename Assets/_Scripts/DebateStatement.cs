@@ -69,6 +69,7 @@ namespace Gnosronpa
 			transform.localPosition = animation.startPosition;
 			transform.localRotation = Quaternion.Euler(0, 0, animation.startRotation);
 			transform.localScale = new Vector3(animation.startScale.x, animation.startScale.y, 1);
+			text.color = new Color(text.color.r, text.color.g, text.color.b, a: 0);
 
 			var seq = DOTween.Sequence()
 				.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 1, transition.appearTime));
