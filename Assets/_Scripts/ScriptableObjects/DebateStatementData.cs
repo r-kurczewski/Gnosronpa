@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Gnosronpa.Common;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gnosronpa.ScriptableObjects
@@ -6,7 +8,7 @@ namespace Gnosronpa.ScriptableObjects
 	[CreateAssetMenu(fileName = "Statement", menuName = "NonstopDebate/Statement")]
 	public class DebateStatementData : ScriptableObject
 	{
-		public CharacterData speakingCharacter;
+		//public CharacterData speakingCharacter;
 
 		public StatementType statementType;
 
@@ -19,6 +21,8 @@ namespace Gnosronpa.ScriptableObjects
 		public ColliderData textCollider;
 
 		public ColliderData weakSpotCollider;
+
+		public List<DialogMessage> hitDialogs;
 
 		public enum StatementType
 		{

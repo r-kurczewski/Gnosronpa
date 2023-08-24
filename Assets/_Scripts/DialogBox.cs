@@ -92,7 +92,7 @@ namespace Gnosronpa
 
 				var totalCharacters = message.textInfo.characterCount;
 				var visibleCharacters = 0;
-				var characterLoadDelay = new WaitForSeconds(this.characterLoadDelay);
+				var characterLoadDelay = new WaitForSecondsRealtime(this.characterLoadDelay);
 
 				while (visibleCharacters <= totalCharacters)
 				{

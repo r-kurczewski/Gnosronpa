@@ -159,7 +159,7 @@ namespace Gnosronpa.Controllers
 			isStartLoopAnimation = true;
 
 			StartCoroutine(Debate());
-			
+
 		}
 
 		private IEnumerator Debate()
@@ -208,11 +208,16 @@ namespace Gnosronpa.Controllers
 				EnableBulletChange();
 				EnableDebateRewind();
 				EnableDebateSlowdown();
-				DisableSkipDialogMessage();
 
-				while (isPlaying && statementsQueue.Any())
+				while (statementsQueue.Any())
 				{
-					var sentence = TryLoadNewSentence();
+					if (!isPlaying)
+					{
+						yield return null;
+						continue;
+					}
+
+					var sentence = TryLoadNewStatement();
 					if (sentence != null)
 					{
 						var sliderPosition = (float)(data.debateSequence.IndexOf(sentence) + 1) / (data.debateSequence.Count);
@@ -238,25 +243,27 @@ namespace Gnosronpa.Controllers
 				debateGUI.SetActive(false);
 				dialogBox.SetVisibility(true);
 
-				data.debateHint.messages.ForEach((msg) => dialogBox.AddMessage(msg));
+				data.debateHints.ForEach((msg) => dialogBox.AddMessage(msg));
 
 				dialogBox.LoadNextMessage(playSound: false);
 				EnableSkipDialogMessage();
 
 				yield return new WaitWhile(() => dialogBox.gameObject.activeSelf);
+				DisableSkipDialogMessage();
 			}
 		}
 
 		public void PlayAnimation(DebateSequenceData statementData)
 		{
-			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
+			var speakingCharacter = TryGetCharacter(statementData.speakingCharacter);
 
+			Debug.Log("Play");
 			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter.gameObject);
 
 			if (statementData.statement)
 			{
 				LoadStatement(statementData);
-				characterInfo.SetCharacter(statementData.statement.speakingCharacter);
+				characterInfo.SetCharacter(statementData.speakingCharacter);
 			}
 		}
 
@@ -295,21 +302,53 @@ namespace Gnosronpa.Controllers
 			cameraController.PlayCameraAnimation(msg.cameraAnimation, TryGetCharacter(msg.speakingCharacter).gameObject);
 		}
 
+		private void ResetDebateLoop()
+		{
+			timeSlider.SetPosition(0);
+			statementsQueue.Clear();
+			ClearSpawnedStatements();
+			ClearSpawnedBullets();
+			time = 0;
+
+			data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
+			isPlaying = true;
+		}
+
 		private void OnMessageEnded()
 		{
 			dialogBox.SetVisibility(false);
 			debateGUI.SetActive(true);
 
+			DisableSkipDialogMessage();
+			EnableBulletShoot();
+			EnableBulletChange();
+			EnableDebateRewind();
+			EnableDebateSlowdown();
+
 			if (!developerMode) ResetDebateLoop();
 		}
 
-		private void ResetDebateLoop()
+		private void ClearSpawnedStatements()
 		{
-			timeSlider.SetPosition(0);
-			data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
+			foreach (Transform statement in bulletsParent.transform)
+			{
+				Debug.Log(statement.name);
+				statement.gameObject.SetActive(false);
+				Destroy(statement.gameObject);
+			}
 		}
 
-		private DebateSequenceData TryLoadNewSentence()
+		private void ClearSpawnedBullets()
+		{
+			foreach (Transform statement in statementsParent.transform)
+			{
+				Debug.Log(statement.name);
+				statement.gameObject.SetActive(false);
+				Destroy(statement.gameObject);
+			}
+		}
+
+		private DebateSequenceData TryLoadNewStatement()
 		{
 			var statement = statementsQueue.Peek();
 			if (statement.delay < time)
@@ -426,10 +465,11 @@ namespace Gnosronpa.Controllers
 			var statement = Instantiate(statementPrefab, statementsParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
 			statement.OnCorrectBulletHit += PlayCounterAnimation;
+			statement.OnIncorrectBulletHit += LoadIncorrectHitMessages;
 			return statement;
 		}
 
-		private void PlayCounterAnimation(TruthBullet bullet)
+		private void PlayCounterAnimation(TruthBullet bullet, DebateStatement statement)
 		{
 			isPlaying = false;
 			debateGUI.SetActive(false);
@@ -440,7 +480,7 @@ namespace Gnosronpa.Controllers
 
 			var speakingCharacter = data.debateSequence
 				.Single(x => x.statement.correctBullet == bullet.Data)
-				.statement.speakingCharacter;
+				.speakingCharacter;
 
 			var chosenLieAnimation = GameObject.FindGameObjectsWithTag("Character")
 				.Select(x => x.GetComponent<Character>())
@@ -467,11 +507,29 @@ namespace Gnosronpa.Controllers
 			};
 		}
 
+		private void LoadIncorrectHitMessages(TruthBullet bullet, DebateStatement statement)
+		{
+			debateGUI.SetActive(false);
+			dialogBox.SetVisibility(true);
+
+			isPlaying = false;
+
+			DisableBulletShoot();
+			DisableBulletChange();
+			DisableDebateRewind();
+			DisableDebateSlowdown();
+
+			statement.Data.hitDialogs.ForEach((msg) => dialogBox.AddMessage(msg));
+
+			dialogBox.LoadNextMessage(playSound: false);
+			EnableSkipDialogMessage();
+		}
+
 		private void RestartDebateScene()
 		{
 			DOTween.Clear();
 			Time.timeScale = 1;
-			SceneManager.LoadScene(0);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 
 		private void PauseDebate()

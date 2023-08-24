@@ -2,7 +2,6 @@ using Gnosronpa.Common;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Gnosronpa.ScriptableObjects
 {
@@ -11,24 +10,17 @@ namespace Gnosronpa.ScriptableObjects
 	{
 		public List<TruthBulletData> bullets;
 
-		public DebateHintData debateHint;
+		public List<DialogMessage> debateHints;
 
 		public List<DebateSequenceData> debateSequence;
-
-	}
-
-	[Serializable]
-	public class DebateHintData
-	{
-		public List<DialogMessage> messages;
-
-		public Animation3DData cameraAnimation;
 	}
 
 	[Serializable]
 	public class DebateSequenceData
 	{
 		public float delay;
+
+		public CharacterData speakingCharacter;
 
 		public DebateStatementData statement;
 
@@ -40,6 +32,8 @@ namespace Gnosronpa.ScriptableObjects
 		/// Relative to speaking character in the statement
 		/// </summary>
 		public Animation3DData cameraAnimation;
+
+		public List<DialogMessage> incorrectHitMessages;
 
 		public float SequenceDuration
 		{

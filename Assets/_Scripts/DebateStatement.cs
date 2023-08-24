@@ -12,7 +12,9 @@ namespace Gnosronpa
 {
 	public class DebateStatement : MonoBehaviour
 	{
-		public event Action<TruthBullet> OnCorrectBulletHit;
+		public event Action<TruthBullet, DebateStatement> OnCorrectBulletHit;
+
+		public event Action<TruthBullet, DebateStatement> OnIncorrectBulletHit;
 
 		private const float statementColliderThickness = 5;
 		private const float statementColliderDepth = 5;
@@ -38,9 +40,17 @@ namespace Gnosronpa
 		[SerializeField]
 		private TMP_Text text;
 
+		public DebateStatementData Data => data;
+
 		private string Gradient(string text) => $"<gradient=\"Weak spot\">{text}</gradient>";
 
 		public bool IsCorrectBullet(TruthBulletData data) => this.data.correctBullet == data;
+
+		private void OnDestroy()
+		{
+			weakSpotCollider.OnWeakSpotHit -= OnWeakSpotHit;
+			statementCollider.OnStatementHit -= OnStatementHit;
+		}
 
 		public void Init(DebateSequenceData sequenceData)
 		{
@@ -66,8 +76,7 @@ namespace Gnosronpa
 			}
 			else weakSpotCollider.gameObject.SetActive(false);
 
-			transform.localPosition = animation.startPosition;
-			transform.localRotation = Quaternion.Euler(0, 0, animation.startRotation);
+			transform.SetLocalPositionAndRotation(animation.startPosition, Quaternion.Euler(0, 0, animation.startRotation));
 			transform.localScale = new Vector3(animation.startScale.x, animation.startScale.y, 1);
 			text.color = new Color(text.color.r, text.color.g, text.color.b, a: 0);
 
@@ -109,7 +118,7 @@ namespace Gnosronpa
 			bullet.HitObject = true;
 		}
 
-		private void OnWeakSpotHit(TruthBullet bullet)
+		private void OnWeakSpotHit(TruthBullet bullet, DebateStatement statement)
 		{
 			if (bullet.HitObject) return;
 			Debug.Log("WeakSpotHit");
@@ -118,29 +127,23 @@ namespace Gnosronpa
 
 			if (isCorrect)
 			{
-				OnCorrectHit(bullet);
+				OnCorrectHit(bullet, statement);
 			}
 			else
 			{
-				OnIncorrectHit(bullet);
+				OnIncorrectHit(bullet, statement);
 			}
 			bullet.HitObject = true;
 		}
 
-		private void OnCorrectHit(TruthBullet bullet)
+		private void OnCorrectHit(TruthBullet bullet, DebateStatement statement)
 		{
-			StartCoroutine(ICorrectHit(bullet));
-
-			IEnumerator ICorrectHit(TruthBullet bullet)
-			{
-				OnCorrectBulletHit?.Invoke(bullet);
-				yield return null;
-			}
+			OnCorrectBulletHit?.Invoke(bullet, statement);
 		}
 
-		private void OnIncorrectHit(TruthBullet bullet)
+		private void OnIncorrectHit(TruthBullet bullet, DebateStatement statement)
 		{
-
+			OnIncorrectBulletHit?.Invoke(bullet, statement);
 		}
 	}
 }

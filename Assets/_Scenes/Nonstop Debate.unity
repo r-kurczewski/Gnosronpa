@@ -4770,7 +4770,7 @@ MonoBehaviour:
   inputSlowmode: {fileID: 5230133188502322826, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputNextDialog: {fileID: 4643884041679450791, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   statementsParent: {fileID: 46455575}
-  bulletsParent: {fileID: 1074893610}
+  bulletsParent: {fileID: 462967594}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}
   bulletLabelPrefab: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
   counterAnimationPrefab: {fileID: 4850683306774207522, guid: bf300a118cdc3f141b6d6368fd2e0341, type: 3}

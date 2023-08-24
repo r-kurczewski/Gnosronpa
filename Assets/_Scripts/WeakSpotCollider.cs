@@ -5,7 +5,7 @@ namespace Gnosronpa
 {
 	public class WeakSpotCollider : MonoBehaviour
 	{
-		public event Action<TruthBullet> OnWeakSpotHit;
+		public event Action<TruthBullet, DebateStatement> OnWeakSpotHit;
 
 		[SerializeField]
 		private BoxCollider weakspotCollider;
@@ -16,7 +16,8 @@ namespace Gnosronpa
 			other.enabled = false;
 
 			var bullet = other.GetComponent<TruthBullet>();
-			OnWeakSpotHit?.Invoke(bullet);
+			var statement = GetComponentInParent<DebateStatement>();
+			OnWeakSpotHit?.Invoke(bullet, statement);
 		}
 
 		public void SetColliderSize(Vector3 center, Vector3 size)

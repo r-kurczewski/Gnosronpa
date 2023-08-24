@@ -17,12 +17,28 @@ MonoBehaviour:
   textTemplate: There is {0} to find Gnosia
   weakSpotText: no way
   correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
-  collider:
-    m_Center: {x: -41, y: -5, z: 0}
-    m_Extent: {x: 564, y: 55, z: 3}
   textCollider:
     center: {x: 5.5, y: -6}
     size: {x: 990, y: 40}
   weakSpotCollider:
     center: {x: -95, y: -6}
     size: {x: 230, y: 40}
+  hitDialogs:
+  - speakingCharacter: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
+    messageText: Setsu, what is your goal? It's not the same as mine...
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+    messageText: I'll try harder...
+    cameraAnimation:
+      startPosition: {x: 0, y: 8, z: 20}
+      endPosition: {x: 0, y: 8, z: 25}
+      moveDuration: 0.5
+      startRotation: {x: -15, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
