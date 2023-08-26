@@ -6,16 +6,20 @@ namespace Gnosronpa.Controllers
    public class AudioController : SingletonBase<AudioController>
     {
       [SerializeField]
-      private AudioSource audioSource;
+      private AudioSource musicSource;
 
-      public void PlaySound(AudioClip clip)
+      [SerializeField]
+      private AudioSource sfxSource;
+
+		public void PlaySound(AudioClip clip)
       {
-         audioSource.PlayOneShot(clip);
+         sfxSource.PlayOneShot(clip);
       }
 
-		public void SetPitch(float pitch)
+		public void SetSoundPitch(float pitch)
 		{
-         audioSource.pitch = pitch;
+         musicSource.pitch = pitch;
+         sfxSource.pitch = pitch;
 		}
 	}
 }

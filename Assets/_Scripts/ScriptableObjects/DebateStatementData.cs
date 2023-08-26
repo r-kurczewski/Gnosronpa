@@ -8,7 +8,7 @@ namespace Gnosronpa.ScriptableObjects
 	[CreateAssetMenu(fileName = "Statement", menuName = "NonstopDebate/Statement")]
 	public class DebateStatementData : ScriptableObject
 	{
-		//public CharacterData speakingCharacter;
+		public CharacterData speakingCharacter;
 
 		public StatementType statementType;
 

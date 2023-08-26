@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Gnosronpa.Common;
+using System;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers
@@ -25,9 +26,10 @@ namespace Gnosronpa.Controllers
 		/// <param name="target">Target on which the camera will focus</param>
 		public void PlayCameraAnimation(Animation3DData animationData, GameObject target = null)
 		{
-			var baseRotation = GetBaseRotation(target);
+			StopCurrentAnimations();
 
-			var seq = DOTween.Sequence();
+			var baseRotation = GetBaseRotation(target);
+			var seq = DOTween.Sequence(transform);
 
 			if (transitions)
 			{
@@ -60,6 +62,11 @@ namespace Gnosronpa.Controllers
 			transform.localRotation = Quaternion.Euler(baseRotation);
 			cameraTransform.localPosition = animationData?.endPosition ?? Vector3.zero;
 			cameraTransform.localRotation = Quaternion.Euler(animationData?.endRotation ?? Vector3.zero);
+		}
+
+		private void StopCurrentAnimations()
+		{
+			Debug.Log($"Stopped {DOTween.Kill(transform)} active camera animations");
 		}
 
 		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;

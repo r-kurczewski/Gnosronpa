@@ -40,7 +40,6 @@ MonoBehaviour:
       rotationDuration: 0
   debateSequence:
   - delay: 2
-    speakingCharacter: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
     statement: {fileID: 11400000, guid: a8f8f9ae895ca164cba2d4fb3d9b5efa, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}
@@ -57,38 +56,18 @@ MonoBehaviour:
       waitingTime: 0
       disappearTime: 0.5
     cameraAnimation:
-      startPosition: {x: 0, y: 10, z: 10}
-      endPosition: {x: 0, y: 10, z: 20}
+      startPosition: {x: 0, y: 15, z: 10}
+      endPosition: {x: 0, y: 15, z: 20}
       moveDuration: 4
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-    incorrectHitMessages:
-    - speakingCharacter: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
-      messageText: Setsu, what is your goal? It's not the same as mine...
-      cameraAnimation:
-        startPosition: {x: 0, y: 0, z: 0}
-        endPosition: {x: 0, y: 0, z: 0}
-        moveDuration: 0
-        startRotation: {x: 0, y: 0, z: 0}
-        endRotation: {x: 0, y: 0, z: 0}
-        rotationDuration: 0
-    - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
-      messageText: I'll try harder...
-      cameraAnimation:
-        startPosition: {x: 0, y: 8, z: 20}
-        endPosition: {x: 0, y: 8, z: 25}
-        moveDuration: 0.5
-        startRotation: {x: -15, y: 0, z: 0}
-        endRotation: {x: 0, y: 0, z: 0}
-        rotationDuration: 0
   - delay: 6
-    speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
     statement: {fileID: 11400000, guid: 2428eac30ff3cf64ab088376744b5114, type: 2}
     statementAnimation:
       startPosition: {x: -200, y: -200}
       move: {x: 300, y: 173.205}
-      moveDuration: 3
+      moveDuration: 4
       startRotation: 30
       rotation: 0
       rotationDuration: 0
@@ -105,28 +84,8 @@ MonoBehaviour:
       moveDuration: 2
       startRotation: {x: -5, y: 0, z: 0}
       endRotation: {x: -10, y: 0, z: 0}
-      rotationDuration: 3
-    incorrectHitMessages:
-    - speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
-      messageText: (She's tired of hearing Setsu speak. That much is clear.)
-      cameraAnimation:
-        startPosition: {x: 0, y: 0, z: 0}
-        endPosition: {x: 0, y: 0, z: 0}
-        moveDuration: 0
-        startRotation: {x: 0, y: 0, z: 0}
-        endRotation: {x: 0, y: 0, z: 0}
-        rotationDuration: 0
-    - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
-      messageText: "I guess\u2026 I failed again\u2026"
-      cameraAnimation:
-        startPosition: {x: 0, y: 8, z: 20}
-        endPosition: {x: 0, y: 8, z: 25}
-        moveDuration: 0.5
-        startRotation: {x: -15, y: 0, z: 0}
-        endRotation: {x: 0, y: 0, z: 0}
-        rotationDuration: 0
-  - delay: 5
-    speakingCharacter: {fileID: 11400000, guid: b3807ff927022844095d2e8becc33567, type: 2}
+      rotationDuration: 2
+  - delay: 7
     statement: {fileID: 11400000, guid: e995661795292ff41ae48ad745a0ce68, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}
@@ -149,9 +108,7 @@ MonoBehaviour:
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: -10, y: 0, z: 10}
       rotationDuration: 3
-    incorrectHitMessages: []
   - delay: 5
-    speakingCharacter: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
     statement: {fileID: 11400000, guid: 4a64e8fd93855b448886ea382d951fe5, type: 2}
     statementAnimation:
       startPosition: {x: -100, y: 200}
@@ -174,9 +131,7 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: -20, y: 0, z: 10}
       rotationDuration: 2
-    incorrectHitMessages: []
   - delay: 3
-    speakingCharacter: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
     statement: {fileID: 11400000, guid: e345abae323791d479da765180d7db4a, type: 2}
     statementAnimation:
       startPosition: {x: -100, y: -50}
@@ -199,4 +154,3 @@ MonoBehaviour:
       startRotation: {x: -20, y: 0, z: 10}
       endRotation: {x: -30, y: 0, z: -10}
       rotationDuration: 1
-    incorrectHitMessages: []

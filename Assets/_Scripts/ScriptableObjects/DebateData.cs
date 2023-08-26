@@ -20,8 +20,6 @@ namespace Gnosronpa.ScriptableObjects
 	{
 		public float delay;
 
-		public CharacterData speakingCharacter;
-
 		public DebateStatementData statement;
 
 		public Animation2DData statementAnimation;
@@ -32,8 +30,6 @@ namespace Gnosronpa.ScriptableObjects
 		/// Relative to speaking character in the statement
 		/// </summary>
 		public Animation3DData cameraAnimation;
-
-		public List<DialogMessage> incorrectHitMessages;
 
 		public float SequenceDuration
 		{

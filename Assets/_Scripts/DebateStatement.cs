@@ -16,6 +16,8 @@ namespace Gnosronpa
 
 		public event Action<TruthBullet, DebateStatement> OnIncorrectBulletHit;
 
+		public event Action<TruthBullet, DebateStatement> OnIncorrectBulletHitAnimationEnded;
+
 		private const float statementColliderThickness = 5;
 		private const float statementColliderDepth = 5;
 
@@ -35,6 +37,9 @@ namespace Gnosronpa
 		private AudioClip incorrectHitSound;
 
 		[SerializeField]
+		private AudioClip statementHitSound;
+
+		[SerializeField]
 		private AudioClip correctHitSound;
 
 		[SerializeField]
@@ -50,6 +55,7 @@ namespace Gnosronpa
 		{
 			weakSpotCollider.OnWeakSpotHit -= OnWeakSpotHit;
 			statementCollider.OnStatementHit -= OnStatementHit;
+			DOTween.Kill(transform);
 		}
 
 		public void Init(DebateSequenceData sequenceData)
@@ -80,7 +86,7 @@ namespace Gnosronpa
 			transform.localScale = new Vector3(animation.startScale.x, animation.startScale.y, 1);
 			text.color = new Color(text.color.r, text.color.g, text.color.b, a: 0);
 
-			var seq = DOTween.Sequence()
+			var seq = DOTween.Sequence(transform)
 				.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 1, transition.appearTime));
 
 			if (animation.moveDuration > 0)
@@ -112,7 +118,7 @@ namespace Gnosronpa
 			if (bullet.HitObject) return;
 			Debug.Log("StatementHit");
 
-			AudioController.instance.PlaySound(incorrectHitSound);
+			AudioController.instance.PlaySound(statementHitSound);
 			transform.BlendableShake(Vector3.one * 8, 1f, 5);
 
 			bullet.HitObject = true;
@@ -121,7 +127,6 @@ namespace Gnosronpa
 		private void OnWeakSpotHit(TruthBullet bullet, DebateStatement statement)
 		{
 			if (bullet.HitObject) return;
-			Debug.Log("WeakSpotHit");
 
 			var isCorrect = IsCorrectBullet(bullet.Data);
 
@@ -143,7 +148,17 @@ namespace Gnosronpa
 
 		private void OnIncorrectHit(TruthBullet bullet, DebateStatement statement)
 		{
-			OnIncorrectBulletHit?.Invoke(bullet, statement);
+			StartCoroutine(IOnIncorrectHit(bullet, statement));
+
+			IEnumerator IOnIncorrectHit(TruthBullet bullet, DebateStatement statement)
+			{
+				AudioController.instance.PlaySound(incorrectHitSound);
+				OnIncorrectBulletHit?.Invoke(bullet, statement);
+
+				yield return new WaitForSecondsRealtime(incorrectHitSound.length);
+
+				OnIncorrectBulletHitAnimationEnded?.Invoke(bullet, statement);
+			}
 		}
 	}
 }

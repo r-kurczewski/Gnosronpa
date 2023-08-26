@@ -27,12 +27,12 @@ MonoBehaviour:
   - speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
     messageText: (She's tired of hearing Setsu speak. That much is clear.)
     cameraAnimation:
-      startPosition: {x: 0, y: 0, z: 0}
+      startPosition: {x: 0, y: 10, z: 25}
       endPosition: {x: 0, y: 0, z: 0}
       moveDuration: 0
-      startRotation: {x: 0, y: 0, z: 0}
-      endRotation: {x: 0, y: 0, z: 0}
-      rotationDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: -10, y: 10, z: 0}
+      rotationDuration: 4
   - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
     messageText: "I guess\u2026 I failed again\u2026"
     cameraAnimation:

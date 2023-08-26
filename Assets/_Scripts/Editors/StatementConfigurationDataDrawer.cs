@@ -38,7 +38,7 @@ namespace Gnosronpa.Editors
 					var statements = GetStatementConfigurations(property);
 					var prevSpeakingCharacter = GameObject.FindGameObjectsWithTag("Character")
 					.Select(x => x.GetComponent<Character>())
-					.FirstOrDefault(x => x.Data == statements.prev?.speakingCharacter);
+					.FirstOrDefault(x => x.Data == statements.prev?.statement.speakingCharacter);
 
 					cameraController.SetLastStateOfAnimation(statements.prev?.cameraAnimation, prevSpeakingCharacter?.gameObject);
 					debateController.PlayAnimation(statements.current);

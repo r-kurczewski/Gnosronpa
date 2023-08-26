@@ -168,7 +168,8 @@ MonoBehaviour:
   data: {fileID: 0}
   statementCollider: {fileID: 7968020158639806204}
   weakSpotCollider: {fileID: 3189089644974405870}
-  incorrectHitSound: {fileID: 8300000, guid: 5e8236ca00983ab46a218cb074bd6fba, type: 3}
+  incorrectHitSound: {fileID: 8300000, guid: b43f7eaf34f301f47a5c541140db0976, type: 3}
+  statementHitSound: {fileID: 8300000, guid: 5e8236ca00983ab46a218cb074bd6fba, type: 3}
   correctHitSound: {fileID: 8300000, guid: d3ddade50e8f4474c8c590fce887d24b, type: 3}
   text: {fileID: 2583807685936287923}
 --- !u!1 &4752287247875012505

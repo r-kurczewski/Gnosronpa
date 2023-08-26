@@ -27,6 +27,16 @@ namespace Gnosronpa
 			texture.Apply();
 		}
 
+		public void FadeOn()
+		{
+			alpha = 1;
+		}
+
+		public void FadeOff()
+		{
+			alpha = 0;
+		}
+
 		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration)
 		{
 			return DOTween.To(() => alpha, (a) => alpha = a, endFade, duration);

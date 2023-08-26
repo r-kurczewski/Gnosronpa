@@ -255,15 +255,14 @@ namespace Gnosronpa.Controllers
 
 		public void PlayAnimation(DebateSequenceData statementData)
 		{
-			var speakingCharacter = TryGetCharacter(statementData.speakingCharacter);
+			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
 
-			Debug.Log("Play");
 			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter.gameObject);
 
 			if (statementData.statement)
 			{
 				LoadStatement(statementData);
-				characterInfo.SetCharacter(statementData.speakingCharacter);
+				characterInfo.SetCharacter(statementData.statement.speakingCharacter);
 			}
 		}
 
@@ -465,7 +464,8 @@ namespace Gnosronpa.Controllers
 			var statement = Instantiate(statementPrefab, statementsParent).GetComponent<DebateStatement>();
 			statement.Init(statementData);
 			statement.OnCorrectBulletHit += PlayCounterAnimation;
-			statement.OnIncorrectBulletHit += LoadIncorrectHitMessages;
+			statement.OnIncorrectBulletHit += PreLoadIncorrectMessages;
+			statement.OnIncorrectBulletHitAnimationEnded += LoadIncorrectHitMessages;
 			return statement;
 		}
 
@@ -480,7 +480,7 @@ namespace Gnosronpa.Controllers
 
 			var speakingCharacter = data.debateSequence
 				.Single(x => x.statement.correctBullet == bullet.Data)
-				.speakingCharacter;
+				.statement.speakingCharacter;
 
 			var chosenLieAnimation = GameObject.FindGameObjectsWithTag("Character")
 				.Select(x => x.GetComponent<Character>())
@@ -507,19 +507,23 @@ namespace Gnosronpa.Controllers
 			};
 		}
 
-		private void LoadIncorrectHitMessages(TruthBullet bullet, DebateStatement statement)
+		private void PreLoadIncorrectMessages(TruthBullet bullet, DebateStatement statement)
 		{
-			debateGUI.SetActive(false);
-			dialogBox.SetVisibility(true);
-
 			isPlaying = false;
+			SetDebateNormalSpeed();
 
 			DisableBulletShoot();
 			DisableBulletChange();
 			DisableDebateRewind();
 			DisableDebateSlowdown();
+		}
 
+		private void LoadIncorrectHitMessages(TruthBullet bullet, DebateStatement statement)
+		{
 			statement.Data.hitDialogs.ForEach((msg) => dialogBox.AddMessage(msg));
+
+			debateGUI.SetActive(false);
+			dialogBox.SetVisibility(true);
 
 			dialogBox.LoadNextMessage(playSound: false);
 			EnableSkipDialogMessage();
@@ -574,19 +578,19 @@ namespace Gnosronpa.Controllers
 		private void SetDebateNormalSpeed(CallbackContext context = default)
 		{
 			Time.timeScale = defaultSpeed;
-			AudioController.instance.SetPitch(defaultPitch);
+			AudioController.instance.SetSoundPitch(defaultPitch);
 		}
 
 		private void SetDebateRewindSpeed(CallbackContext context = default)
 		{
 			Time.timeScale = rewindSpeed;
-			AudioController.instance.SetPitch(rewindPitch);
+			AudioController.instance.SetSoundPitch(rewindPitch);
 		}
 
 		private void SetDebateSlowdownSpeed(CallbackContext context = default)
 		{
 			Time.timeScale = slowdownSpeed;
-			AudioController.instance.SetPitch(slowdownPitch);
+			AudioController.instance.SetSoundPitch(slowdownPitch);
 		}
 
 		private void ClearAllUserInputEvents()
