@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AC Follower
   m_EditorClassIdentifier: 
   bulletName: AC Follower
-  collider:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 1}
+  bulletIcon: {fileID: 21300000, guid: 82a5ef85aeb90284381a7537d81d4f1e, type: 3}
+  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nisi
+    neque, porta ut nisi ut, consectetur semper risus. Vestibulum ultricies vulputate
+    neque in imperdiet.

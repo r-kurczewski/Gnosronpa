@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gnosronpa.Controllers;
 using System;
@@ -8,8 +9,6 @@ namespace Gnosronpa
 	[SelectionBase]
 	public class CounterAnimation : MonoBehaviour
 	{
-		public event TweenCallback OnAnimationEnd;
-
 		[SerializeField]
 		private Transform shakeParent;
 
@@ -28,12 +27,7 @@ namespace Gnosronpa
 		[SerializeField]
 		private AudioClip sound;
 
-		private void Start()
-		{
-			Init();
-		}
-
-		public void Init()
+		public async UniTask PlayAnimation()
 		{
 			var animationEndPos = Vector2.zero;
 			var setsuEndPos = setsuAvatar.transform.localPosition;
@@ -41,11 +35,14 @@ namespace Gnosronpa
 			var cg = GetComponent<CanvasGroup>();
 
 			var seq = DOTween.Sequence()
+				.SetUpdate(true)
+
 				.AppendCallback(() =>
 				{
 					AudioController.instance.PlaySound(sound);
 					AudioController.instance.PlaySound(dialogue);
 				})
+
 				.Append(transform.DOLocalMove(animationEndPos, 0.15f).SetEase(Ease.OutFlash))
 				.Join(DOTween.Shake(() => shakeParent.localPosition, (vector) =>
 				{
@@ -56,9 +53,8 @@ namespace Gnosronpa
 
 				.Append(transform.DOScale(1.3f, 0.2f))
 				.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, 0.2f));
-
-			seq.SetUpdate(true);
-			seq.onComplete += OnAnimationEnd;
+			
+			await seq.AwaitForComplete();
 		}
 	}
 }

@@ -40,8 +40,7 @@ namespace Gnosronpa.Controllers
 			else
 			{
 				transform.localRotation = Quaternion.Euler(baseRotation);
-				cameraTransform.localPosition = animationData.startPosition;
-				cameraTransform.localRotation = Quaternion.Euler(animationData.startRotation);
+				cameraTransform.SetLocalPositionAndRotation(animationData.startPosition, Quaternion.Euler(animationData.startRotation));
 			}
 
 			if (animationData.moveDuration > 0)
@@ -60,13 +59,20 @@ namespace Gnosronpa.Controllers
 			var baseRotation = GetBaseRotation(target);
 
 			transform.localRotation = Quaternion.Euler(baseRotation);
-			cameraTransform.localPosition = animationData?.endPosition ?? Vector3.zero;
-			cameraTransform.localRotation = Quaternion.Euler(animationData?.endRotation ?? Vector3.zero);
+			cameraTransform.SetLocalPositionAndRotation(animationData?.endPosition ?? Vector3.zero, Quaternion.Euler(animationData?.endRotation ?? Vector3.zero));
+		}
+
+		public void ResetCamera()
+		{
+
 		}
 
 		private void StopCurrentAnimations()
 		{
-			Debug.Log($"Stopped {DOTween.Kill(transform)} active camera animations");
+			var killCount = DOTween.Kill(transform);
+
+			if (killCount == 0) return;
+			Debug.Log($"Stopped {killCount} active camera animations");
 		}
 
 		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;

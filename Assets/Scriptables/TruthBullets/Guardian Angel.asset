@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Guardian Angel
   m_EditorClassIdentifier: 
   bulletName: Guardian Angel
-  collider:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 1}
+  bulletIcon: {fileID: 21300000, guid: be6d5e71ad6d98946ad2297c27484f3a, type: 3}
+  description: Pellentesque vel libero consectetur, semper tellus ut, accumsan nulla.
+    Fusce molestie ac nibh a blandit.

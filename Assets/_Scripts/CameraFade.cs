@@ -2,11 +2,15 @@
 using DG.Tweening.Plugins.Options;
 using DG.Tweening;
 using UnityEngine;
+using System;
 
 namespace Gnosronpa
 {
 	public class CameraFade : MonoBehaviour
 	{
+		[SerializeField]
+		private B a;
+
 		[SerializeField]
 		private float alpha = 0f;
 
@@ -40,6 +44,18 @@ namespace Gnosronpa
 		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration)
 		{
 			return DOTween.To(() => alpha, (a) => alpha = a, endFade, duration);
+		}
+
+		[Serializable]
+		public class A<T>
+		{
+			[SerializeField]
+			private string b;
+		}
+
+		public class B : A<int>
+		{
+
 		}
 	}
 }

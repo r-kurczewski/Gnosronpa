@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gnosronpa.Assets._Scripts.Common;
 using Gnosronpa.Controllers;
@@ -12,11 +13,11 @@ namespace Gnosronpa
 {
 	public class DebateStatement : MonoBehaviour
 	{
-		public event Action<TruthBullet, DebateStatement> OnCorrectBulletHit;
+		public event Func<TruthBullet, DebateStatement, UniTask> OnCorrectBulletHit;
 
 		public event Action<TruthBullet, DebateStatement> OnIncorrectBulletHit;
 
-		public event Action<TruthBullet, DebateStatement> OnIncorrectBulletHitAnimationEnded;
+		public event Func<TruthBullet, DebateStatement, UniTask> OnIncorrectBulletHitAnimationEnded;
 
 		private const float statementColliderThickness = 5;
 		private const float statementColliderDepth = 5;
@@ -116,7 +117,6 @@ namespace Gnosronpa
 		private void OnStatementHit(TruthBullet bullet)
 		{
 			if (bullet.HitObject) return;
-			Debug.Log("StatementHit");
 
 			AudioController.instance.PlaySound(statementHitSound);
 			transform.BlendableShake(Vector3.one * 8, 1f, 5);
@@ -132,21 +132,21 @@ namespace Gnosronpa
 
 			if (isCorrect)
 			{
-				OnCorrectHit(bullet, statement);
+				_ = OnCorrectWeakSpotHit(bullet, statement);
 			}
 			else
 			{
-				OnIncorrectHit(bullet, statement);
+				OnIncorrectWeakspotHit(bullet, statement);
 			}
 			bullet.HitObject = true;
 		}
 
-		private void OnCorrectHit(TruthBullet bullet, DebateStatement statement)
+		private async UniTask OnCorrectWeakSpotHit(TruthBullet bullet, DebateStatement statement)
 		{
-			OnCorrectBulletHit?.Invoke(bullet, statement);
+			if(OnCorrectBulletHit is not null) await OnCorrectBulletHit(bullet, statement);
 		}
 
-		private void OnIncorrectHit(TruthBullet bullet, DebateStatement statement)
+		private void OnIncorrectWeakspotHit(TruthBullet bullet, DebateStatement statement)
 		{
 			StartCoroutine(IOnIncorrectHit(bullet, statement));
 

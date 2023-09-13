@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gnosronpa.Controllers;
 using UnityEngine;
@@ -8,8 +9,6 @@ namespace Gnosronpa
 	public class LieAnimation : MonoBehaviour
 	{
 		private const string AnimationProgressField = "_AnimationProgress";
-
-		public event TweenCallback OnAnimationEnd;
 
 		[SerializeField]
 		private AudioClip lieSound;
@@ -35,18 +34,17 @@ namespace Gnosronpa
 			ResetAnimationProgress();
 		}
 
-		public void PlayAnimation()
+		public async UniTask PlayAnimation()
 		{
-			AudioController.instance.PlaySound(lieSound);
 			ResetAnimationProgress();
+			AudioController.instance.PlaySound(lieSound);
 
-			var tween = DOTween.To(
+			await DOTween.To(
 				() => LieMaterial.GetFloat(AnimationProgressField),
 				(v) => LieMaterial.SetFloat(AnimationProgressField, v),
 				endValue: 1f, duration: 2.5f)
 				.SetEase(Ease.InOutCubic)
-				.SetUpdate(true)
-				.onComplete += OnAnimationEnd;
+				.SetUpdate(true);
 		}
 
 		private void ResetAnimationProgress()

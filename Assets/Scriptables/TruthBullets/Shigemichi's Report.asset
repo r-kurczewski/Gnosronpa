@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Shigemichi's Report
   m_EditorClassIdentifier: 
   bulletName: Shigemichi's Report
-  collider:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 1}
+  bulletIcon: {fileID: 21300000, guid: 05dc30acbb1c48e4cb54d6c1f5716349, type: 3}
+  description: Vestibulum ultricies augue vel urna fermentum porta a sed arcu. Nunc
+    dapibus diam ac metus egestas varius. Nulla non nibh nisi.

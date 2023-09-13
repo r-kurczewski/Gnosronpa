@@ -7,6 +7,9 @@ namespace Gnosronpa.ScriptableObjects
 	{
 		public string bulletName;
 
-		public Bounds collider = new Bounds(Vector3.zero, new Vector3(50, 50, 3));
+		public Sprite bulletIcon;
+
+		[TextArea(4,4)]
+		public string description;
 	}
 }

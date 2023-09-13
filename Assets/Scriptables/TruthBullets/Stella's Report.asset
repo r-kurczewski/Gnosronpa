@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Stella's Report
   m_EditorClassIdentifier: 
   bulletName: Stella's Report
-  collider:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 1}
+  bulletIcon: {fileID: 21300000, guid: 53da5eac0fddef045876861fc6c67615, type: 3}
+  description: Stella revealed herself as a Engineer. She clams that Chipie is a
+    Gnosia.

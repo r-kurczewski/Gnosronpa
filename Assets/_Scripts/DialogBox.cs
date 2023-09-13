@@ -1,9 +1,10 @@
+using Cysharp.Threading.Tasks;
 using Gnosronpa.Common;
 using Gnosronpa.Controllers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -12,10 +13,6 @@ namespace Gnosronpa
 	public class DialogBox : MonoBehaviour
 	{
 		public event Action<DialogMessage> OnMessageChanged;
-
-		public event Action<DialogMessage> OnMessageContentDisplayed;
-
-		public event Action OnMessagesEnded;
 
 		[SerializeField]
 		private TMP_Text title;
@@ -28,15 +25,20 @@ namespace Gnosronpa
 
 		[SerializeField]
 		private AudioClip messageLoadSound;
-		
+
 		[SerializeField]
 		private bool messageContentDisplayed;
 
+		[SerializeField]
+		private bool messagesEnded;
+
 		private Queue<DialogMessage> messages = new();
 
-		private Coroutine revealTextCoroutine;
+		private CancellationTokenSource revealTextTokenSource;
 
 		public bool MessageContentDisplayed => messageContentDisplayed;
+
+		public bool MessagesEnded => messagesEnded;
 
 
 		[SerializeField]
@@ -45,6 +47,7 @@ namespace Gnosronpa
 		public void AddMessage(DialogMessage message)
 		{
 			messages.Enqueue(message);
+			messagesEnded = false;
 		}
 
 		public void SetVisibility(bool visibility)
@@ -54,11 +57,11 @@ namespace Gnosronpa
 
 		public void LoadNextMessage(bool playSound = true)
 		{
-			if(playSound) AudioController.instance.PlaySound(messageLoadSound);
+			if (playSound) AudioController.instance.PlaySound(messageLoadSound);
 
 			if (!messages.Any())
 			{
-				OnMessagesEnded?.Invoke();
+				messagesEnded = true;
 				return;
 			}
 
@@ -67,42 +70,41 @@ namespace Gnosronpa
 			messageContentDisplayed = false;
 			SetTitle(currentMessage.speakingCharacter.characterName);
 			SetMessage(currentMessage.messageText);
-			RevealText();
+
+			revealTextTokenSource = new CancellationTokenSource();
+			_ = RevealText(revealTextTokenSource.Token);
 
 			OnMessageChanged?.Invoke(currentMessage);
 		}
 
 		public void ForceDisplayMessage()
 		{
-			StopCoroutine(revealTextCoroutine);
-			
+			revealTextTokenSource.Cancel();
+
 			message.maxVisibleCharacters = message.textInfo.characterCount;
-			
+
 			messageContentDisplayed = true;
-			OnMessageContentDisplayed?.Invoke(currentMessage);
 		}
 
-		private void RevealText()
+		private async UniTask RevealText(CancellationToken cancellationToken)
 		{
-			revealTextCoroutine = StartCoroutine(IRevealText());
+			message.ForceMeshUpdate();
 
-			IEnumerator IRevealText()
+			var totalCharacters = message.textInfo.characterCount;
+			var visibleCharacters = 0;
+
+			while (visibleCharacters <= totalCharacters)
 			{
-				message.ForceMeshUpdate();
-
-				var totalCharacters = message.textInfo.characterCount;
-				var visibleCharacters = 0;
-				var characterLoadDelay = new WaitForSecondsRealtime(this.characterLoadDelay);
-
-				while (visibleCharacters <= totalCharacters)
+				if (cancellationToken.IsCancellationRequested)
 				{
-					message.maxVisibleCharacters = visibleCharacters;
-					visibleCharacters++;
-					yield return characterLoadDelay;
+					return;
 				}
-				OnMessageContentDisplayed?.Invoke(currentMessage);
-				messageContentDisplayed = true;
+
+				message.maxVisibleCharacters = visibleCharacters;
+				visibleCharacters++;
+				await UniTask.Delay(TimeSpan.FromSeconds(characterLoadDelay));
 			}
+			messageContentDisplayed = true;
 		}
 
 		private void SetTitle(string title)
@@ -114,5 +116,7 @@ namespace Gnosronpa
 		{
 			this.message.text = message;
 		}
+
+
 	}
 }

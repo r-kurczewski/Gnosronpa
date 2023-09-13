@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Guard Duty
   m_EditorClassIdentifier: 
   bulletName: Guard Duty
-  collider:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 25, y: 25, z: 1}
+  bulletIcon: {fileID: 21300000, guid: dc837f6444502834bba8cf58adb128cc, type: 3}
+  description: 'Suspendisse sagittis, nunc et finibus suscipit, tortor eros pretium
+    diam, eget malesuada ipsum leo nec sem. In non gravida nisi, a dapibus felis. '
