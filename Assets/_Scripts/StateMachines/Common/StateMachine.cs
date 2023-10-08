@@ -7,8 +7,12 @@ namespace Gnosronpa.StateMachines.Common
 	public abstract class StateMachine<T, S> : MonoBehaviour
 		where S : State<T>, new()
 	{
+		protected const string FinalStateName = "Final";
+
 		[SerializeField]
 		private S _currentState;
+
+		private S _finalState;
 
 		public S CurrentState
 		{
@@ -25,24 +29,31 @@ namespace Gnosronpa.StateMachines.Common
 
 		protected abstract S StartingState { get; }
 
-		protected S FinalState { get; } = new S();
+		public S FinalState { get => _finalState; private set => _finalState = value; }
 
 		protected S RequestedState { get; private set; }
 
 		protected void InitStateMachine()
 		{
 			DefineMachineStates();
+			FinalState = new() { StateName = FinalStateName, OnEnter = DefineFinalStateBehaviour() };
+
 			try
 			{
 				_ = StateMachineExecute();
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Debug.LogError($"State machine error: {ex.Message}", this);
 			}
 		}
 
 		protected abstract void DefineMachineStates();
+
+		protected virtual Func<UniTask> DefineFinalStateBehaviour()
+		{
+			return () => UniTask.CompletedTask;
+		}
 
 		private async UniTask StateMachineExecute()
 		{
@@ -89,7 +100,7 @@ namespace Gnosronpa.StateMachines.Common
 			}
 		}
 
-		public async UniTask RequestStateChange(State<T> requestedState)
+		protected async UniTask RequestStateChange(State<T> requestedState)
 		{
 			RequestedState = requestedState as S;
 			await UniTask.WaitUntil(() => CurrentState == requestedState);

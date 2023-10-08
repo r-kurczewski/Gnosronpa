@@ -136,264 +136,289 @@ namespace Gnosronpa.Controllers
 
 		#region State Machine
 
-		private readonly DebateState startAnimation = new(nameof(startAnimation));
-		private readonly DebateState loadingBullets = new(nameof(loadingBullets));
-		private readonly DebateState choosingBullet = new(nameof(choosingBullet));
-		private readonly DebateState debate = new(nameof(debate));
-		private readonly DebateState preDebateLoop = new(nameof(preDebateLoop));
-		private readonly DebateState debateHint = new(nameof(debateHint));
-		private readonly DebateState correctBulletHit = new(nameof(correctBulletHit));
-		private readonly DebateState incorrectBulletHit = new(nameof(incorrectBulletHit));
-		private readonly DebateState showBulletDescriptionState = new(nameof(showBulletDescriptionState));
+		private DebateState startAnimation;
+		private DebateState loadingBullets;
+		private DebateState choosingBullet;
+		private DebateState debate;
+		private DebateState preDebateLoop;
+		private DebateState debateHint;
+		private DebateState correctBulletHit;
+		private DebateState incorrectBulletHit;
 
 		protected override DebateState StartingState => startAnimation;
 
 		protected override void DefineMachineStates()
 		{
-			startAnimation.OnEnter = () =>
+			startAnimation = new(nameof(startAnimation))
 			{
-				statementsQueue.Clear();
-				data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
-
-				dialogBox.OnMessageChanged += OnMessageChanged;
-
-				debateGUI.SetActive(false);
-				rightPanel.SetActive(false);
-				customCursor.gameObject.SetActive(true);
-
-				return UniTask.CompletedTask;
-			};
-
-			startAnimation.OnExecute = async () =>
-			{
-				if (!developerMode)
+				OnEnter = () =>
 				{
-					await PlayDebateStartAnimation();
+					statementsQueue.Clear();
+					data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
+
+					dialogBox.OnMessageChanged += OnMessageChanged;
+
+					debateGUI.SetActive(false);
+					rightPanel.SetActive(false);
+					customCursor.gameObject.SetActive(true);
+
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					if (!developerMode)
+					{
+						await PlayDebateStartAnimation();
+					}
+					return loadingBullets;
 				}
-				return loadingBullets;
 			};
 
-			loadingBullets.OnEnter = () =>
+			loadingBullets = new(nameof(loadingBullets))
 			{
-				customCursor.gameObject.SetActive(true);
-				debateGUI.SetActive(true);
-				bulletController.Init(data.bullets);
-
-				return UniTask.CompletedTask;
-			};
-
-			loadingBullets.OnExecute = async () =>
-			{
-				await UniTask.WaitWhile(() => bulletController.CurrentState == bulletController.Loading);
-
-				return choosingBullet;
-			};
-
-			choosingBullet.OnEnter = () =>
-			{
-				inputPickBullet.action.Enable();
-				inputChangeBullet.action.Enable();
-				return UniTask.CompletedTask;
-			};
-
-			choosingBullet.OnExecute = async () =>
-			{
-				if (!developerMode)
+				OnEnter = () =>
 				{
-					await UniTask.WaitUntil(() => bulletController.CurrentState == bulletController.Closed);
-				}
-				return preDebateLoop;
-			};
+					customCursor.gameObject.SetActive(true);
+					debateGUI.SetActive(true);
+					bulletController.Init(data.bullets);
 
-			choosingBullet.OnExit = async () =>
-			{
-				inputShoot.action.Disable();
-				await UniTask.Yield();
-			};
+					return UniTask.CompletedTask;
+				},
 
-			preDebateLoop.OnEnter = () =>
-			{
-				rightPanel.SetActive(false);
-
-				inputChangeBullet.action.Enable();
-				inputPickBullet.action.Enable();
-
-				return UniTask.CompletedTask;
-			};
-
-			preDebateLoop.OnExecute = async () =>
-			{
-				var firstStatement = statementsQueue.Peek();
-				while (time < firstStatement.delay)
+				OnExecute = async () =>
 				{
-					time += Time.deltaTime;
+					await UniTask.WaitWhile(() => bulletController.CurrentState == bulletController.Loading);
+
+					return choosingBullet;
+				},
+			};
+
+			choosingBullet = new(nameof(choosingBullet))
+			{
+				OnEnter = () =>
+				{
+					inputPickBullet.action.Enable();
+					inputChangeBullet.action.Enable();
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					if (!developerMode)
+					{
+						await UniTask.WaitUntil(() => bulletController.CurrentState == bulletController.Closed);
+					}
+					return preDebateLoop;
+				},
+
+				OnExit = async () =>
+				{
+					inputShoot.action.Disable();
 					await UniTask.Yield();
-				}
-				return debate;
+				},
 			};
 
-			preDebateLoop.OnExit = () =>
+			preDebateLoop = new(nameof(preDebateLoop))
 			{
-				loop?.Kill();
-				return UniTask.CompletedTask;
-			};
-
-			debate.OnEnter = () =>
-			{
-				inputShoot.action.Enable();
-				inputChangeBullet.action.Enable();
-				inputPickBullet.action.Enable();
-
-				rightPanel.SetActive(true);
-				characterInfo.SetCharacter(null);
-
-				return UniTask.CompletedTask;
-			};
-
-			debate.OnExecute = async () =>
-			{
-				while (statementsQueue.Any() || statementsParent.childCount > 0)
+				OnEnter = () =>
 				{
-					if (Paused)
+					rightPanel.SetActive(false);
+
+					inputChangeBullet.action.Enable();
+					inputPickBullet.action.Enable();
+
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					var firstStatement = statementsQueue.Peek();
+					while (time < firstStatement.delay)
 					{
-						Debug.Log("Pause");
-						await UniTask.WaitWhile(() => Paused);
-						continue;
+						time += Time.deltaTime;
+						await UniTask.Yield();
+					}
+					return debate;
+				},
+
+				OnExit = () =>
+				{
+					loop?.Kill();
+					return UniTask.CompletedTask;
+				},
+			};
+
+			debate = new(nameof(debate))
+			{
+				OnEnter = () =>
+				{
+					inputShoot.action.Enable();
+					inputChangeBullet.action.Enable();
+					inputPickBullet.action.Enable();
+
+					rightPanel.SetActive(true);
+					characterInfo.SetCharacter(null);
+
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					while (statementsQueue.Any() || statementsParent.childCount > 0)
+					{
+						if (Paused)
+						{
+							Debug.Log("Pause");
+							await UniTask.WaitWhile(() => Paused);
+							continue;
+						}
+
+						CheckStateChangeRequest();
+
+						var statement = TryLoadNewStatement();
+						if (statement != null)
+						{
+							var sliderPosition = (float)(data.debateSequence.IndexOf(statement) + 1) / (data.debateSequence.Count);
+							timeSlider.SetPosition(sliderPosition);
+						}
+
+						if (inputSlowmode.action.IsPressed())
+						{
+							SetDebateSlowdownSpeed();
+						}
+						else if (inputRewind.action.IsPressed())
+						{
+							SetDebateRewindSpeed();
+						}
+						else
+						{
+							SetDebateNormalSpeed();
+						}
+
+						time += Time.deltaTime;
+						await UniTask.Yield();
 					}
 
-					CheckStateChangeRequest();
+					return developerMode ? FinalState : debateHint;
+				},
 
-					var statement = TryLoadNewStatement();
-					if (statement != null)
+				OnExit = async () =>
+				{
+					SetDebateNormalSpeed();
+					inputShoot.action.Disable();
+					inputChangeBullet.action.Disable();
+
+					await bulletController.CloseBulletMenu();
+				},
+			};
+
+			debateHint = new(nameof(debateHint))
+			{
+				OnEnter = async () =>
 					{
-						var sliderPosition = (float)(data.debateSequence.IndexOf(statement) + 1) / (data.debateSequence.Count);
-						timeSlider.SetPosition(sliderPosition);
-					}
+						await UniTask.Delay(TimeSpan.FromSeconds(showHintDelay), true);
 
-					if (inputSlowmode.action.IsPressed())
-					{
-						SetDebateSlowdownSpeed();
-					}
-					else if (inputRewind.action.IsPressed())
-					{
-						SetDebateRewindSpeed();
-					}
-					else
-					{
-						SetDebateNormalSpeed();
-					}
+						debateGUI.SetActive(false);
+						dialogBox.SetVisibility(true);
 
-					time += Time.deltaTime;
-					await UniTask.Yield();
-				}
+						data.debateHints.ForEach((msg) => dialogBox.AddMessage(msg));
 
-				return developerMode ? FinalState : debateHint;
+						dialogBox.LoadNextMessage(playSound: false);
+						inputNextDialog.action.Enable();
+					},
+
+				OnExecute = async () =>
+						{
+							await UniTask.WaitUntil(() => dialogBox.MessagesEnded);
+							return preDebateLoop;
+						},
+
+				OnExit = () =>
+				{
+					debateGUI.SetActive(true);
+					dialogBox.SetVisibility(false);
+
+					inputNextDialog.action.Disable();
+					ResetDebateLoop();
+					return UniTask.CompletedTask;
+				},
 			};
 
-			debate.OnExit = async () =>
+			correctBulletHit = new(nameof(correctBulletHit))
 			{
-				SetDebateNormalSpeed();
-				inputShoot.action.Disable();
-				inputChangeBullet.action.Disable();
+				OnEnter = () =>
+				{
+					debateGUI.SetActive(false);
+					customCursor.gameObject.SetActive(false);
+					PauseDebate();
+					RemoveUserInputEvents();
+					SetDebateNormalSpeed();
+					return UniTask.CompletedTask;
+				},
 
-				await bulletController.RequestStateChange(bulletController.Closing);
-				await UniTask.WaitUntil(() => bulletController.CurrentState == bulletController.Closed);
+				OnExecute = async () =>
+				{
+					var speakingCharacter = data.debateSequence
+					.Single(x => x.statement.correctBullet == hitBullet.Data)
+					.statement.speakingCharacter;
+
+					var speakingCharacterLieAnimation = GameObject.FindGameObjectsWithTag("Character")
+						.Select(x => x.GetComponent<Character>())
+						.Single(x => x.Data == speakingCharacter)
+						.GetComponent<LieAnimation>();
+
+					var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
+
+					await counterAnimation.PlayAnimation();
+					await speakingCharacterLieAnimation.PlayAnimation();
+
+					await cameraFade.DOFade(fadeOn, 0.75f)
+						.SetEase(Ease.InOutFlash)
+						.SetUpdate(true);
+
+					return FinalState;
+				},
 			};
 
-			debateHint.OnEnter = async () =>
+			incorrectBulletHit = new(nameof(correctBulletHit))
 			{
-				await UniTask.Delay(TimeSpan.FromSeconds(showHintDelay), true);
+				OnEnter = () =>
+				{
 
-				debateGUI.SetActive(false);
-				dialogBox.SetVisibility(true);
+					debateGUI.SetActive(false);
+					dialogBox.SetVisibility(true);
 
-				data.debateHints.ForEach((msg) => dialogBox.AddMessage(msg));
+					hitStatement.Data.hitDialogs.ForEach((msg) => dialogBox.AddMessage(msg));
+					dialogBox.LoadNextMessage(playSound: false);
 
-				dialogBox.LoadNextMessage(playSound: false);
-				inputNextDialog.action.Enable();
+					inputNextDialog.action.Enable();
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					await UniTask.WaitUntil(() => dialogBox.MessagesEnded);
+					return preDebateLoop;
+				},
+
+				OnExit = () =>
+				{
+					debateGUI.SetActive(true);
+					dialogBox.SetVisibility(false);
+
+					inputNextDialog.action.Disable();
+
+					ResetDebateLoop();
+
+					return UniTask.CompletedTask;
+				},
 			};
+		}
 
-			debateHint.OnExecute = async () =>
-			{
-				await UniTask.WaitUntil(() => dialogBox.MessagesEnded);
-				return preDebateLoop;
-			};
-
-			debateHint.OnExit = () =>
-			{
-				debateGUI.SetActive(true);
-				dialogBox.SetVisibility(false);
-
-				inputNextDialog.action.Disable();
-				ResetDebateLoop();
-				return UniTask.CompletedTask;
-			};
-
-			correctBulletHit.OnEnter = () =>
-			{
-				debateGUI.SetActive(false);
-				customCursor.gameObject.SetActive(false);
-				PauseDebate();
-				RemoveUserInputEvents();
-				SetDebateNormalSpeed();
-				return UniTask.CompletedTask;
-			};
-
-			correctBulletHit.OnExecute = async () =>
-			{
-				var speakingCharacter = data.debateSequence
-				.Single(x => x.statement.correctBullet == hitBullet.Data)
-				.statement.speakingCharacter;
-
-				var speakingCharacterLieAnimation = GameObject.FindGameObjectsWithTag("Character")
-					.Select(x => x.GetComponent<Character>())
-					.Single(x => x.Data == speakingCharacter)
-					.GetComponent<LieAnimation>();
-
-				var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
-
-				await counterAnimation.PlayAnimation();
-				await speakingCharacterLieAnimation.PlayAnimation();
-
-				await cameraFade.DOFade(fadeOn, 0.75f)
-					.SetEase(Ease.InOutFlash)
-					.SetUpdate(true);
-
-				return FinalState;
-			};
-
-			incorrectBulletHit.OnEnter = () =>
-			{
-
-				debateGUI.SetActive(false);
-				dialogBox.SetVisibility(true);
-
-				hitStatement.Data.hitDialogs.ForEach((msg) => dialogBox.AddMessage(msg));
-				dialogBox.LoadNextMessage(playSound: false);
-
-				inputNextDialog.action.Enable();
-				return UniTask.CompletedTask;
-			};
-
-			incorrectBulletHit.OnExecute = async () =>
-			{
-				await UniTask.WaitUntil(() => dialogBox.MessagesEnded);
-				return preDebateLoop;
-			};
-
-			incorrectBulletHit.OnExit = () =>
-			{
-				debateGUI.SetActive(true);
-				dialogBox.SetVisibility(false);
-
-				inputNextDialog.action.Disable();
-
-				ResetDebateLoop();
-
-				return UniTask.CompletedTask;
-			};
-
-			FinalState.OnEnter = () =>
+		protected override Func<UniTask> DefineFinalStateBehaviour()
+		{
+			return () =>
 			{
 				RestartDebateScene();
 				return UniTask.CompletedTask;
@@ -534,7 +559,8 @@ namespace Gnosronpa.Controllers
 		{
 			if (bulletController.CurrentState == bulletController.Closed)
 			{
-				await bulletController.RequestStateChange(bulletController.Opening);
+				await bulletController.OpenBulletMenu();
+				return;
 			}
 
 			if (bulletController.CurrentState != bulletController.Opened
@@ -544,18 +570,18 @@ namespace Gnosronpa.Controllers
 
 			if (direction > 0)
 			{
-				await bulletController.RequestStateChange(bulletController.BulletUp);
+				await bulletController.ChangeBulletUp();
 			}
 			else if (direction < 0)
 			{
-				await bulletController.RequestStateChange(bulletController.BulletDown);
+				await bulletController.ChangeBulletDown();
 			}
 		}
 
 		private async void OnPickBullet(CallbackContext context = default)
 		{
 			if (bulletController.CurrentState != bulletController.Closed)
-				await bulletController.RequestStateChange(bulletController.Closing);
+				await bulletController.CloseBulletMenu();
 		}
 
 		private void OnShoot(CallbackContext context = default)
@@ -592,7 +618,6 @@ namespace Gnosronpa.Controllers
 
 		private void RestartDebateScene()
 		{
-			DOTween.Clear(true);
 			Time.timeScale = 1;
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}

@@ -11,23 +11,20 @@ namespace Gnosronpa.StateMachines.Common
 		[SerializeField]
 		private string _stateName;
 
-		protected State()
-		{
-			StateName = "FINAL";
-		}
+		protected State() { }
 
 		public State(string stateName)
 		{
-			StateName = stateName.ToSnakeCase().ToUpper();
+			StateName = stateName;
 		}
 
-		public string StateName { get => _stateName; protected set => _stateName = value; }
+		public string StateName { get => _stateName; init => _stateName = value.ToSnakeCase().ToUpper(); }
 
-		public virtual Func<UniTask> OnEnter { get; set; }
+		public virtual Func<UniTask> OnEnter { get; init; }
 
-		public virtual Func<UniTask<State<T>>> OnExecute { get; set; }
+		public virtual Func<UniTask<State<T>>> OnExecute { get; init; }
 
-		public virtual Func<UniTask> OnExit { get; set; }
+		public virtual Func<UniTask> OnExit { get; init; }
 
 		public override string ToString()
 		{

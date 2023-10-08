@@ -1812,6 +1812,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1074893610}
     m_Modifications:
+    - target: {fileID: 4906400955063757628, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+      propertyPath: m_Color.b
+      value: 0.21698111
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906400955063757628, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+      propertyPath: m_Color.g
+      value: 0.21698111
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906400955063757628, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+      propertyPath: m_Color.r
+      value: 0.21698111
+      objectReference: {fileID: 0}
     - target: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
       propertyPath: m_Name
       value: Selected
@@ -1855,6 +1867,18 @@ PrefabInstance:
     - target: {fileID: 7104132095075164846, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
       propertyPath: m_SizeDelta.y
       value: 73.56882
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104132095075164846, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104132095075164846, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104132095075164846, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.05
       objectReference: {fileID: 0}
     - target: {fileID: 7104132095075164846, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2782,6 +2806,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02602f82bbba870458fa9bb8cbb8d5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState:
+    _stateName: 
   bulletLabelPrefab: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
   labelSpawnPos: {x: 550, y: -160, z: 0}
   selectedBulletLabel: {fileID: 1817275695}
@@ -5945,6 +5971,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 223067903d146f24a900bc93bdc187ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState:
+    _stateName: 
   data: {fileID: 11400000, guid: 709bbdba48d415a439638c07469cdb25, type: 2}
   cameraController: {fileID: 1371867603}
   inputShoot: {fileID: -6240823983734169260, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}

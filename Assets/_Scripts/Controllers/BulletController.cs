@@ -55,100 +55,132 @@ namespace Gnosronpa.Controllers
 
 		#region State Machine
 
+		public BulletMenuState Loading { get; private set; }
+		public BulletMenuState Loaded { get; private set; }
+		public BulletMenuState Opened { get; private set; }
+		public BulletMenuState Closing { get; private set; }
+		public BulletMenuState Closed { get; private set; }
+		public BulletMenuState Opening { get; private set; }
+		public BulletMenuState BulletUp { get; private set; }
+		public BulletMenuState BulletDown { get; private set; }
 		protected override BulletMenuState StartingState => Loading;
-
-		public readonly BulletMenuState Loading = new(nameof(Loading));
-		public readonly BulletMenuState Loaded = new(nameof(Loaded));
-		public readonly BulletMenuState Opened = new(nameof(Opened));
-		public readonly BulletMenuState Closing = new(nameof(Closing));
-		public readonly BulletMenuState Closed = new(nameof(Closed));
-		public readonly BulletMenuState Opening = new(nameof(Opening));
-		public readonly BulletMenuState BulletUp = new(nameof(BulletUp));
-		public readonly BulletMenuState BulletDown = new(nameof(BulletDown));
 
 		protected override void DefineMachineStates()
 		{
-			Loading.OnExecute = async () =>
+			Loading = new(nameof(Loading))
 			{
-				await StartAnimation();
-				return Loaded;
-			};
-
-			Loaded.OnEnter = () =>
-			{
-				hideMenuTimer = startHideMenuTime;
-				return UniTask.CompletedTask;
-			};
-
-			Loaded.OnExecute = async () =>
-			{
-				CheckStateChangeRequest();
-
-				if (hideMenuTimer < 0)
+				OnExecute = async () =>
 				{
-					return Closing;
+					await StartAnimation();
+					return Loaded;
 				}
-				hideMenuTimer -= Time.unscaledDeltaTime;
-
-				await UniTask.Yield();
-				return Loaded;
 			};
 
-			Closing.OnExecute = async () =>
+			Loaded = new(nameof(Loading))
 			{
-				await HideBulletPickMenu();
-				return Closed;
-			};
-
-			Opening.OnExecute = async () =>
-			{
-				await ShowBulletPickMenu();
-				return Opened;
-			};
-
-			BulletUp.OnExecute = async () =>
-			{
-				await ChangeBulletUp();
-				return Opened;
-			};
-
-			BulletDown.OnExecute = async () =>
-			{
-				await ChangeBulletDown();
-				return Opened;
-			};
-
-			Opened.OnEnter = () =>
-			{
-				hideMenuTimer = defaultHideMenuTime;
-				return UniTask.CompletedTask;
-			};
-
-			Opened.OnExecute = async () =>
-			{
-				CheckStateChangeRequest();
-
-				if (hideMenuTimer < 0)
+				OnEnter = () =>
 				{
-					return Closing;
+					hideMenuTimer = startHideMenuTime;
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					CheckStateChangeRequest();
+
+					if (hideMenuTimer < 0)
+					{
+						return Closing;
+					}
+					hideMenuTimer -= Time.unscaledDeltaTime;
+
+					await UniTask.Yield();
+					return Loaded;
 				}
-				hideMenuTimer -= Time.unscaledDeltaTime;
-
-				await UniTask.Yield();
-				return Opened;
 			};
 
-			Closed.OnEnter = () =>
+			Closing = new(nameof(Closing))
 			{
-				hideMenuTimer = 0;
-				return UniTask.CompletedTask;
+				OnEnter = () =>
+				{
+					hideMenuTimer = 0;
+					hideMenuAferTimeCancellationTokenSource?.Cancel();
+					ShowSelectedBulletPanel();
+					Refresh();
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					await HideBulletPickMenu();
+					return Closed;
+				}
 			};
 
-			Closed.OnExecute = async () =>
+			Opening = new(nameof(Opening))
 			{
-				CheckStateChangeRequest();
-				await UniTask.Yield();
-				return Closed;
+				OnEnter = () =>
+				{
+					HideSelectedBulletPanel();
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					await ShowBulletPickMenu();
+					return Opened;
+				}
+			};
+
+			BulletUp = new(nameof(BulletUp))
+			{
+				OnExecute = async () =>
+				{
+					await ChangeBulletUpAnimation();
+					return Opened;
+				}
+			};
+
+			BulletDown = new(nameof(BulletDown))
+			{
+				OnExecute = async () =>
+				{
+					await ChangeBulletDownAnimation();
+					return Opened;
+				}
+			};
+
+			Opened = new(nameof(Opened))
+			{
+				OnEnter = () =>
+				{
+					hideMenuTimer = defaultHideMenuTime;
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					CheckStateChangeRequest();
+
+					if (hideMenuTimer < 0)
+					{
+						return Closing;
+					}
+					hideMenuTimer -= Time.unscaledDeltaTime;
+
+					await UniTask.Yield();
+					return Opened;
+				},
+			};
+
+			Closed = new(nameof(Closed))
+			{
+				OnExecute = async () =>
+				{
+					CheckStateChangeRequest();
+					await UniTask.Yield();
+					return Closed;
+				},
 			};
 		}
 
@@ -167,12 +199,36 @@ namespace Gnosronpa.Controllers
 			InitStateMachine();
 		}
 
-		public void ShowSelectedBulletPanel()
+		public async UniTask OpenBulletMenu()
+		{
+			await RequestStateChange(Opening);
+			await UniTask.WaitUntil(() => CurrentState == Opened);
+		}
+
+		public async UniTask CloseBulletMenu()
+		{
+			await RequestStateChange(Closing);
+			await UniTask.WaitUntil(() => CurrentState == Closed);
+		}
+
+		public async UniTask ChangeBulletUp()
+		{
+			await RequestStateChange(BulletUp);
+			await UniTask.WaitWhile(() => CurrentState == BulletUp);
+		}
+
+		public async UniTask ChangeBulletDown()
+		{
+			await RequestStateChange(BulletDown);
+			await UniTask.WaitWhile(() => CurrentState == BulletDown);
+		}
+
+		private void ShowSelectedBulletPanel()
 		{
 			selectedBulletLabel.gameObject.SetActive(true);
 		}
 
-		public void HideSelectedBulletPanel()
+		private void HideSelectedBulletPanel()
 		{
 			selectedBulletLabel.gameObject.SetActive(false);
 		}
@@ -180,6 +236,7 @@ namespace Gnosronpa.Controllers
 		public void Refresh()
 		{
 			selectedBulletLabel.Init(bulletLabels[selectedIndex].Data, "Selected");
+			selectedBulletLabel.ChangeSelectedState(true);
 		}
 
 		private async UniTask StartAnimation()
@@ -216,9 +273,13 @@ namespace Gnosronpa.Controllers
 				}
 				await UniTask.WhenAll(tasks);
 			}
+
+			var selectAnimation = DOTween.Sequence();
+			JoinLabelSelectionAnimation(selectAnimation);
+			await selectAnimation.AwaitForComplete();
 		}
 
-		private async UniTask ChangeBulletUp()
+		private async UniTask ChangeBulletUpAnimation()
 		{
 			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
@@ -227,12 +288,16 @@ namespace Gnosronpa.Controllers
 				var level = (selectedIndex - i + 2 + bulletLabels.Count) % bulletLabels.Count;
 				var newLevel = (level + 1) % bulletLabels.Count;
 				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel, true);
+
+
 			}
 			selectedIndex = (selectedIndex + 1 + bulletLabels.Count) % bulletLabels.Count;
+			JoinLabelSelectionAnimation(seq);
+
 			await seq.AwaitForComplete();
 		}
 
-		private async UniTask ChangeBulletDown()
+		private async UniTask ChangeBulletDownAnimation()
 		{
 			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
@@ -243,6 +308,7 @@ namespace Gnosronpa.Controllers
 				AddMoveYBulletAnimation(seq, bulletLabels[i], newLevel, false);
 			}
 			selectedIndex = (selectedIndex - 1 + bulletLabels.Count) % bulletLabels.Count;
+			JoinLabelSelectionAnimation(seq);
 
 			await seq.AwaitForComplete();
 		}
@@ -251,8 +317,7 @@ namespace Gnosronpa.Controllers
 		{
 			bulletLabelsParent.gameObject.SetActive(true);
 
-			var seq = DOTween.Sequence(transform)
-				.SetUpdate(true);
+			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
 			var firstVisibleIndexUnclamped = selectedIndex - maxVisibleBullets / 2;
 			//var lastVisibleIndex = (firstVisibleIndexUnclamped + maxVisibleBullets + bulletLabels.Count) % bulletLabels.Count;
@@ -272,13 +337,7 @@ namespace Gnosronpa.Controllers
 			var outOfScreenRight = -950;
 			var duration = 0.3f;
 
-			hideMenuAferTimeCancellationTokenSource?.Cancel();
-
-			ShowSelectedBulletPanel();
-			Refresh();
-
-			var seq = DOTween.Sequence(transform)
-				.SetUpdate(true);
+			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
 			var animationStartingBullet = selectedIndex - maxVisibleBullets / 2;
 			for (int i = 0; i < bulletLabels.Count; i++)
@@ -291,6 +350,14 @@ namespace Gnosronpa.Controllers
 			await seq.AwaitForComplete();
 
 			bulletLabelsParent.gameObject.SetActive(false);
+		}
+
+		private void JoinLabelSelectionAnimation(Sequence seq)
+		{
+			for (int i = 0; i < bulletLabels.Count; i++)
+			{
+				_ = seq.Join(bulletLabels[i].ChangeSelectedStateAnimation(i == selectedIndex, moveYDuration));
+			}
 		}
 
 		private void AddMoveYBulletAnimation(Sequence seq, BulletLabel bullet, int newLevel, bool upwards)
@@ -309,7 +376,7 @@ namespace Gnosronpa.Controllers
 				var moveUp = new Vector3(0, moveY, 0);
 				seq.Join(bt.DOBlendableLocalMoveBy(moveUp, moveYDuration));
 
-				//fade out
+				// fade out
 				if (newLevel > maxVisibleBullets)
 				{
 					seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration));
@@ -343,13 +410,6 @@ namespace Gnosronpa.Controllers
 				var moveDown = new Vector3(0, -moveY, 0);
 				seq.Join(bt.DOBlendableLocalMoveBy(moveDown, moveYDuration));
 
-				////fade out
-				//if (newLevel > maxVisibleBullets)
-				//{
-				//	seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration));
-				//	seq.onComplete += () => bullet.gameObject.SetActive(false);
-				//}
-
 				// fade out + move to top
 				if (newLevel is 0)
 				{
@@ -375,71 +435,6 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
-		//private void AddMoveYBulletAnimation(Sequence seq, BulletLabel bullet, int level, int newLevel, bool upwards)
-		//{
-		//	var bt = bullet.transform;
-		//	var cg = bullet.GetComponent<CanvasGroup>();
-
-		//	if (newLevel < 0)
-		//	{
-		//		Debug.LogError($"Invalid level [{newLevel}] on [{bullet.name}]", this);
-		//		return;
-		//	}
-
-		//	// move top one to bottom
-		//	if (level is maxVisibleBullets && newLevel is 0)
-		//	{
-		//		seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration));
-		//		seq.onComplete += () =>
-		//		{
-		//			var bottomPos = bullet.transform.localPosition;
-		//			bottomPos.y = GetLevelHeight(0);
-		//			bullet.transform.localPosition = bottomPos;
-		//			bullet.gameObject.SetActive(false);
-		//		};
-		//	}
-		//	// move bottom one to top
-		//	else if (newLevel - level > 1)
-		//	{
-		//		Debug.Log(2 + bullet.name);
-		//	}
-		//	// fade out to bottom
-		//	if (level is 1 && newLevel is 0)
-		//	{
-		//		seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration));
-		//		seq.onComplete += () => bullet.gameObject.SetActive(false);
-		//	}
-		//	//fade in from bottom
-		//	else if (level is 0 && newLevel is 1)
-		//	{
-		//		bullet.gameObject.SetActive(true);
-		//		seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 1, moveYDuration));
-		//	}
-		//	//fade in from top
-		//	else if (level is (maxVisibleBullets + 1) && newLevel is maxVisibleBullets)
-		//	{
-		//		bullet.gameObject.SetActive(true);
-		//		seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 1, moveYDuration));
-		//	}
-		//	//fade out to top
-		//	else if (level is maxVisibleBullets && newLevel is (maxVisibleBullets + 1))
-		//	{
-		//		seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration));
-		//		seq.onComplete += () => bullet.gameObject.SetActive(false);
-		//	}
-
-		//	if (newLevel > level || newLevel - level != 1)
-		//	{
-		//		var moveUp = new Vector3(0, moveY, 0);
-		//		seq.Join(bt.DOBlendableLocalMoveBy(moveUp, moveYDuration));
-		//	}
-		//	else
-		//	{
-		//		var moveDown = new Vector3(0, -moveY, 0);
-		//		seq.Join(bt.DOBlendableLocalMoveBy(moveDown, moveYDuration));
-		//	}
-		//}
-
 		private BulletLabel LoadBulletLabel(TruthBulletData bulletData)
 		{
 			var bulletLabel = Instantiate(bulletLabelPrefab, bulletLabelsParent).GetComponent<BulletLabel>();
@@ -451,13 +446,6 @@ namespace Gnosronpa.Controllers
 		private float GetLevelHeight(int level)
 		{
 			return labelSpawnPos.y + level * moveY;
-		}
-
-		public void HideAndReset()
-		{
-			hideMenuAferTimeCancellationTokenSource?.Cancel();
-			hideMenuTimer = 0;
-			bulletLabelsParent.gameObject.SetActive(false);
 		}
 	}
 }
