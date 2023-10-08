@@ -8,9 +8,9 @@ namespace Gnosronpa.StateMachines.Common
 		where S : State<T>, new()
 	{
 		[SerializeField]
-		private State<T> _currentState;
+		private S _currentState;
 
-		public State<T> CurrentState
+		public S CurrentState
 		{
 			get
 			{
@@ -70,7 +70,6 @@ namespace Gnosronpa.StateMachines.Common
 				}
 				catch (StateChangeRequestedException)
 				{
-					//Debug.Log($"Requested {name} state: {RequestedState}.");
 					nextState = RequestedState;
 					RequestedState = null;
 				}
