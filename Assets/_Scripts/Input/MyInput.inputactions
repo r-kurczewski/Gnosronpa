@@ -69,22 +69,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Menu",
+                    "name": "ShowMenu",
                     "type": "Button",
                     "id": "317f40c6-aab8-4366-b3c5-7cd94b13d152",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "ChangeBulletDescription",
-                    "type": "Value",
-                    "id": "a4c8e075-0e92-4bf6-945c-86adc60ff28f",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -172,7 +163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Menu",
+                    "action": "ShowMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -208,10 +199,36 @@
                     "action": "Slowdown",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Menu",
+            "id": "885a85c9-e419-4810-ba5d-b38543ba8900",
+            "actions": [
+                {
+                    "name": "ChangeBulletDescription",
+                    "type": "Value",
+                    "id": "e90bcbe4-21d8-405e-921d-671c2b4d4cb8",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
+                    "name": "HideMenu",
+                    "type": "Button",
+                    "id": "b0814ee1-1db0-4a70-a7ba-c2966ea90551",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
                     "name": "1D Axis",
-                    "id": "bac27bd8-135e-4e70-9fad-6823b1db5e04",
+                    "id": "82da7f10-5f83-4a07-9ff8-7cc9bdb14aeb",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
@@ -222,7 +239,7 @@
                 },
                 {
                     "name": "positive",
-                    "id": "8a52f991-def3-4bf1-800e-396d5fc5325a",
+                    "id": "eca38495-8976-4ae7-aec7-649a6ef9d59d",
                     "path": "<Mouse>/scroll/up",
                     "interactions": "",
                     "processors": "",
@@ -233,7 +250,7 @@
                 },
                 {
                     "name": "negative",
-                    "id": "4bf02e94-91c3-439b-9187-77f8c36be962",
+                    "id": "f30dc7d7-84a5-401a-b44a-cc8e6cbab93a",
                     "path": "<Mouse>/scroll/down",
                     "interactions": "",
                     "processors": "",
@@ -244,7 +261,7 @@
                 },
                 {
                     "name": "positive",
-                    "id": "66dacd41-2be7-4b55-8487-eabcd8b4dbda",
+                    "id": "63e49a5b-a942-4f1d-9263-5561658ca2f7",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
@@ -255,7 +272,7 @@
                 },
                 {
                     "name": "negative",
-                    "id": "d5f7df70-9037-4ace-af84-28f618617d9f",
+                    "id": "d585171c-3479-4b8c-b8a6-eb67b5a660aa",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
@@ -263,14 +280,19 @@
                     "action": "ChangeBulletDescription",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "65e3acc1-2deb-41d9-8297-cfc7268b66d6",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HideMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
-        },
-        {
-            "name": "Menu",
-            "id": "885a85c9-e419-4810-ba5d-b38543ba8900",
-            "actions": [],
-            "bindings": []
         }
     ],
     "controlSchemes": []

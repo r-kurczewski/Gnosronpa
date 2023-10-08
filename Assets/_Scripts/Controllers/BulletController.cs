@@ -92,7 +92,7 @@ namespace Gnosronpa.Controllers
 					{
 						return Closing;
 					}
-					hideMenuTimer -= Time.unscaledDeltaTime;
+					UpdateHideMenuTimeCounter();
 
 					await UniTask.Yield();
 					return Loaded;
@@ -166,7 +166,7 @@ namespace Gnosronpa.Controllers
 					{
 						return Closing;
 					}
-					hideMenuTimer -= Time.unscaledDeltaTime;
+					UpdateHideMenuTimeCounter();
 
 					await UniTask.Yield();
 					return Opened;
@@ -182,6 +182,11 @@ namespace Gnosronpa.Controllers
 					return Closed;
 				},
 			};
+		}
+
+		private void UpdateHideMenuTimeCounter()
+		{
+			if (Time.timeScale != 0) hideMenuTimer -= Time.unscaledDeltaTime;
 		}
 
 		#endregion

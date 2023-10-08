@@ -40,9 +40,6 @@ namespace Gnosronpa.Controllers
 		[Header("References", order = 1)]
 
 		[SerializeField]
-		private DebateData data;
-
-		[SerializeField]
 		private CameraController cameraController;
 
 		[SerializeField]
@@ -117,6 +114,9 @@ namespace Gnosronpa.Controllers
 		#endregion
 
 		[Header("Other", order = 1)]
+
+		[SerializeField]
+		private DebateData data;
 
 		[SerializeField]
 		private float time;
@@ -269,7 +269,6 @@ namespace Gnosronpa.Controllers
 					{
 						if (Paused)
 						{
-							Debug.Log("Pause");
 							await UniTask.WaitWhile(() => Paused);
 							continue;
 						}
@@ -350,7 +349,6 @@ namespace Gnosronpa.Controllers
 				OnEnter = () =>
 				{
 					debateGUI.SetActive(false);
-					customCursor.gameObject.SetActive(false);
 					PauseDebate();
 					RemoveUserInputEvents();
 					SetDebateNormalSpeed();
@@ -427,17 +425,14 @@ namespace Gnosronpa.Controllers
 
 		#endregion
 
-		private void Start()
+		public void Init(DebateData data)
 		{
+			this.data = data;
 			InitStateMachine();
+			AddUserInputEvents(disabled: true);
 		}
 
-		private void OnEnable()
-		{
-			AddUserInputEvents();
-		}
-
-		private void OnDisable()
+		private void OnDestroy()
 		{
 			RemoveUserInputEvents();
 		}
@@ -464,6 +459,8 @@ namespace Gnosronpa.Controllers
 
 		private void OnNextDialogMessage(CallbackContext context = default)
 		{
+			if (!dialogBox.gameObject.activeInHierarchy) return;
+
 			if (dialogBox.MessageContentDisplayed)
 			{
 				dialogBox.LoadNextMessage();
@@ -645,13 +642,12 @@ namespace Gnosronpa.Controllers
 			Time.timeScale = 0;
 		}
 
-		private void AddUserInputEvents(bool disabled = true)
+		private void AddUserInputEvents(bool disabled)
 		{
 			inputPickBullet.action.performed += OnPickBullet;
 			inputShoot.action.performed += OnShoot;
 			inputChangeBullet.action.performed += OnBulletChange;
 			inputNextDialog.action.performed += OnNextDialogMessage;
-			//inputBulletDescription.action.performed += OnBulletDescription;
 
 			if (disabled)
 			{
@@ -659,7 +655,6 @@ namespace Gnosronpa.Controllers
 				inputShoot.action.Disable();
 				inputChangeBullet.action.Disable();
 				inputNextDialog.action.Disable();
-				//inputBulletDescription.action.Disable();
 			}
 		}
 
@@ -669,7 +664,6 @@ namespace Gnosronpa.Controllers
 			inputShoot.action.performed -= OnShoot;
 			inputChangeBullet.action.performed -= OnBulletChange;
 			inputNextDialog.action.performed -= OnNextDialogMessage;
-			//inputBulletDescription.action.performed -= OnBulletDescription;
 		}
 	}
 }

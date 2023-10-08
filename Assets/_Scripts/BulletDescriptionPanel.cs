@@ -35,40 +35,28 @@ namespace Gnosronpa
 		private int selectedIndex;
 
 		[SerializeField]
-		private List<BulletDescriptionListElement> listElements = new List<BulletDescriptionListElement>();
-
-		public DebateData debateData;
+		private List<BulletDescriptionListElement> listElements = new();
 
 		public BulletDescriptionListElement SelectedBullet
 		{
 			get
 			{
-				if (selectedIndex >= listElements.Count)
-				{
-					Debug.LogWarning("Invalid bullet description index", this);
-					return null;
-				}
+				if (selectedIndex >= listElements.Count) return null;
 
 				return listElements[selectedIndex];
 			}
-		}
-
-		private void Start()
-		{
-			Init(debateData.bullets);
 		}
 
 		private void OnEnable()
 		{
 			changeBulletDescription.action.performed += OnBulletDescriptionChange;
 			UpdateView();
-
-			//Time.timeScale = 1 - Time.timeScale;
 		}
 
 		private void OnDisable()
 		{
 			changeBulletDescription.action.performed -= OnBulletDescriptionChange;
+			selectedIndex = 0;
 		}
 
 		public void Init(IEnumerable<TruthBulletData> bullets)
