@@ -8,7 +8,7 @@
 
 public record TestRecord(string Name, int Age);
 
-public class Persion
+public class Person
 {
 	public int Age
 	{

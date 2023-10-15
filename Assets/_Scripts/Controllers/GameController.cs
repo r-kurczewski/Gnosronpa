@@ -1,10 +1,10 @@
-﻿using Gnosronpa.Controllers;
-using Gnosronpa.ScriptableObjects;
+﻿using Gnosronpa.ScriptableObjects;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
-namespace Gnosronpa.Assets._Scripts.Controllers
+namespace Gnosronpa.Controllers
 {
 	public class GameController : SingletonBase<GameController>
 	{
@@ -41,6 +41,10 @@ namespace Gnosronpa.Assets._Scripts.Controllers
 		[SerializeField]
 		private DebateData startDebate;
 
+		private Dictionary<InputAction, bool> previousInputState = new();
+
+		public bool Paused => paused;
+
 		private void Start()
 		{
 			debateController.Init(startDebate);
@@ -75,10 +79,13 @@ namespace Gnosronpa.Assets._Scripts.Controllers
 		private void PauseGame()
 		{
 			previousTimeScale = Time.timeScale;
-
 			Time.timeScale = 0;
-			playerInput.SwitchCurrentActionMap(MenuActionMapKey);
+
 			bulletsParent.SetActive(false);
+
+			SaveCurrentInputEnabledState();
+			playerInput.SwitchCurrentActionMap(MenuActionMapKey);
+
 			paused = true;
 		}
 
@@ -86,8 +93,27 @@ namespace Gnosronpa.Assets._Scripts.Controllers
 		{
 			Time.timeScale = previousTimeScale;
 			playerInput.SwitchCurrentActionMap(NonstopDebateActionMapKey);
+			RestorePreviousInputEnabledState();
 			bulletsParent.SetActive(true);
 			paused = false;
+		}
+
+		private void SaveCurrentInputEnabledState()
+		{
+			foreach (var action in playerInput.actions)
+			{
+				previousInputState[action] = action.enabled;
+			}
+		}
+
+		private void RestorePreviousInputEnabledState()
+		{
+			foreach (var action in playerInput.actions)
+			{
+				if (previousInputState[action]) action.Enable();
+				else action.Disable();
+			}
+			previousInputState.Clear();
 		}
 	}
 }

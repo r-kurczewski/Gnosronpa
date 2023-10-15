@@ -14,7 +14,7 @@ namespace Gnosronpa.Controllers
 	{
 		private const int maxVisibleBullets = 3;
 		private const float startHideMenuTime = 10f;
-		private const float defaultHideMenuTime = 2.5f;
+		private const float defaultHideMenuTime = 1.25f;
 
 		private const float moveY = 80;
 		private const float moveYDuration = 0.3f;

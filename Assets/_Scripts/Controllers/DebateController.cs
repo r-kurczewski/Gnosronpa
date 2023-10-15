@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using Gnosronpa.Common;
 using Gnosronpa.ScriptableObjects;
 using Gnosronpa.StateMachines.Common;
@@ -11,16 +10,15 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using Gnosronpa.StateMachines;
 using static UnityEngine.InputSystem.InputAction;
+using static Gnosronpa.Common.AnimationConsts;
+using DG.Tweening;
+using Gnosronpa.Animations;
 
 namespace Gnosronpa.Controllers
 {
 	public class DebateController : StateMachine<DebateController, DebateState>
 	{
 		#region consts
-
-		private const int fadeOn = 1;
-		private const int fadeOff = 0;
-		private const int instant = 0;
 
 		private const float rewindSpeed = 3;
 		private const float rewindPitch = 1.3f;
@@ -111,6 +109,9 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private DialogBox dialogBox;
 
+		[SerializeField]
+		private DebateAnimation debateAnimation;
+
 		#endregion
 
 		[Header("Other", order = 1)]
@@ -121,12 +122,10 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private float time;
 
-		private bool Paused => Time.timeScale == 0;
+		private bool Paused => GameController.instance.Paused;
 
 		[SerializeField]
 		private bool developerMode;
-
-		private Tween loop;
 
 		private TruthBullet hitBullet;
 
@@ -169,7 +168,7 @@ namespace Gnosronpa.Controllers
 				{
 					if (!developerMode)
 					{
-						await PlayDebateStartAnimation();
+						await debateAnimation.PlayDebateStartAnimation();
 					}
 					return loadingBullets;
 				}
@@ -244,7 +243,7 @@ namespace Gnosronpa.Controllers
 
 				OnExit = () =>
 				{
-					loop?.Kill();
+					debateAnimation.KillLoopAnimation();
 					return UniTask.CompletedTask;
 				},
 			};
@@ -387,7 +386,7 @@ namespace Gnosronpa.Controllers
 					debateGUI.SetActive(false);
 					dialogBox.SetVisibility(true);
 
-					hitStatement.Data.hitDialogs.ForEach((msg) => dialogBox.AddMessage(msg));
+					hitStatement.Data.statement.hitDialogs.ForEach((msg) => dialogBox.AddMessage(msg));
 					dialogBox.LoadNextMessage(playSound: false);
 
 					inputNextDialog.action.Enable();
@@ -459,8 +458,6 @@ namespace Gnosronpa.Controllers
 
 		private void OnNextDialogMessage(CallbackContext context = default)
 		{
-			if (!dialogBox.gameObject.activeInHierarchy) return;
-
 			if (dialogBox.MessageContentDisplayed)
 			{
 				dialogBox.LoadNextMessage();
@@ -481,28 +478,26 @@ namespace Gnosronpa.Controllers
 		{
 			timeSlider.SetPosition(0);
 			statementsQueue.Clear();
-			ClearSpawnedStatements();
 			ClearSpawnedBullets();
+			ClearSpawnedStatements();
 			time = 0;
 
 			data.debateSequence.ForEach(statement => statementsQueue.Enqueue(statement));
 		}
 
-		private void ClearSpawnedStatements()
+		private void ClearSpawnedBullets()
 		{
 			foreach (Transform statement in bulletsParent.transform)
 			{
-				Debug.Log(statement.name);
 				statement.gameObject.SetActive(false);
 				Destroy(statement.gameObject);
 			}
 		}
 
-		private void ClearSpawnedBullets()
+		private void ClearSpawnedStatements()
 		{
 			foreach (Transform statement in statementsParent.transform)
 			{
-				Debug.Log(statement.name);
 				statement.gameObject.SetActive(false);
 				Destroy(statement.gameObject);
 			}
@@ -521,35 +516,6 @@ namespace Gnosronpa.Controllers
 				return statement;
 			}
 			return null;
-		}
-
-		private async UniTask PlayDebateStartAnimation()
-		{
-			var ct = Camera.main.transform;
-			var cp = ct.parent;
-
-			var spin = new Vector3(0, -360, 0);
-			var skew = new Vector3(0, 0, 5);
-			var zoom = new Vector3(0, 7, 20);
-
-			var fadeTime = 0.5f;
-
-			var seq = DOTween.Sequence()
-				.Append(ct.DOLocalRotate(2 * skew, instant))
-
-				.Append(ct.DOLocalRotate(1.25f * spin + 2 * skew, 3, RotateMode.FastBeyond360).SetEase(Ease.Linear))
-				.Join(cameraFade.DOFade(fadeOn, fadeTime).SetEase(Ease.InOutFlash).SetDelay(2))
-
-				.Append(ct.DOLocalMove(zoom, instant))
-				.Join(ct.DOLocalRotate(-skew, instant))
-
-				.Append(cameraFade.DOFade(fadeOff, fadeTime).SetEase(Ease.InOutFlash))
-				.Join(ct.DOLocalRotate(-skew, instant));
-
-			await seq.AwaitForComplete();
-
-			// infinite spin until bullet is chosen - transform changed to avoid killing by CameraController
-			loop = cp.DOLocalRotate(spin, 30, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(int.MaxValue).SetTarget(transform);
 		}
 
 		private async void OnBulletChange(CallbackContext context = default)
@@ -585,7 +551,7 @@ namespace Gnosronpa.Controllers
 		{
 			if (bulletController.CurrentState != bulletController.Closed) return;
 
-			shootScript.Shoot(bulletController.SelectedBullet);
+			shootScript.TryShoot(bulletController.SelectedBullet);
 		}
 
 		private DebateStatement LoadStatement(DebateSequenceData statementData)

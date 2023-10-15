@@ -26,7 +26,7 @@ namespace Gnosronpa
 		private const float weakSpotColliderDepth = -5;
 
 		[SerializeField]
-		private DebateStatementData data;
+		private DebateSequenceData data;
 
 		[SerializeField]
 		private StatementCollider statementCollider;
@@ -46,11 +46,11 @@ namespace Gnosronpa
 		[SerializeField]
 		private TMP_Text text;
 
-		public DebateStatementData Data => data;
+		public DebateSequenceData Data => data;
 
 		private string Gradient(string text) => $"<gradient=\"Weak spot\">{text}</gradient>";
 
-		public bool IsCorrectBullet(TruthBulletData data) => this.data.correctBullet == data;
+		public bool IsCorrectBullet(TruthBulletData data) => this.data.statement.correctBullet == data;
 
 		private void OnDestroy()
 		{
@@ -64,31 +64,48 @@ namespace Gnosronpa
 			weakSpotCollider.OnWeakSpotHit += OnWeakSpotHit;
 			statementCollider.OnStatementHit += OnStatementHit;
 
-			data = sequenceData.statement;
+			data = sequenceData;
 			var animation = sequenceData.statementAnimation;
 			var transition = sequenceData.statementTransition;
 
-			name = data.name;
-			text.text = string.Format(data.textTemplate, Gradient(data.weakSpotText));
+			name = data.statement.name;
+			text.text = string.Format(data.statement.textTemplate, Gradient(data.statement.weakSpotText));
 
+			var colliderData = data.statement.textCollider;
 			statementCollider.SetColliderSize(
-				new Vector3(data.textCollider.center.x, data.textCollider.center.y, statementColliderDepth),
-				new Vector3(data.textCollider.size.x, data.textCollider.size.y, statementColliderThickness));
+				new Vector3(colliderData.center.x, colliderData.center.y, statementColliderDepth),
+				new Vector3(colliderData.size.x, colliderData.size.y, statementColliderThickness));
+			statementCollider.gameObject.SetActive(false);
 
-			if (data.statementType is StatementType.WeakSpot)
+			if (data.statement.statementType is StatementType.WeakSpot)
 			{
+				colliderData = data.statement.weakSpotCollider;
 				weakSpotCollider.SetColliderSize(
-					new Vector3(data.weakSpotCollider.center.x, data.weakSpotCollider.center.y, weakSpotColliderDepth),
-					new Vector3(data.weakSpotCollider.size.x, data.weakSpotCollider.size.y, weakSpotColliderThickness));
+					new Vector3(colliderData.center.x, colliderData.center.y, weakSpotColliderDepth),
+					new Vector3(colliderData.size.x, colliderData.size.y, weakSpotColliderThickness));
 			}
-			else weakSpotCollider.gameObject.SetActive(false);
+			weakSpotCollider.gameObject.SetActive(false);
 
 			transform.SetLocalPositionAndRotation(animation.startPosition, Quaternion.Euler(0, 0, animation.startRotation));
 			transform.localScale = new Vector3(animation.startScale.x, animation.startScale.y, 1);
 			text.color = new Color(text.color.r, text.color.g, text.color.b, a: 0);
 
-			var seq = DOTween.Sequence(transform)
-				.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 1, transition.appearTime));
+			PlayStatementAnimation();
+		}
+
+		private void PlayStatementAnimation()
+		{
+			var animation = data.statementAnimation;
+			var transition = data.statementTransition;
+
+			var seq = DOTween.Sequence(transform);
+
+			seq.Join(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 1, transition.appearTime)
+				.OnComplete(() =>
+				{
+					statementCollider.gameObject.SetActive(true);
+					weakSpotCollider.gameObject.SetActive(data.statement.statementType is StatementType.WeakSpot);
+				}));
 
 			if (animation.moveDuration > 0)
 			{
@@ -106,7 +123,12 @@ namespace Gnosronpa
 			}
 
 			seq.AppendInterval(transition.waitingTime)
-			.Append(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 0, transition.disappearTime))
+				.AppendCallback(() =>
+				{
+					statementCollider.gameObject.SetActive(false);
+					weakSpotCollider.gameObject.SetActive(false);
+				})
+			.Join(DOTween.ToAlpha(() => text.color, (color) => text.color = color, 0, transition.disappearTime))
 			.onComplete = () =>
 			{
 				DOTween.Kill(transform);
@@ -143,7 +165,7 @@ namespace Gnosronpa
 
 		private async UniTask OnCorrectWeakSpotHit(TruthBullet bullet, DebateStatement statement)
 		{
-			if(OnCorrectBulletHit is not null) await OnCorrectBulletHit(bullet, statement);
+			if (OnCorrectBulletHit is not null) await OnCorrectBulletHit(bullet, statement);
 		}
 
 		private void OnIncorrectWeakspotHit(TruthBullet bullet, DebateStatement statement)

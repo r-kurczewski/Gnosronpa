@@ -4,7 +4,6 @@ using System;
 
 namespace Gnosronpa.StateMachines
 {
-
 	[Serializable]
 	public class BulletMenuState : State<BulletController>
 	{

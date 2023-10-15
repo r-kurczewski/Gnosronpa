@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Gnosronpa.Common;
-using System;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers
@@ -62,17 +61,11 @@ namespace Gnosronpa.Controllers
 			cameraTransform.SetLocalPositionAndRotation(animationData?.endPosition ?? Vector3.zero, Quaternion.Euler(animationData?.endRotation ?? Vector3.zero));
 		}
 
-		public void ResetCamera()
-		{
-
-		}
-
 		private void StopCurrentAnimations()
 		{
 			var killCount = DOTween.Kill(transform);
 
 			if (killCount == 0) return;
-			Debug.Log($"Stopped {killCount} active camera animations");
 		}
 
 		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;

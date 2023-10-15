@@ -4,7 +4,7 @@ using Gnosronpa.Controllers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Gnosronpa
+namespace Gnosronpa.Animations
 {
 	public class LieAnimation : MonoBehaviour
 	{
