@@ -1,11 +1,11 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Gnosronpa.Assets._Scripts.Common
+namespace Gnosronpa.Common
 {
 	public static class TweenExtensions
 	{
-		public static Tween BlendableShake(this Transform transform, Vector3 startShake, float duration, float vibrato)
+		public static Tween BlendableShake(this Transform transform, Vector3 shake, float duration, float vibrato, bool fadeout)
 		{
 			var seq = DOTween.Sequence(transform);
 
@@ -17,7 +17,7 @@ namespace Gnosronpa.Assets._Scripts.Common
 			{
 				for (int direction = 1; direction >= -1; direction -= 2)
 				{
-					seq.Append(transform.DOBlendableLocalMoveBy(direction * shakePower * startShake, shakeDuration));
+					seq.Append(transform.DOBlendableLocalMoveBy(direction * (fadeout ? shakePower : 1) * shake, shakeDuration));
 				}
 				shakePower -= fading;
 			}

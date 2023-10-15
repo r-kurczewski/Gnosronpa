@@ -36,7 +36,7 @@ namespace Gnosronpa.Animations
 				.Join(ct.DOLocalRotate(-skew, instant));
 
 			// infinite spin until bullet is chosen - transform changed to avoid killing by CameraController
-			loop = cp.DOLocalRotate(spin, 45, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(int.MaxValue).SetTarget(transform);
+			loop = cp.DOLocalRotate(spin, 30, RotateMode.LocalAxisAdd).SetEase(Ease.Linear).SetLoops(int.MaxValue).SetTarget(transform);
 
 			await seq.AwaitForComplete();
 		}

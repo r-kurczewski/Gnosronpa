@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Gnosronpa.Common;
 using Gnosronpa.Controllers;
 using UnityEngine;
 
@@ -43,16 +44,10 @@ namespace Gnosronpa.Animations
 				})
 
 				.Append(transform.DOLocalMove(animationEndPos, 0.15f).SetEase(Ease.OutFlash))
-				.Join(DOTween.Shake(() => shakeParent.localPosition, (vector) =>
-				{
-					vector.x = shakeParent.localPosition.x;
-					shakeParent.localPosition = vector;
-				},
-				duration: 2f, strength: 10, vibrato: 20, randomness: 0, ignoreZAxis: true, fadeOut: false, ShakeRandomnessMode.Harmonic))
-
+				.Join(shakeParent.BlendableShake(Vector2.up * 10, 2f, 20, false))
 				.Append(transform.DOScale(1.3f, 0.2f))
 				.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, 0.2f));
-			
+
 			await seq.AwaitForComplete();
 		}
 	}

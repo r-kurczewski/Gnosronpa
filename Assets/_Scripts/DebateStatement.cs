@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Gnosronpa.Assets._Scripts.Common;
+using Gnosronpa.Common;
 using Gnosronpa.Controllers;
 using Gnosronpa.ScriptableObjects;
 using System;
@@ -141,7 +141,7 @@ namespace Gnosronpa
 			if (bullet.HitObject) return;
 
 			AudioController.instance.PlaySound(statementHitSound);
-			transform.BlendableShake(Vector3.one * 8, 1f, 5);
+			transform.BlendableShake(Vector3.one * 8, 1f, 5, true);
 
 			bullet.HitObject = true;
 		}
