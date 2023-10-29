@@ -20,7 +20,7 @@ namespace Gnosronpa.Controllers
 	{
 		#region consts
 
-		private const float rewindSpeed = 3;
+		private const float rewindSpeed = 4;
 		private const float rewindPitch = 1.3f;
 
 		private const float defaultSpeed = 1;
@@ -180,7 +180,7 @@ namespace Gnosronpa.Controllers
 				{
 					customCursor.gameObject.SetActive(true);
 					debateGUI.SetActive(true);
-					bulletController.Init(data.bullets);
+					bulletController.Init(data);
 
 					return UniTask.CompletedTask;
 				},
@@ -264,6 +264,11 @@ namespace Gnosronpa.Controllers
 
 				OnExecute = async () =>
 				{
+					while (developerMode)
+					{
+						await UniTask.Yield();
+					}
+
 					while (statementsQueue.Any() || statementsParent.childCount > 0)
 					{
 						if (Paused)
@@ -298,7 +303,7 @@ namespace Gnosronpa.Controllers
 						await UniTask.Yield();
 					}
 
-					return developerMode ? FinalState : debateHint;
+					return debateHint;
 				},
 
 				OnExit = async () =>
@@ -427,8 +432,8 @@ namespace Gnosronpa.Controllers
 		public void Init(DebateData data)
 		{
 			this.data = data;
-			InitStateMachine();
 			AddUserInputEvents(disabled: true);
+			_ = InitStateMachine();
 		}
 
 		private void OnDestroy()
@@ -440,6 +445,11 @@ namespace Gnosronpa.Controllers
 		{
 			var speakingCharacter = TryGetCharacter(statementData.statement.speakingCharacter);
 
+			if (speakingCharacter == null)
+			{
+				Debug.LogError($"Could not get character from {statementData.statement.name}", this);
+			}
+
 			cameraController.PlayCameraAnimation(statementData.cameraAnimation, speakingCharacter.gameObject);
 
 			if (statementData.statement)
@@ -449,11 +459,13 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
-		private static Character TryGetCharacter(CharacterData characterData)
+		private Character TryGetCharacter(CharacterData characterData)
 		{
-			return GameObject.FindGameObjectsWithTag("Character")
+			var result = GameObject.FindGameObjectsWithTag("Character")
 				.Select(x => x.GetComponent<Character>())
 				.FirstOrDefault(x => x.Data == characterData);
+
+			return result;
 		}
 
 		private void OnNextDialogMessage(CallbackContext context = default)

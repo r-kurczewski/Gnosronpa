@@ -33,14 +33,14 @@ namespace Gnosronpa.StateMachines.Common
 
 		protected S RequestedState { get; private set; }
 
-		protected void InitStateMachine()
+		protected async UniTask InitStateMachine()
 		{
 			DefineMachineStates();
 			FinalState = new() { StateName = FinalStateName, OnEnter = DefineFinalStateBehaviour() };
 
 			try
 			{
-				_ = StateMachineExecute();
+				await StateMachineExecute();
 			}
 			catch (Exception ex)
 			{

@@ -8,6 +8,8 @@ namespace Gnosronpa.ScriptableObjects
 	[CreateAssetMenu(fileName = "Debate", menuName = "NonstopDebate/Debate")]
 	public class DebateData : ScriptableObject
 	{
+		public int visibleBullets;
+
 		public List<TruthBulletData> bullets;
 
 		public List<DialogMessage> debateHints;

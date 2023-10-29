@@ -12,7 +12,7 @@ namespace Gnosronpa.Controllers
 {
 	public class BulletController : StateMachine<BulletController, BulletMenuState>, IRefreshable
 	{
-		private const int maxVisibleBullets = 3;
+		
 		private const float startHideMenuTime = 10f;
 		private const float defaultHideMenuTime = 1.25f;
 
@@ -39,6 +39,9 @@ namespace Gnosronpa.Controllers
 		private AudioClip bulletLoadSound;
 
 		[Header("State")]
+
+		[SerializeField]
+		private int visibleBullets;
 
 		[SerializeField]
 		private int selectedIndex;
@@ -191,17 +194,20 @@ namespace Gnosronpa.Controllers
 
 		#endregion
 
-		public void Init(IEnumerable<TruthBulletData> bulletsData)
+		public void Init(DebateData debateData)
 		{
+			visibleBullets = debateData.visibleBullets;
+
+			var bulletsData = debateData.bullets;
 			bulletLabels = new List<BulletLabel>();
 			foreach (var bulletData in bulletsData)
 			{
 				var bulletLabel = LoadBulletLabel(bulletData);
 				bulletLabels.Add(bulletLabel);
 			}
-			selectedIndex = bulletLabels.Count - maxVisibleBullets / 2 - 1;
+			selectedIndex = bulletLabels.Count - visibleBullets / 2 - 1;
 
-			InitStateMachine();
+			_ = InitStateMachine();
 		}
 
 		public async UniTask OpenBulletMenu()
@@ -268,9 +274,9 @@ namespace Gnosronpa.Controllers
 						.Append(label.DOBlendableLocalMoveBy(Vector2.up * moveY, moveYDuration));
 
 					// hide bullet over limit 
-					if (j > maxVisibleBullets - 1)
+					if (j > visibleBullets - 1)
 					{
-						var cg = bulletLabels[j - maxVisibleBullets].GetComponent<CanvasGroup>();
+						var cg = bulletLabels[j - visibleBullets].GetComponent<CanvasGroup>();
 						_ = seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0f, moveYDuration))
 							.onComplete = () => cg.gameObject.SetActive(false);
 					}
@@ -324,13 +330,13 @@ namespace Gnosronpa.Controllers
 
 			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
-			var firstVisibleIndexUnclamped = selectedIndex - maxVisibleBullets / 2;
+			var firstVisibleIndexUnclamped = selectedIndex - visibleBullets / 2;
 			//var lastVisibleIndex = (firstVisibleIndexUnclamped + maxVisibleBullets + bulletLabels.Count) % bulletLabels.Count;
 
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				var currentIndex = (firstVisibleIndexUnclamped + i + bulletLabels.Count) % bulletLabels.Count;
-				var delay = i < maxVisibleBullets ? i * nextBulletAnimationDelay : 0;
+				var delay = i < visibleBullets ? i * nextBulletAnimationDelay : 0;
 				_ = seq.Join(bulletLabels[currentIndex].transform.DOLocalMoveX(bulletsPosX, 0.3f).SetDelay(delay));
 			}
 
@@ -344,11 +350,11 @@ namespace Gnosronpa.Controllers
 
 			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
-			var animationStartingBullet = selectedIndex - maxVisibleBullets / 2;
+			var animationStartingBullet = selectedIndex - visibleBullets / 2;
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				var currentIndex = (animationStartingBullet + i + bulletLabels.Count) % bulletLabels.Count;
-				var delay = i < maxVisibleBullets ? i * nextBulletAnimationDelay : 0;
+				var delay = i < visibleBullets ? i * nextBulletAnimationDelay : 0;
 				_ = seq.Join(bulletLabels[currentIndex].transform.DOLocalMoveX(outOfScreenRight, duration).SetDelay(delay));
 			}
 
@@ -382,7 +388,7 @@ namespace Gnosronpa.Controllers
 				seq.Join(bt.DOBlendableLocalMoveBy(moveUp, moveYDuration));
 
 				// fade out
-				if (newLevel > maxVisibleBullets)
+				if (newLevel > visibleBullets)
 				{
 					seq.Join(DOTween.To(() => cg.alpha, (a) => cg.alpha = a, 0, moveYDuration));
 					seq.onComplete += () => bullet.gameObject.SetActive(false);
@@ -422,16 +428,16 @@ namespace Gnosronpa.Controllers
 					seq.onComplete += () =>
 					{
 						var newPos = bullet.transform.localPosition;
-						newPos.y = GetLevelHeight(maxVisibleBullets + 1);
+						newPos.y = GetLevelHeight(visibleBullets + 1);
 						bullet.transform.localPosition = newPos;
 						bullet.gameObject.SetActive(false);
 					};
 				}
 				// fade in + move to top
-				else if (newLevel is maxVisibleBullets)
+				else if (newLevel == visibleBullets)
 				{
 					var newPos = bullet.transform.localPosition;
-					newPos.y = GetLevelHeight(maxVisibleBullets + 1);
+					newPos.y = GetLevelHeight(visibleBullets + 1);
 					bullet.transform.localPosition = newPos;
 
 					bullet.gameObject.SetActive(true);
