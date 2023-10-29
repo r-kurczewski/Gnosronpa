@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de611e5b16e5fc54a8bde4ca0961fc74, type: 3}
+  m_Name: LeVi ship system
+  m_EditorClassIdentifier: 
+  bulletName: 'LeVi ship system '
+  bulletIcon: {fileID: 21300000, guid: de9b654417835ab4d80b5c92d9289c08, type: 3}
+  description: "Spaceship\u2019s AI responsible for the ship's control and the safety
+    of the crew during the flight, enforcer of Gnosia elimination protocol. In case
+    of a takeover of the ship by Gnosia, it is forced to self-destructing it. It
+    has a huge knowledge database about current world situation and the crew. "

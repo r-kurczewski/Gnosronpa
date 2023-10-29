@@ -12,35 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
   m_Name: Dev Debug
   m_EditorClassIdentifier: 
+  visibleBullets: 3
   bullets:
   - {fileID: 11400000, guid: ef6924cfaeb7c424a88620f15238273a, type: 2}
   - {fileID: 11400000, guid: 04d9b14cb2ffb1f4f8015b76001292af, type: 2}
   - {fileID: 11400000, guid: 7c3ba4321c7177c4799659ec2ee7b0ed, type: 2}
-  - {fileID: 11400000, guid: 028f76c6be0cba443bf81f5f47298fcc, type: 2}
   - {fileID: 11400000, guid: b2f5bf88a2171b9498de27d85d5f7e4c, type: 2}
-  - {fileID: 11400000, guid: 7869d6148cca6d749b51c08ba6b0dfba, type: 2}
-  - {fileID: 11400000, guid: ca0d3d659f336c544a46d708701ebafd, type: 2}
+  debateHints: []
   debateSequence:
-  - delay: 0
-    statement: {fileID: 11400000, guid: 06ef1fad80f07fc4282ce8a4f9a28fbc, type: 2}
+  - delay: 1
+    statement: {fileID: 11400000, guid: 2428eac30ff3cf64ab088376744b5114, type: 2}
     statementAnimation:
       startPosition: {x: 0, y: 0}
-      endPosition: {x: 0, y: 0}
+      move: {x: 0, y: 0}
       moveDuration: 0
       startRotation: 0
-      endRotation: 0
+      rotation: 0
       rotationDuration: 0
-      startScale: {x: 0, y: 0}
-      endScale: {x: 0, y: 0}
+      startScale: {x: 1, y: 1}
+      scale: {x: 0, y: 0}
       scaleDuration: 0
     statementTransition:
-      appearTime: 0
-      waitingTime: 0
-      disappearTime: 0
-    characterRelativeCameraAnimation:
-      startPosition: {x: 0, y: 8, z: 25}
+      appearTime: 10
+      waitingTime: 5
+      disappearTime: 10
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
       endPosition: {x: 0, y: 0, z: 0}
       moveDuration: 0
-      startRotation: {x: -15, y: 0, z: 0}
+      startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0

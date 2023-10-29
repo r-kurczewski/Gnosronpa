@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de611e5b16e5fc54a8bde4ca0961fc74, type: 3}
+  m_Name: Guard Duty
+  m_EditorClassIdentifier: 
+  bulletName: Guard Duty
+  bulletIcon: {fileID: 21300000, guid: dc837f6444502834bba8cf58adb128cc, type: 3}
+  description: 'Suspendisse sagittis, nunc et finibus suscipit, tortor eros pretium
+    diam, eget malesuada ipsum leo nec sem. In non gravida nisi, a dapibus felis. '

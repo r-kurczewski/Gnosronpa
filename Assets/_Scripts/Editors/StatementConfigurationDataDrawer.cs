@@ -30,16 +30,20 @@ namespace Gnosronpa.Editors
 
 			var button = new Button(() =>
 			{
-				var debateController = Object.FindObjectOfType<DebateController>();
-				var cameraController = Object.FindObjectOfType<CameraController>();
+				if (Application.isPlaying)
+				{
+					var debateController = Object.FindObjectOfType<DebateController>();
+					var cameraController = Object.FindObjectOfType<CameraController>();
 
-				var statements = GetStatementConfigurations(property);
-				var prevSpeakingCharacter = GameObject.FindGameObjectsWithTag("Character")
-				.Select(x => x.GetComponent<Character>())
-				.FirstOrDefault(x => x.Data == statements.prev?.statement.speakingCharacter);
+					var statements = GetStatementConfigurations(property);
+					var prevSpeakingCharacter = GameObject.FindGameObjectsWithTag("Character")
+					.Select(x => x.GetComponent<Character>())
+					.FirstOrDefault(x => x.Data == statements.prev?.statement.speakingCharacter);
 
-				cameraController.SetLastStateOfAnimation(statements.prev?.cameraAnimation, prevSpeakingCharacter?.gameObject);
-				debateController.PlayAnimation(statements.current);
+					cameraController.SetLastStateOfAnimation(statements.prev?.cameraAnimation, prevSpeakingCharacter?.gameObject);
+					debateController.PlayAnimation(statements.current);
+				}
+				else Debug.LogWarning("Animation will play only in play mode!");
 			});
 			button.text = "Play animation";
 

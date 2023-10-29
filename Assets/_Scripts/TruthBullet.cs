@@ -16,6 +16,8 @@ public class TruthBullet : MonoBehaviour
 
 	public TruthBulletData Data => data;
 
+	public bool HitObject { get; set; }
+
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -27,6 +29,11 @@ public class TruthBullet : MonoBehaviour
 	{
 		rb.velocity = transform.parent.TransformDirection(localMoveDirection) * speed;
 	}
+
+	//private void OnTriggerEnter(Collider other)
+	//{
+	//	Debug.Log($"Bullet hit {other.name}");
+	//}
 
 	private void Update()
 	{
@@ -43,6 +50,7 @@ public class TruthBullet : MonoBehaviour
 		this.data = data;
 		name = data.name;
 		text.text = data.bulletName;
+		HitObject = false;
 	}
 
 	public void Shoot(Vector3 srcWorldPos, Vector3 dstWorldPos, float speed)

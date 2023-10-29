@@ -19,6 +19,7 @@ namespace Gnosronpa.Utilities
 				pos.z = distance * Mathf.Sin(2 * Mathf.PI / characters.Length * i);
 
 				characters[i].transform.localPosition = new Vector3(pos.x, characters[i].transform.localPosition.y, pos.z);
+				characters[i].transform.LookAt(transform);
 			}
 		}
 	}

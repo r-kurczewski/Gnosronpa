@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,18 +10,15 @@ namespace Gnosronpa
       private Slider slider;
 
 		[SerializeField]
-		private float speed;
+		private float transitionDuration;
+
+		[SerializeField]
+		private Ease transitionEase;
 
 		public void SetPosition(float sliderPosition)
 		{
-			DOTween.To(() => slider.value, (v) => slider.value = v, sliderPosition, 0.5f);
-			//slider.value = Mathf.Clamp01(sliderPosition);
+			DOTween.To(() => slider.value, (v) => slider.value = v, sliderPosition, transitionDuration)
+				.SetEase(transitionEase);
 		}
-
-		//private void Update()
-		//{
-		//	slider.value += speed * Time.deltaTime;
-		//	if (slider.value == 1) slider.value = 0;
-		//}
 	}
 }

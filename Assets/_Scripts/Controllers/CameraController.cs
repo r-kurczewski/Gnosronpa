@@ -25,9 +25,10 @@ namespace Gnosronpa.Controllers
 		/// <param name="target">Target on which the camera will focus</param>
 		public void PlayCameraAnimation(Animation3DData animationData, GameObject target = null)
 		{
-			var baseRotation = GetBaseRotation(target);
+			StopCurrentAnimations();
 
-			var seq = DOTween.Sequence();
+			var baseRotation = GetBaseRotation(target);
+			var seq = DOTween.Sequence(transform);
 
 			if (transitions)
 			{
@@ -38,8 +39,7 @@ namespace Gnosronpa.Controllers
 			else
 			{
 				transform.localRotation = Quaternion.Euler(baseRotation);
-				cameraTransform.localPosition = animationData.startPosition;
-				cameraTransform.localRotation = Quaternion.Euler(animationData.startRotation);
+				cameraTransform.SetLocalPositionAndRotation(animationData.startPosition, Quaternion.Euler(animationData.startRotation));
 			}
 
 			if (animationData.moveDuration > 0)
@@ -58,10 +58,21 @@ namespace Gnosronpa.Controllers
 			var baseRotation = GetBaseRotation(target);
 
 			transform.localRotation = Quaternion.Euler(baseRotation);
-			cameraTransform.localPosition = animationData?.endPosition ?? Vector3.zero;
-			cameraTransform.localRotation = Quaternion.Euler(animationData?.endRotation ?? Vector3.zero);
+			cameraTransform.SetLocalPositionAndRotation(animationData?.endPosition ?? Vector3.zero, Quaternion.Euler(animationData?.endRotation ?? Vector3.zero));
+		}
+
+		private void StopCurrentAnimations()
+		{
+			var killCount = DOTween.Kill(transform);
+
+			if (killCount == 0) return;
 		}
 
 		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;
+
+		private void OnDrawGizmos()
+		{
+			Gizmos.DrawCube(transform.position, Vector3.one);
+		}
 	}
 }
