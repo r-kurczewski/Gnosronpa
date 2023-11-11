@@ -2,7 +2,7 @@
 
 namespace Gnosronpa.ScriptableObjects
 {
-	[CreateAssetMenu(fileName ="Character", menuName ="NonstopDebate/Character")]
+	[CreateAssetMenu(fileName = nameof(CharacterData), menuName = "")]
 	public class CharacterData : ScriptableObject
 	{
 		public string characterName;

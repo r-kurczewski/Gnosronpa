@@ -12,7 +12,6 @@ namespace Gnosronpa.Controllers
 {
 	public class BulletController : StateMachine<BulletController, BulletMenuState>, IRefreshable
 	{
-		
 		private const float startHideMenuTime = 10f;
 		private const float defaultHideMenuTime = 1.25f;
 
@@ -50,7 +49,7 @@ namespace Gnosronpa.Controllers
 		private float hideMenuTimer = 0;
 
 		[SerializeField]
-		private List<BulletLabel> bulletLabels;
+		private List<BulletLabel> bulletLabels = new();
 
 		private CancellationTokenSource hideMenuAferTimeCancellationTokenSource;
 
@@ -79,7 +78,7 @@ namespace Gnosronpa.Controllers
 				}
 			};
 
-			Loaded = new(nameof(Loading))
+			Loaded = new(nameof(Loaded))
 			{
 				OnEnter = () =>
 				{
@@ -187,19 +186,28 @@ namespace Gnosronpa.Controllers
 			};
 		}
 
+		#endregion
+
 		private void UpdateHideMenuTimeCounter()
 		{
 			if (Time.timeScale != 0) hideMenuTimer -= Time.unscaledDeltaTime;
 		}
 
-		#endregion
-
-		public void Init(DebateData debateData)
+		public void Init(NonstopDebate debateData)
 		{
 			visibleBullets = debateData.visibleBullets;
+			hideMenuTimer = 0;
 
 			var bulletsData = debateData.bullets;
-			bulletLabels = new List<BulletLabel>();
+			
+			foreach (Transform bullet in bulletLabelsParent)
+			{
+				Destroy(bullet.gameObject);
+			}
+			bulletLabels.Clear();
+			bulletLabelsParent.gameObject.SetActive(true);
+			selectedBulletLabel.gameObject.SetActive(false);
+
 			foreach (var bulletData in bulletsData)
 			{
 				var bulletLabel = LoadBulletLabel(bulletData);
@@ -207,7 +215,7 @@ namespace Gnosronpa.Controllers
 			}
 			selectedIndex = bulletLabels.Count - visibleBullets / 2 - 1;
 
-			_ = InitStateMachine();
+			InitStateMachine();
 		}
 
 		public async UniTask OpenBulletMenu()
@@ -331,7 +339,6 @@ namespace Gnosronpa.Controllers
 			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
 			var firstVisibleIndexUnclamped = selectedIndex - visibleBullets / 2;
-			//var lastVisibleIndex = (firstVisibleIndexUnclamped + maxVisibleBullets + bulletLabels.Count) % bulletLabels.Count;
 
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{

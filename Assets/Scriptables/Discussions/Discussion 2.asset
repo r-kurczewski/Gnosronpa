@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b16a9d816fe2b45a0ea2eeab7381b1, type: 3}
+  m_Name: Discussion 2
+  m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: 709bbdba48d415a439638c07469cdb25, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 46d127e29503f7a4bab74fdddcdf357d, type: 3}
+  messages:
+  - speakingCharacter: {fileID: 11400000, guid: 148bf81d8dc14c94c996f08852b13d0b, type: 2}
+    messageText: Hello D
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
+    messageText: Hello E
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - speakingCharacter: {fileID: 11400000, guid: c78135e9b5aaa75499f7f421e04e0d9a, type: 2}
+    messageText: Hello F
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0

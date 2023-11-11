@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
   m_Name: Example Debate
   m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: afa83aa277b6db64b886283e1e9dfbb9, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 60ba7940e5a7cf64087a256188fc2d20, type: 3}
   visibleBullets: 3
   bullets:
   - {fileID: 11400000, guid: 3d59d073c73c62148ac8888d696268d1, type: 2}

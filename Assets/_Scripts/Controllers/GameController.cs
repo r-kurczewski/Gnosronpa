@@ -1,4 +1,6 @@
-﻿using Gnosronpa.ScriptableObjects;
+﻿using Cysharp.Threading.Tasks;
+using Gnosronpa.Assets._Scripts.Scriptables;
+using Gnosronpa.ScriptableObjects;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,9 +18,6 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private DebateController debateController;
-
-		[SerializeField]
-		private BulletController bulletController;
 
 		[SerializeField]
 		private InputActionReference inputShowMenu;
@@ -39,7 +38,10 @@ namespace Gnosronpa.Controllers
 		private float previousTimeScale = 1;
 
 		[SerializeField]
-		private DebateData startDebate;
+		private GameplaySegmentData startMechanic;
+
+		[SerializeField]
+		private GameplaySegmentData currentMechanic;
 
 		private Dictionary<InputAction, bool> previousInputState = new();
 
@@ -47,8 +49,7 @@ namespace Gnosronpa.Controllers
 
 		private void Start()
 		{
-			debateController.Init(startDebate);
-			bulletDescriptionPanel.Init(startDebate.bullets);
+			_ = Init();
 		}
 
 		private void OnEnable()
@@ -61,6 +62,41 @@ namespace Gnosronpa.Controllers
 		{
 			inputShowMenu.action.performed -= ToggleMenu;
 			inputHideMenu.action.performed -= ToggleMenu;
+		}
+
+		public async UniTask Init()
+		{
+			currentMechanic = startMechanic;
+			await RunGameLoop();
+		}
+
+		public async UniTask RunGameLoop()
+		{
+			do
+			{
+				currentMechanic = await LoadGameMechanic(currentMechanic);
+			}
+			while (currentMechanic != null);
+		}
+
+		private async UniTask<GameplaySegmentData> LoadGameMechanic(GameplaySegmentData mechanic)
+		{
+			AudioController.instance.PlayMusic(mechanic.segmentMusic);
+			if (mechanic is NonstopDebate debate)
+			{
+				await debateController.ResetMachineState();
+				debateController.Init(debate);
+				await UniTask.WaitUntil(() => debateController.CurrentState == debateController.FinalState);
+			}
+			else if (mechanic is Discussion discussion)
+			{
+				DialogController.instance.SetVisibility(true);
+				discussion.messages.ForEach(message => DialogController.instance.AddMessage(message));
+				DialogController.instance.LoadNextMessage(playSound: false);
+
+				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+			}
+			return mechanic.nextGameplaySegment;
 		}
 
 		private async void ToggleMenu(CallbackContext ctx = default)

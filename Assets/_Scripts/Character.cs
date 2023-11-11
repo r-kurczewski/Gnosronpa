@@ -1,5 +1,6 @@
 using Gnosronpa.ScriptableObjects;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Gnosronpa
@@ -10,6 +11,15 @@ namespace Gnosronpa
 		private CharacterData _data;
 
 		public CharacterData Data { get => _data; set => _data = value; }
+
+		public static Character TryGet(CharacterData characterData)
+		{
+			var result = GameObject.FindGameObjectsWithTag("Character")
+				.Select(x => x.GetComponent<Character>())
+				.FirstOrDefault(x => x.Data == characterData);
+
+			return result;
+		}
 
 		private void Update()
 		{

@@ -61,7 +61,12 @@ namespace Gnosronpa
 
 		public void Init(IEnumerable<TruthBulletData> bullets)
 		{
+			foreach(var listEl in listElements)
+			{
+				Destroy(listEl.gameObject);
+			}
 			listElements.Clear();
+
 			foreach (var bullet in bullets)
 			{
 				var bulletDescription = Instantiate(bulletDescriptionListElementPrefab, scroll.content)

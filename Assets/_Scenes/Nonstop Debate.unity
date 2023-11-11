@@ -200,14 +200,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 87834060}
   debateController: {fileID: 1919049673}
-  bulletController: {fileID: 1074893611}
   inputShowMenu: {fileID: -217501561462601132, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputHideMenu: {fileID: -1071899101131143589, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   bulletDescriptionPanel: {fileID: 182817678}
   bulletsParent: {fileID: 462967593}
   paused: 0
   previousTimeScale: 1
-  startDebate: {fileID: 11400000, guid: 71e613d531c6594439da3bdef7b354c5, type: 2}
+  startMechanic: {fileID: 11400000, guid: 2adf9fdbc5538f844b1ad5d0f8f88a61, type: 2}
+  currentMechanic: {fileID: 0}
 --- !u!4 &53949346
 Transform:
   m_ObjectHideFlags: 0
@@ -356,17 +356,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4153192063383369015, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
   m_PrefabInstance: {fileID: 1351304389}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &78969553 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7266549160843331831, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-  m_PrefabInstance: {fileID: 1351304389}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6cd36b3f936ad04f91cf2acc39e23ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &87834057
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,7 +792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 80}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -18.2, y: -30.599998}
+  m_AnchoredPosition: {x: -18.2, y: -30.600006}
   m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &328334940
@@ -981,17 +970,19 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389315967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.104061, y: -12.971626, z: 76.23251}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1435445875}
-  - {fileID: 87834058}
   - {fileID: 1645166534}
   - {fileID: 63137765}
   - {fileID: 53949346}
   - {fileID: 1919049672}
   - {fileID: 357588252}
+  - {fileID: 544776156}
+  - {fileID: 464812824}
+  - {fileID: 1435445875}
+  - {fileID: 87834058}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1124,6 +1115,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &454857325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6332363437147780324, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+  m_PrefabInstance: {fileID: 1351304389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &462027774 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+  m_PrefabInstance: {fileID: 1351304389}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &462967593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,6 +1167,62 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &464812823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 464812824}
+  - component: {fileID: 464812825}
+  m_Layer: 0
+  m_Name: BulletController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &464812824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464812823}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 389315968}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &464812825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464812823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02602f82bbba870458fa9bb8cbb8d5b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInitialized: 0
+  _currentState:
+    _stateName: 
+  bulletLabelPrefab: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
+  labelSpawnPos: {x: 550, y: -160, z: 0}
+  selectedBulletLabel: {fileID: 1817275695}
+  bulletLabelsParent: {fileID: 431949050}
+  bulletLoadSound: {fileID: 8300000, guid: 2fb0cad3478775a4f815e39306a497f3, type: 3}
+  visibleBullets: 0
+  selectedIndex: 0
+  hideMenuTimer: 0
+  bulletLabels: []
 --- !u!1 &476110836
 GameObject:
   m_ObjectHideFlags: 0
@@ -1583,6 +1646,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 544623028}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &544776155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 544776156}
+  - component: {fileID: 544776157}
+  m_Layer: 5
+  m_Name: DialogController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &544776156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544776155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 389315968}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &544776157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544776155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ccad4e2609a35b40a31e98cdc5913eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputNextDialog: {fileID: 4643884041679450791, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
+  dialogBox: {fileID: 454857325}
+  characterInfo: {fileID: 1607292614}
+  title: {fileID: 1819542883}
+  message: {fileID: 462027774}
+  messageLoadSound: {fileID: 8300000, guid: 0990ef82a832e8540baf5b9ee461b441, type: 3}
+  messageContentDisplayed: 0
+  messagesEnded: 0
+  currentMessage:
+    speakingCharacter: {fileID: 0}
+    messageText: 
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
 --- !u!1 &591587491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,7 +2113,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 22.5, y: 50}
-  m_SizeDelta: {x: 55, y: 0}
+  m_SizeDelta: {x: 55, y: 287.0498}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &827687496
 MonoBehaviour:
@@ -2224,7 +2349,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -8678494371168694065, guid: f8204ebadc274604d889b5baabbc7637, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 1e1341cc4dbc3c34a884183ec2435870, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.67
   m_Pitch: 1
@@ -2527,9 +2652,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1074893610}
-  - component: {fileID: 1074893611}
   m_Layer: 5
-  m_Name: BulletController
+  m_Name: BulletsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2559,29 +2683,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1074893611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074893609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02602f82bbba870458fa9bb8cbb8d5b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentState:
-    _stateName: 
-  bulletLabelPrefab: {fileID: 6309097409184503346, guid: 3f2405aacc25c8841890ccefac95d8ee, type: 3}
-  labelSpawnPos: {x: 550, y: -160, z: 0}
-  selectedBulletLabel: {fileID: 1817275695}
-  bulletLabelsParent: {fileID: 431949050}
-  bulletLoadSound: {fileID: 8300000, guid: 2fb0cad3478775a4f815e39306a497f3, type: 3}
-  visibleBullets: 0
-  selectedIndex: 0
-  hideMenuTimer: 0
-  bulletLabels: []
 --- !u!1 &1079968974 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7059870668660101784, guid: 4cc928983f4d52647acede4128ed8870, type: 3}
@@ -3953,7 +4054,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 200.1554, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1677106260
 MonoBehaviour:
@@ -3968,7 +4069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.29803923}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.4745098}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4035,7 +4136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1681735287
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4254,6 +4355,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7059870668660101791, guid: 4cc928983f4d52647acede4128ed8870, type: 3}
   m_PrefabInstance: {fileID: 7003615439573999962}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1819542883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7088122354538996437, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+  m_PrefabInstance: {fileID: 1351304389}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1821868565 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7059870668660101784, guid: 4cc928983f4d52647acede4128ed8870, type: 3}
@@ -4297,8 +4409,8 @@ RectTransform:
   m_Father: {fileID: 1474894458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -45}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4649,6 +4761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 223067903d146f24a900bc93bdc187ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInitialized: 0
   _currentState:
     _stateName: 
   cameraController: {fileID: 1371867603}
@@ -4657,7 +4770,6 @@ MonoBehaviour:
   inputChangeBullet: {fileID: 2805303670844433148, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputRewind: {fileID: -925155489392383504, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputSlowmode: {fileID: 5230133188502322826, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
-  inputNextDialog: {fileID: 4643884041679450791, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   statementsParent: {fileID: 46455575}
   bulletsParent: {fileID: 462967594}
   statementPrefab: {fileID: 2583807685936287925, guid: c417cad2ad6a9564ea61b7f3e0d05cc7, type: 3}
@@ -4666,15 +4778,12 @@ MonoBehaviour:
   counterAnimationParent: {fileID: 220746912}
   cameraFade: {fileID: 1073098762}
   shootScript: {fileID: 1645166533}
-  characterInfo: {fileID: 1607292614}
   rightPanel: {fileID: 1677106258}
   debateGUI: {fileID: 1681735286}
-  bulletController: {fileID: 1074893611}
+  bulletController: {fileID: 464812825}
   timeSlider: {fileID: 1845808667}
-  screenshotScript: {fileID: 0}
-  lieAnimation: {fileID: 0}
   customCursor: {fileID: 1874376606}
-  dialogBox: {fileID: 78969553}
+  bulletDescriptionPanel: {fileID: 182817678}
   debateAnimation: {fileID: 63137766}
   data: {fileID: 11400000, guid: 709bbdba48d415a439638c07469cdb25, type: 2}
   time: 0
@@ -4975,8 +5084,8 @@ RectTransform:
   m_Father: {fileID: 476110837}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

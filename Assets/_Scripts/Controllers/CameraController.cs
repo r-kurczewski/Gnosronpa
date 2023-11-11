@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Gnosronpa.Common;
+using System;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers
@@ -7,7 +8,7 @@ namespace Gnosronpa.Controllers
 	/// <summary>
 	/// Camera must be a child of this controller GameObject to properly apply base rotation.
 	/// </summary>
-	public class CameraController : MonoBehaviour
+	public class CameraController : SingletonBase<CameraController>
 	{
 		[SerializeField]
 		private Transform cameraTransform;
@@ -53,6 +54,12 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
+		public void ResetCamera()
+		{
+			transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+			cameraTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+		}
+
 		public void SetLastStateOfAnimation(Animation3DData animationData, GameObject target = null)
 		{
 			var baseRotation = GetBaseRotation(target);
@@ -74,5 +81,7 @@ namespace Gnosronpa.Controllers
 		{
 			Gizmos.DrawCube(transform.position, Vector3.one);
 		}
+
+
 	}
 }
