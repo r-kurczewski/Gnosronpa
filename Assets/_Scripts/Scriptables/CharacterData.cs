@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Gnosronpa.ScriptableObjects
+namespace Gnosronpa.Scriptables
 {
 	[CreateAssetMenu(fileName = nameof(CharacterData), menuName = "")]
 	public class CharacterData : ScriptableObject

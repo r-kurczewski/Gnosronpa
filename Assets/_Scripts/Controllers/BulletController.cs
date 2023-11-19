@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using Gnosronpa.StateMachines;
 using Gnosronpa.StateMachines.Common;
 using System.Collections.Generic;

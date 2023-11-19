@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;

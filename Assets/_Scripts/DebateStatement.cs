@@ -2,12 +2,12 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gnosronpa.Common;
 using Gnosronpa.Controllers;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using static Gnosronpa.ScriptableObjects.DebateStatementData;
+using static Gnosronpa.Scriptables.DebateStatementData;
 
 namespace Gnosronpa
 {

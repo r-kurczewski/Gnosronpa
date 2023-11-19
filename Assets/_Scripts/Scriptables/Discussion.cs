@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gnosronpa.Assets._Scripts.Scriptables
+namespace Gnosronpa.Scriptables
 {
 	[CreateAssetMenu(fileName = nameof(Discussion), menuName = "")]
 	public class Discussion : GameplaySegmentData

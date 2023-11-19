@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Gnosronpa.Common;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using System;
 using System.Collections.Generic;
 using System.Linq;

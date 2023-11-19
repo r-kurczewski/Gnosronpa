@@ -1,5 +1,5 @@
 ﻿using DG.Tweening;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

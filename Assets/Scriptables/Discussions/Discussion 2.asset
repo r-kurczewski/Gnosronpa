@@ -16,7 +16,8 @@ MonoBehaviour:
   segmentMusic: {fileID: 8300000, guid: 46d127e29503f7a4bab74fdddcdf357d, type: 3}
   messages:
   - speakingCharacter: {fileID: 11400000, guid: 148bf81d8dc14c94c996f08852b13d0b, type: 2}
-    messageText: Hello D
+    messageText: Pellentesque interdum, metus blandit tempus fringilla, lacus ex
+      sollicitudin nibh, non finibus orci elit nec eros.
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 0}
@@ -25,7 +26,8 @@ MonoBehaviour:
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
   - speakingCharacter: {fileID: 11400000, guid: 7cd4afe944c6ee04dadcdf3a6c20c2e4, type: 2}
-    messageText: Hello E
+    messageText: Nulla placerat leo purus, vulputate faucibus odio sagittis sed.
+      Maecenas accumsan cursus lobortis.
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 0}
@@ -34,7 +36,8 @@ MonoBehaviour:
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
   - speakingCharacter: {fileID: 11400000, guid: c78135e9b5aaa75499f7f421e04e0d9a, type: 2}
-    messageText: Hello F
+    messageText: Vestibulum dui libero, blandit tristique ex eget, interdum bibendum
+      mi. Phasellus enim nibh, tincidunt a mollis eu,
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 0}

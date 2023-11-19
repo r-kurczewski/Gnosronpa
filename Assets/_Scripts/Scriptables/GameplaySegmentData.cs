@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Gnosronpa.Assets._Scripts.Scriptables
+namespace Gnosronpa.Scriptables
 {
 	public abstract class GameplaySegmentData : ScriptableObject
 	{

@@ -1,5 +1,5 @@
 using UnityEditor;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEngine;
