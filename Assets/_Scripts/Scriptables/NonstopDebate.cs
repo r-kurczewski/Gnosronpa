@@ -1,10 +1,9 @@
-using Gnosronpa.Assets._Scripts.Scriptables;
 using Gnosronpa.Common;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gnosronpa.ScriptableObjects
+namespace Gnosronpa.Scriptables
 {
 	[CreateAssetMenu(fileName = nameof(NonstopDebate), menuName = "NonstopDebate/Debate")]
 	public class NonstopDebate : GameplaySegmentData

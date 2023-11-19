@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using Gnosronpa.Assets._Scripts.Scriptables;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,6 +11,8 @@ namespace Gnosronpa.Controllers
 	{
 		private const string NonstopDebateActionMapKey = "Nonstop Debate";
 		private const string MenuActionMapKey = "Menu";
+
+		public static GameplaySegmentData startingSegment;
 
 		[SerializeField]
 		private PlayerInput playerInput;
@@ -38,10 +39,10 @@ namespace Gnosronpa.Controllers
 		private float previousTimeScale = 1;
 
 		[SerializeField]
-		private GameplaySegmentData startMechanic;
+		private GameplaySegmentData startingSegmentFallback;
 
 		[SerializeField]
-		private GameplaySegmentData currentMechanic;
+		private GameplaySegmentData currentSegment;
 
 		private Dictionary<InputAction, bool> previousInputState = new();
 
@@ -66,7 +67,7 @@ namespace Gnosronpa.Controllers
 
 		public async UniTask Init()
 		{
-			currentMechanic = startMechanic;
+			currentSegment = startingSegment ?? startingSegmentFallback;
 			await RunGameLoop();
 		}
 
@@ -74,9 +75,10 @@ namespace Gnosronpa.Controllers
 		{
 			do
 			{
-				currentMechanic = await LoadGameMechanic(currentMechanic);
+				currentSegment = await LoadGameMechanic(currentSegment);
 			}
-			while (currentMechanic != null);
+			while (currentSegment != null);
+			SceneController.instance.LoadMenu();
 		}
 
 		private async UniTask<GameplaySegmentData> LoadGameMechanic(GameplaySegmentData mechanic)

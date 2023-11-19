@@ -1,6 +1,5 @@
 using DG.Tweening;
 using Gnosronpa.Common;
-using System;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers

@@ -1,4 +1,4 @@
-﻿using Gnosronpa.ScriptableObjects;
+﻿using Gnosronpa.Scriptables;
 using System;
 using UnityEngine;
 
