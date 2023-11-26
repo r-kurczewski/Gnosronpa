@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 namespace Gnosronpa
 {
-	public class CameraFade : MonoBehaviour
+	public class CameraFade : SingletonBase<CameraFade>
 	{
+		private const float fadeTime = 0.75f;
+
 		[SerializeField]
 		private Image image;
 
-		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration)
+		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration = fadeTime)
 		{
 			return DOTween.To(
 				() => image.color.a, (a) =>

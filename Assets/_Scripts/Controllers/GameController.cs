@@ -1,8 +1,10 @@
-﻿using Gnosronpa.ScriptableObjects;
+﻿using Cysharp.Threading.Tasks;
+using Gnosronpa.Scriptables;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
+using static Gnosronpa.Common.AnimationConsts;
 
 namespace Gnosronpa.Controllers
 {
@@ -11,14 +13,13 @@ namespace Gnosronpa.Controllers
 		private const string NonstopDebateActionMapKey = "Nonstop Debate";
 		private const string MenuActionMapKey = "Menu";
 
+		public static GameplaySegmentData startingSegment;
+
 		[SerializeField]
 		private PlayerInput playerInput;
 
 		[SerializeField]
 		private DebateController debateController;
-
-		[SerializeField]
-		private BulletController bulletController;
 
 		[SerializeField]
 		private InputActionReference inputShowMenu;
@@ -30,6 +31,9 @@ namespace Gnosronpa.Controllers
 		private BulletDescriptionPanel bulletDescriptionPanel;
 
 		[SerializeField]
+		private CustomCursor cursor;
+
+		[SerializeField]
 		private GameObject bulletsParent;
 
 		[SerializeField]
@@ -39,7 +43,10 @@ namespace Gnosronpa.Controllers
 		private float previousTimeScale = 1;
 
 		[SerializeField]
-		private DebateData startDebate;
+		private GameplaySegmentData startingSegmentFallback;
+
+		[SerializeField]
+		private GameplaySegmentData currentSegment;
 
 		private Dictionary<InputAction, bool> previousInputState = new();
 
@@ -47,8 +54,7 @@ namespace Gnosronpa.Controllers
 
 		private void Start()
 		{
-			debateController.Init(startDebate);
-			bulletDescriptionPanel.Init(startDebate.bullets);
+			_ = Init();
 		}
 
 		private void OnEnable()
@@ -61,6 +67,45 @@ namespace Gnosronpa.Controllers
 		{
 			inputShowMenu.action.performed -= ToggleMenu;
 			inputHideMenu.action.performed -= ToggleMenu;
+		}
+
+		public async UniTask Init()
+		{
+			currentSegment = startingSegment ?? startingSegmentFallback;
+			await RunGameLoop();
+		}
+
+		public async UniTask RunGameLoop()
+		{
+			do
+			{
+				currentSegment = await LoadGameMechanic(currentSegment);
+			}
+			while (currentSegment != null);
+
+			cursor.gameObject.SetActive(false);
+			await CameraFade.instance.DOFade(fadeOn, 1.5f);
+			SceneController.instance.LoadMenu();
+		}
+
+		private async UniTask<GameplaySegmentData> LoadGameMechanic(GameplaySegmentData mechanic)
+		{
+			AudioController.instance.PlayMusic(mechanic.segmentMusic);
+			if (mechanic is NonstopDebate debate)
+			{
+				await debateController.ResetMachineState();
+				debateController.Init(debate);
+				await UniTask.WaitUntil(() => debateController.CurrentState == debateController.FinalState);
+			}
+			else if (mechanic is Discussion discussion)
+			{
+				DialogController.instance.SetVisibility(true);
+				discussion.messages.ForEach(message => DialogController.instance.AddMessage(message));
+				DialogController.instance.LoadNextMessage(playSound: false);
+
+				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+			}
+			return mechanic.nextGameplaySegment;
 		}
 
 		private async void ToggleMenu(CallbackContext ctx = default)

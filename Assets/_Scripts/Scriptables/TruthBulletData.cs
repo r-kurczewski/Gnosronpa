@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Gnosronpa.ScriptableObjects
+namespace Gnosronpa.Scriptables
 {
 	[CreateAssetMenu(fileName = "TruthBullet", menuName = "NonstopDebate/TruthBullet")]
 	public class TruthBulletData : ScriptableObject

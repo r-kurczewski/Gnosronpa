@@ -1,5 +1,5 @@
 using UnityEditor;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -66,7 +66,7 @@ namespace Gnosronpa.Editors
 			indexStr = indexStr.Remove(indexStr.Length - 1);
 			var index = int.Parse(indexStr);
 
-			var target = property.serializedObject.targetObject as DebateData;
+			var target = property.serializedObject.targetObject as NonstopDebate;
 			return (target.debateSequence[index], index - 1 >= 0 ? target.debateSequence[index - 1] : null);
 		}
 	}

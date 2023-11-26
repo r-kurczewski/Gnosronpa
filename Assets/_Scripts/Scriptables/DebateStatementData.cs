@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gnosronpa.ScriptableObjects
+namespace Gnosronpa.Scriptables
 {
 	[CreateAssetMenu(fileName = "Statement", menuName = "NonstopDebate/Statement")]
 	public class DebateStatementData : ScriptableObject

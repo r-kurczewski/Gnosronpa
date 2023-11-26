@@ -1,5 +1,5 @@
 using Gnosronpa.Controllers;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

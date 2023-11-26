@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Gnosronpa.StateMachines.Common.Exceptions;
 using System;
 using UnityEngine;
 
@@ -10,9 +11,7 @@ namespace Gnosronpa.StateMachines.Common
 		protected const string FinalStateName = "Final";
 
 		[SerializeField]
-		private S _currentState;
-
-		private S _finalState;
+		private bool isInitialized;
 
 		public S CurrentState
 		{
@@ -27,16 +26,28 @@ namespace Gnosronpa.StateMachines.Common
 			}
 		}
 
+		[SerializeField]
+		private S _currentState;
+
+		private S _finalState;
+
 		protected abstract S StartingState { get; }
 
 		public S FinalState { get => _finalState; private set => _finalState = value; }
 
 		protected S RequestedState { get; private set; }
 
-		protected async UniTask InitStateMachine()
+		protected async void InitStateMachine()
 		{
+			if (isInitialized)
+			{
+				Debug.LogError("State machine is already initialized", this);
+				return;
+			}
+
 			DefineMachineStates();
 			FinalState = new() { StateName = FinalStateName, OnEnter = DefineFinalStateBehaviour() };
+			isInitialized = true;
 
 			try
 			{
@@ -59,10 +70,11 @@ namespace Gnosronpa.StateMachines.Common
 		{
 			if (StartingState is null)
 			{
-				Debug.LogError($"Starting state is null");
+				Debug.LogError($"Starting state is null", gameObject);
 				return;
 			}
 
+			isInitialized = true;
 			CurrentState = StartingState;
 			if (CurrentState.OnEnter is not null) await CurrentState.OnEnter();
 
@@ -84,6 +96,11 @@ namespace Gnosronpa.StateMachines.Common
 					nextState = RequestedState;
 					RequestedState = null;
 				}
+				catch (StateMachineStoppedException)
+				{
+					CurrentState = null;
+					return;
+				}
 
 				if (nextState is null)
 				{
@@ -100,6 +117,24 @@ namespace Gnosronpa.StateMachines.Common
 			}
 		}
 
+		public async UniTask ResetMachineState()
+		{
+			if (!isInitialized) return;
+
+			isInitialized = false;
+			RequestedState = null;
+			
+			if (CurrentState == FinalState)
+			{
+				CurrentState = null;
+				RequestedState = null;
+			}
+			else
+			{
+				await UniTask.WaitUntil(() => CurrentState is null);
+			}
+		}
+
 		protected async UniTask RequestStateChange(State<T> requestedState)
 		{
 			RequestedState = requestedState as S;
@@ -108,7 +143,11 @@ namespace Gnosronpa.StateMachines.Common
 
 		protected void CheckStateChangeRequest()
 		{
-			if (RequestedState is not null)
+			if (!isInitialized)
+			{
+				throw new StateMachineStoppedException();
+			}
+			else if (RequestedState is not null)
 			{
 				throw new StateChangeRequestedException();
 			}

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
   m_Name: Example Debate
   m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: afa83aa277b6db64b886283e1e9dfbb9, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 60ba7940e5a7cf64087a256188fc2d20, type: 3}
   visibleBullets: 3
   bullets:
   - {fileID: 11400000, guid: 3d59d073c73c62148ac8888d696268d1, type: 2}
@@ -20,9 +22,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
   - {fileID: 11400000, guid: 2061875d0cdd0154594a981872e306d0, type: 2}
   debateHints:
-  - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: "We've been blindly trusting Gina's opinions. Can we really trust
       Gina\u2026?"
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 8, z: 20}
       endPosition: {x: 0, y: 8, z: 25}
@@ -30,8 +33,9 @@ MonoBehaviour:
       startRotation: {x: -15, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: ' Let''s reassess this, carefully.'
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 8, z: 25}
       endPosition: {x: 0, y: 0, z: 0}
