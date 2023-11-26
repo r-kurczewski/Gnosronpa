@@ -33,7 +33,7 @@ MonoBehaviour:
       startRotation: {x: -15, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - dialogSource: {fileID: 0}
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: ' Let''s reassess this, carefully.'
     skipAnimation: 0
     cameraAnimation:
