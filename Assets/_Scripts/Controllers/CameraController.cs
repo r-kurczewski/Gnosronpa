@@ -23,7 +23,7 @@ namespace Gnosronpa.Controllers
 		/// </summary>
 		/// <param name="animationData">AnimationData applied in relation to target</param>
 		/// <param name="target">Target on which the camera will focus</param>
-		public void PlayCameraAnimation(Animation3DData animationData, GameObject target = null)
+		public void PlayCameraAnimation(Animation3DData animationData, GameObject target)
 		{
 			StopCurrentAnimations();
 

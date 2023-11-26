@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a1f0dfde382e1704d95bf3e78a3ac15a, type: 2}
   - {fileID: 11400000, guid: d265ef19b985c0d4eb895a3d634e4225, type: 2}
   debateHints:
-  - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: We're missing something. Let's take our time and figure out who
       could be the Gnosia...
     cameraAnimation:

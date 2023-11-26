@@ -15,7 +15,7 @@ MonoBehaviour:
   nextGameplaySegment: {fileID: 0}
   segmentMusic: {fileID: 8300000, guid: 1818598d0b8b5c842833e38e97176e5c, type: 3}
   messages:
-  - speakingCharacter: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
+  - dialogSource: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
     messageText: Praesent laoreet nunc vestibulum venenatis euismod. Ut ut urna et
       sapien porta dignissim a id nibh.
     cameraAnimation:
@@ -25,7 +25,7 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - speakingCharacter: {fileID: 11400000, guid: dddf2eebdcb2dd848b7bf4753c0d1958, type: 2}
+  - dialogSource: {fileID: 11400000, guid: dddf2eebdcb2dd848b7bf4753c0d1958, type: 2}
     messageText: Nulla imperdiet nisi quis mollis tincidunt. In vestibulum leo eu
       mauris tincidunt ultricies.
     cameraAnimation:
@@ -35,7 +35,7 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - speakingCharacter: {fileID: 11400000, guid: ace4b58769a0de849b0f491106a0fcc4, type: 2}
+  - dialogSource: {fileID: 11400000, guid: ace4b58769a0de849b0f491106a0fcc4, type: 2}
     messageText: Donec velit ligula, ultrices at condimentum vitae, eleifend in nibh.
       Duis orci ex, accumsan ornare viverra id, tristique facilisis felis.
     cameraAnimation:

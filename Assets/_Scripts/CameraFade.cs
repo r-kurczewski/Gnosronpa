@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Gnosronpa
 {
-	public class CameraFade : MonoBehaviour
+	public class CameraFade : SingletonBase<CameraFade>
 	{
 		private const float fadeTime = 0.75f;
 

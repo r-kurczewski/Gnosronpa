@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gnosronpa.Scriptables
 {
-	[CreateAssetMenu(fileName = nameof(Discussion), menuName = "")]
+	[CreateAssetMenu(fileName = nameof(Discussion), menuName = "Dialog/Discussion")]
 	public class Discussion : GameplaySegmentData
 	{
 		public List<DialogMessage> messages;

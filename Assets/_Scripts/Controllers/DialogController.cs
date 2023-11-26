@@ -29,6 +29,9 @@ namespace Gnosronpa.Controllers
 		private TMP_Text title;
 
 		[SerializeField]
+		private GameObject titleBox;
+
+		[SerializeField]
 		private TMP_Text message;
 
 		[SerializeField]
@@ -91,10 +94,20 @@ namespace Gnosronpa.Controllers
 
 			currentMessage = messages.Dequeue();
 
+			if(currentMessage.dialogSource is null)
+			{
+				Debug.LogError($"DialogSource cannot be null: {currentMessage.messageText}");
+			}
+
 			messageContentDisplayed = false;
-			SetTitle(currentMessage.speakingCharacter.characterName);
-			SetMessage(currentMessage.messageText);
-			CameraController.instance.PlayCameraAnimation(currentMessage.cameraAnimation, Character.TryGet(currentMessage.speakingCharacter).gameObject);
+			SetTitle(currentMessage.dialogSource.SourceName);
+			SetMessage(currentMessage.FormatedMessage);
+			titleBox.SetActive(currentMessage.dialogSource.ShowTitle);
+
+			if (currentMessage.dialogSource.CameraTarget is GameObject target && !currentMessage.skipAnimation)
+			{
+				CameraController.instance.PlayCameraAnimation(currentMessage.cameraAnimation, target);
+			}
 
 			revealTextTokenSource = new CancellationTokenSource();
 			_ = RevealText(revealTextTokenSource.Token);
@@ -116,7 +129,6 @@ namespace Gnosronpa.Controllers
 
 		private void OnNextDialogMessage(CallbackContext context = default)
 		{
-			
 			if (MessageContentDisplayed)
 			{
 				LoadNextMessage();

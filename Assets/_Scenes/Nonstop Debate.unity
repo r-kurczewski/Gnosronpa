@@ -202,6 +202,7 @@ MonoBehaviour:
   inputShowMenu: {fileID: -217501561462601132, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputHideMenu: {fileID: -1071899101131143589, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   bulletDescriptionPanel: {fileID: 182817678}
+  cursor: {fileID: 1874376606}
   bulletsParent: {fileID: 462967593}
   paused: 0
   previousTimeScale: 1
@@ -1689,13 +1690,15 @@ MonoBehaviour:
   dialogBox: {fileID: 454857325}
   characterInfo: {fileID: 1607292614}
   title: {fileID: 1819542883}
+  titleBox: {fileID: 1845943378}
   message: {fileID: 462027774}
   messageLoadSound: {fileID: 8300000, guid: 0990ef82a832e8540baf5b9ee461b441, type: 3}
   messageContentDisplayed: 0
   messagesEnded: 0
   currentMessage:
-    speakingCharacter: {fileID: 0}
+    dialogSource: {fileID: 0}
     messageText: 
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 0}
       endPosition: {x: 0, y: 0, z: 0}
@@ -3298,6 +3301,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 220746912}
     m_Modifications:
+    - target: {fileID: 190350294221152295, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_text
+      value: We're all supposed to gather in the main console.
+      objectReference: {fileID: 0}
+    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_isRichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_overrideHtmlColors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_enableVertexGradient
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548177784167639367, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456003521483479244, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4153192063383369015, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4485,6 +4520,11 @@ MonoBehaviour:
   slider: {fileID: 328334940}
   transitionDuration: 0.5
   transitionEase: 9
+--- !u!1 &1845943378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 190350294221152295, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+  m_PrefabInstance: {fileID: 1351304389}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1868883482 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7059870668660101784, guid: 4cc928983f4d52647acede4128ed8870, type: 3}

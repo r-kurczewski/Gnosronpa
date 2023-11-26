@@ -24,7 +24,7 @@ MonoBehaviour:
     center: {x: -95, y: -6}
     size: {x: 230, y: 40}
   hitDialogs:
-  - speakingCharacter: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
+  - dialogSource: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
     messageText: Setsu, what is your goal? It's not the same as mine...
     cameraAnimation:
       startPosition: {x: 0, y: 15, z: 20}
@@ -33,7 +33,7 @@ MonoBehaviour:
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 10, z: 0}
       rotationDuration: 4
-  - speakingCharacter: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: I'll try harder...
     cameraAnimation:
       startPosition: {x: 0, y: 8, z: 20}

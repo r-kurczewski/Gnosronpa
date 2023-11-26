@@ -15,9 +15,31 @@ MonoBehaviour:
   nextGameplaySegment: {fileID: 11400000, guid: 71e613d531c6594439da3bdef7b354c5, type: 2}
   segmentMusic: {fileID: 8300000, guid: 1818598d0b8b5c842833e38e97176e5c, type: 3}
   messages:
-  - speakingCharacter: {fileID: 11400000, guid: cf4a726fe019b2d47bd2ddbc25b7b6ae, type: 2}
+  - dialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
+    messageText: Vestibulum laoreet tempus mi, eu vulputate nunc condimentum varius.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
+    messageText: Sed ac lacinia dui, nec ornare sapien. Donec efficitur erat in volutpat
+      pellentesque.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: cf4a726fe019b2d47bd2ddbc25b7b6ae, type: 2}
     messageText: Duis nec nunc ut erat semper consequat et non neque. Maecenas consequat
       purus ac tellus cursus sollicitudin.
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 0}
@@ -25,9 +47,10 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - speakingCharacter: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
+  - dialogSource: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
     messageText: 'Mauris auctor ligula sit amet dolor lobortis, et vestibulum neque
       tincidunt. '
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 0}
@@ -35,8 +58,31 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - speakingCharacter: {fileID: 11400000, guid: d9b8ce82b6125e34982578973c961522, type: 2}
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: Vivamus sed elit auctor, tempor dui vel, pellentesque mi. Duis viverra
+      quam eu libero tincidunt fermentum.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: Nunc vel feugiat eros. Duis interdum orci sit amet turpis cursus
+      bibendum. Suspendisse eleifend orci nec justo porttitor condimentum.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: d9b8ce82b6125e34982578973c961522, type: 2}
     messageText: Pellentesque ipsum nunc, sollicitudin eu porta in, mollis vel ante.
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
       endPosition: {x: 0, y: 0, z: 0}

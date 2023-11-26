@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
+using static Gnosronpa.Common.AnimationConsts;
 
 namespace Gnosronpa.Controllers
 {
@@ -28,6 +29,9 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private BulletDescriptionPanel bulletDescriptionPanel;
+
+		[SerializeField]
+		private CustomCursor cursor;
 
 		[SerializeField]
 		private GameObject bulletsParent;
@@ -78,6 +82,9 @@ namespace Gnosronpa.Controllers
 				currentSegment = await LoadGameMechanic(currentSegment);
 			}
 			while (currentSegment != null);
+
+			cursor.gameObject.SetActive(false);
+			await CameraFade.instance.DOFade(fadeOn, 1.5f);
 			SceneController.instance.LoadMenu();
 		}
 
