@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
   m_Name: Debate 1
   m_EditorClassIdentifier: 
-  nextGameplaySegment: {fileID: 11400000, guid: f5be09bc4756a70459e83bb6c9478461, type: 2}
+  nextGameplaySegment: {fileID: 11400000, guid: afa83aa277b6db64b886283e1e9dfbb9, type: 2}
   segmentMusic: {fileID: 8300000, guid: 1e1341cc4dbc3c34a884183ec2435870, type: 3}
   visibleBullets: 2
   bullets:
@@ -23,6 +23,7 @@ MonoBehaviour:
   - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: We're missing something. Let's take our time and figure out who
       could be the Gnosia...
+    skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 5, z: 15}
       endPosition: {x: 0, y: 5, z: 20}

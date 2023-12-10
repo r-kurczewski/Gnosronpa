@@ -1,9 +1,11 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CustomCursor : MonoBehaviour
 {
+	[SerializeField]
+	private bool customCursorVisible;
+
 	[SerializeField]
 	private InputActionReference cursorPosition;
 
@@ -27,44 +29,43 @@ public class CustomCursor : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		UpdateCursorPosition();
-		UpdateCursorRotation();
+		Cursor.visible = !IsMouseOverGameWindow;
+		cursorImageParent.SetActive(customCursorVisible);
+
+		if (cursorImageParent.activeInHierarchy)
+		{
+			UpdateCursorPosition();
+			UpdateCursorRotation();
+		}
+	}
+
+	public void SetCursor(bool resetPosition = false)
+	{
+		customCursorVisible = true;
+		if (resetPosition) ResetCursorPosition();
+	}
+
+	public void HideCursor()
+	{
+		customCursorVisible = false;
+	}
+
+	private void ResetCursorPosition()
+	{
+		Mouse.current.WarpCursorPosition(new Vector2(Screen.width/2, Screen.height/2));
 	}
 
 	private void UpdateCursorPosition()
 	{
-		if (IsMouseOverGameWindow)
-		{
-			SetCursor();
+		Vector3 mouseCords = cursorPosition.action.ReadValue<Vector2>();
+		mouseCords.z = GetComponentInParent<Canvas>().planeDistance;
+		var mousePosInWorldSpace = Camera.main.ScreenToWorldPoint(mouseCords);
 
-			Vector3 mouseCords = cursorPosition.action.ReadValue<Vector2>();
-			mouseCords.z = GetComponentInParent<Canvas>().planeDistance;
-			var mousePosInWorldSpace = Camera.main.ScreenToWorldPoint(mouseCords);
-
-			transform.position = mousePosInWorldSpace;
-		}
-		else ResetCursor();
+		transform.position = mousePosInWorldSpace;
 	}
 
 	private void UpdateCursorRotation()
 	{
 		cursorSpin.transform.rotation *= Quaternion.Euler(0, 0, -spinSpeed * Time.unscaledDeltaTime);
-	}
-
-	private void OnDisable()
-	{
-		ResetCursor();
-	}
-
-	private void SetCursor()
-	{
-		Cursor.visible = false;
-		cursorImageParent.SetActive(true);
-	}
-
-	private void ResetCursor()
-	{
-		cursorImageParent.SetActive(false);
-		Cursor.visible = true;
 	}
 }

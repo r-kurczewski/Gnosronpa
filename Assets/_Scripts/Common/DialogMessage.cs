@@ -9,6 +9,12 @@ namespace Gnosronpa.Common
 	{
 		public DialogSource dialogSource;
 
+		public DialogMessage(string messageText, DialogSource dialogSource)
+		{
+			this.dialogSource = dialogSource;
+			this.messageText = messageText;
+		}
+
 		[TextArea]
 		public string messageText;
 
@@ -16,7 +22,7 @@ namespace Gnosronpa.Common
 
 		public Animation3DData cameraAnimation;
 
-		public string FormatedMessage => dialogSource.FormatText(messageText); 
+		public string FormatedMessage => dialogSource.FormatText(messageText);
 
 	}
 }

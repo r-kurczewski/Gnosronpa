@@ -3,17 +3,16 @@ using DG.Tweening.Plugins.Options;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using static Gnosronpa.Common.AnimationConsts;
 
 namespace Gnosronpa
 {
 	public class CameraFade : SingletonBase<CameraFade>
 	{
-		private const float fadeTime = 0.75f;
-
 		[SerializeField]
 		private Image image;
 
-		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration = fadeTime)
+		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration = defaultFadeTime)
 		{
 			return DOTween.To(
 				() => image.color.a, (a) =>

@@ -136,7 +136,7 @@ namespace Gnosronpa.Controllers
 		{
 			startAnimation = new(nameof(startAnimation))
 			{
-				OnEnter = async () =>
+				OnEnter = () =>
 				{
 					statementsQueue.Clear();
 					time = 0;
@@ -148,15 +148,16 @@ namespace Gnosronpa.Controllers
 					debateGUI.SetActive(false);
 					rightPanel.SetActive(false);
 					DialogController.instance.SetVisibility(false);
-					customCursor.gameObject.SetActive(true);
 
-					await cameraFade.DOFade(fadeOn).SetEase(Ease.InOutFlash);
+					return UniTask.CompletedTask;
 				},
 
 				OnExecute = async () =>
 				{
 					if (!developerMode)
 					{
+						await cameraFade.DOFade(show).SetEase(Ease.InOutFlash);
+						//customCursor.gameObject.SetActive(true);
 						await debateAnimation.PlayDebateStartAnimation();
 					}
 					return loadingBullets;
@@ -167,7 +168,6 @@ namespace Gnosronpa.Controllers
 			{
 				OnEnter = () =>
 				{
-					customCursor.gameObject.SetActive(true);
 					debateGUI.SetActive(true);
 					bulletController.Init(data);
 
@@ -246,6 +246,7 @@ namespace Gnosronpa.Controllers
 					inputPickBullet.action.Enable();
 
 					rightPanel.SetActive(true);
+					customCursor.SetCursor(resetPosition: true);
 					DialogController.instance.SetSpeakingCharacter(null);
 
 					return UniTask.CompletedTask;
@@ -300,6 +301,7 @@ namespace Gnosronpa.Controllers
 					SetDebateNormalSpeed();
 					inputShoot.action.Disable();
 					inputChangeBullet.action.Disable();
+					customCursor.HideCursor();
 
 					await bulletController.CloseBulletMenu();
 				},
@@ -335,41 +337,6 @@ namespace Gnosronpa.Controllers
 				},
 			};
 
-			correctBulletHit = new(nameof(correctBulletHit))
-			{
-				OnEnter = () =>
-				{
-					debateGUI.SetActive(false);
-					PauseDebate();
-					RemoveUserInputEvents();
-					SetDebateNormalSpeed();
-					return UniTask.CompletedTask;
-				},
-
-				OnExecute = async () =>
-				{
-					var speakingCharacter = data.debateSequence
-					.Single(x => x.statement.correctBullet == hitBullet.Data)
-					.statement.speakingCharacter;
-
-					var speakingCharacterLieAnimation = GameObject.FindGameObjectsWithTag("Character")
-						.Select(x => x.GetComponent<Character>())
-						.Single(x => x.Data == speakingCharacter)
-						.GetComponent<LieAnimation>();
-
-					var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
-
-					await counterAnimation.PlayAnimation();
-					await speakingCharacterLieAnimation.PlayAnimation();
-
-					await cameraFade.DOFade(fadeOn)
-						.SetEase(Ease.InOutFlash)
-						.SetUpdate(true);
-
-					return FinalState;
-				},
-			};
-
 			incorrectBulletHit = new(nameof(correctBulletHit))
 			{
 				OnEnter = () =>
@@ -400,6 +367,40 @@ namespace Gnosronpa.Controllers
 					return UniTask.CompletedTask;
 				},
 			};
+
+			correctBulletHit = new(nameof(correctBulletHit))
+			{
+				OnEnter = () =>
+				{
+					debateGUI.SetActive(false);
+					PauseDebate();
+					RemoveUserInputEvents();
+					SetDebateNormalSpeed();
+					return UniTask.CompletedTask;
+				},
+
+				OnExecute = async () =>
+				{
+					var speakingCharacter = data.debateSequence
+					.Single(x => x.statement.correctBullet == hitBullet.Data)
+					.statement.speakingCharacter;
+
+					var speakingCharacterLieAnimation = GameObject.FindGameObjectsWithTag("Character")
+						.Single(x => x.GetComponent<Character>().Data == speakingCharacter)
+						.GetComponent<LieAnimation>();
+
+					var counterAnimation = Instantiate(counterAnimationPrefab, counterAnimationParent).GetComponent<CounterAnimation>();
+
+					await counterAnimation.PlayAnimation();
+					await speakingCharacterLieAnimation.PlayAnimation();
+
+					await cameraFade.DOFade(show)
+						.SetEase(Ease.InOutFlash)
+						.SetUpdate(true);
+
+					return FinalState;
+				},
+			};
 		}
 
 		protected override Func<UniTask> DefineFinalStateBehaviour()
@@ -409,7 +410,7 @@ namespace Gnosronpa.Controllers
 				DisableUserInputEvents();
 				ClearSpawnedBullets();
 
-				var fade = cameraFade.DOFade(fadeOff)
+				var fade = cameraFade.DOFade(hide)
 						.SetEase(Ease.InOutFlash)
 						.SetUpdate(true)
 						.ToUniTask();

@@ -43,7 +43,12 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private bool messagesEnded;
 
+		[SerializeField]
+		private bool _ignoreUserInput;
+
 		private Queue<DialogMessage> messages = new();
+
+		public bool IgnoreUserInput { get => _ignoreUserInput; set => _ignoreUserInput = value; }
 
 		private CancellationTokenSource revealTextTokenSource;
 
@@ -84,17 +89,17 @@ namespace Gnosronpa.Controllers
 
 		public void LoadNextMessage(bool playSound = true)
 		{
-			if (playSound) AudioController.instance.PlaySound(messageLoadSound);
-
 			if (!messages.Any())
 			{
 				messagesEnded = true;
 				return;
 			}
 
+			if (playSound) AudioController.instance.PlaySound(messageLoadSound);
+
 			currentMessage = messages.Dequeue();
 
-			if(currentMessage.dialogSource is null)
+			if (currentMessage.dialogSource is null)
 			{
 				Debug.LogError($"DialogSource cannot be null: {currentMessage.messageText}");
 			}
@@ -108,6 +113,7 @@ namespace Gnosronpa.Controllers
 			{
 				CameraController.instance.PlayCameraAnimation(currentMessage.cameraAnimation, target);
 			}
+
 
 			revealTextTokenSource = new CancellationTokenSource();
 			_ = RevealText(revealTextTokenSource.Token);
@@ -129,9 +135,11 @@ namespace Gnosronpa.Controllers
 
 		private void OnNextDialogMessage(CallbackContext context = default)
 		{
+			if (IgnoreUserInput) return;
+
 			if (MessageContentDisplayed)
 			{
-				LoadNextMessage();
+				LoadNextMessage(playSound: true);
 			}
 			else
 			{
@@ -169,7 +177,5 @@ namespace Gnosronpa.Controllers
 		{
 			this.message.text = message;
 		}
-
-
 	}
 }

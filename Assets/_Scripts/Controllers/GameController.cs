@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 using static Gnosronpa.Common.AnimationConsts;
+using Gnosronpa.Animations;
+using Gnosronpa.Common;
 
 namespace Gnosronpa.Controllers
 {
@@ -31,6 +33,15 @@ namespace Gnosronpa.Controllers
 		private BulletDescriptionPanel bulletDescriptionPanel;
 
 		[SerializeField]
+		private GameObject obtainedAnimationPrefab;
+
+		[SerializeField]
+		private DialogSource bulletObtainedDialogSource;
+
+		[SerializeField]
+		private Canvas canvas;
+
+		[SerializeField]
 		private CustomCursor cursor;
 
 		[SerializeField]
@@ -52,9 +63,9 @@ namespace Gnosronpa.Controllers
 
 		public bool Paused => paused;
 
-		private void Start()
+		private async void Start()
 		{
-			_ = Init();
+			await Init();
 		}
 
 		private void OnEnable()
@@ -71,7 +82,9 @@ namespace Gnosronpa.Controllers
 
 		public async UniTask Init()
 		{
-			currentSegment = startingSegment ?? startingSegmentFallback;
+			currentSegment = startingSegment ?? startingSegmentFallback;	
+			Cursor.visible = false;
+
 			await RunGameLoop();
 		}
 
@@ -84,13 +97,13 @@ namespace Gnosronpa.Controllers
 			while (currentSegment != null);
 
 			cursor.gameObject.SetActive(false);
-			await CameraFade.instance.DOFade(fadeOn, 1.5f);
+			await CameraFade.instance.DOFade(show, 1.5f);
 			SceneController.instance.LoadMenu();
 		}
 
 		private async UniTask<GameplaySegmentData> LoadGameMechanic(GameplaySegmentData mechanic)
 		{
-			AudioController.instance.PlayMusic(mechanic.segmentMusic);
+			if (mechanic.segmentMusic) AudioController.instance.PlayMusic(mechanic.segmentMusic);
 			if (mechanic is NonstopDebate debate)
 			{
 				await debateController.ResetMachineState();
@@ -101,9 +114,31 @@ namespace Gnosronpa.Controllers
 			{
 				DialogController.instance.SetVisibility(true);
 				discussion.messages.ForEach(message => DialogController.instance.AddMessage(message));
+				DialogController.instance.LoadNextMessage(discussion.playFirstMessageSound);
+
+				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+			}
+			else if (mechanic is BulletObtained obtained)
+			{
+				var animation = Instantiate(obtainedAnimationPrefab, canvas.transform, false)
+					.GetComponent<BulletObtainedAnimation>();
+
+				animation.name = obtained.bullet.bulletName;
+
+				var bulletObtainedMessage = new DialogMessage(obtained.GetMessage(obtained.bullet), bulletObtainedDialogSource);
+				bulletObtainedMessage.skipAnimation = true;
+
+				DialogController.instance.IgnoreUserInput = true;
+				await animation.PlayStartingAnimation(obtained.bullet);
+				DialogController.instance.IgnoreUserInput = false;
+
+				DialogController.instance.AddMessage(bulletObtainedMessage);
 				DialogController.instance.LoadNextMessage(playSound: false);
 
 				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+
+				await animation.PlayEndingAnimation();
+				Destroy(animation.gameObject);
 			}
 			return mechanic.nextGameplaySegment;
 		}

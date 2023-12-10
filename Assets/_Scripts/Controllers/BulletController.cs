@@ -5,7 +5,6 @@ using Gnosronpa.StateMachines;
 using Gnosronpa.StateMachines.Common;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers
@@ -50,8 +49,6 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private List<BulletLabel> bulletLabels = new();
-
-		private CancellationTokenSource hideMenuAferTimeCancellationTokenSource;
 
 		public TruthBulletData SelectedBullet => bulletLabels[selectedIndex].Data;
 
@@ -106,7 +103,6 @@ namespace Gnosronpa.Controllers
 				OnEnter = () =>
 				{
 					hideMenuTimer = 0;
-					hideMenuAferTimeCancellationTokenSource?.Cancel();
 					ShowSelectedBulletPanel();
 					Refresh();
 					return UniTask.CompletedTask;

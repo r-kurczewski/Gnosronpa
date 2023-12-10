@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17b16a9d816fe2b45a0ea2eeab7381b1, type: 3}
-  m_Name: Discussion 3
+  m_Name: Discussion 4
   m_EditorClassIdentifier: 
-  nextGameplaySegment: {fileID: 11400000, guid: 709bbdba48d415a439638c07469cdb25, type: 2}
-  segmentMusic: {fileID: 8300000, guid: 46d127e29503f7a4bab74fdddcdf357d, type: 3}
+  nextGameplaySegment: {fileID: 0}
+  segmentMusic: {fileID: 8300000, guid: 1818598d0b8b5c842833e38e97176e5c, type: 3}
   messages:
-  - dialogSource: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
-    messageText: Praesent laoreet nunc vestibulum venenatis euismod. Ut ut urna et
-      sapien porta dignissim a id nibh.
+  - dialogSource: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
+    messageText: Vivamus dignissim interdum mauris, non varius odio dictum id. Aenean
+      in ante malesuada, efficitur nisl non, convallis orci.
     skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
@@ -26,9 +26,9 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - dialogSource: {fileID: 11400000, guid: dddf2eebdcb2dd848b7bf4753c0d1958, type: 2}
-    messageText: Nulla imperdiet nisi quis mollis tincidunt. In vestibulum leo eu
-      mauris tincidunt ultricies.
+  - dialogSource: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+    messageText: Proin pulvinar commodo neque, eget rutrum libero. Donec eget accumsan
+      urna, et pulvinar ligula.
     skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
@@ -37,9 +37,9 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - dialogSource: {fileID: 11400000, guid: ace4b58769a0de849b0f491106a0fcc4, type: 2}
-    messageText: Donec velit ligula, ultrices at condimentum vitae, eleifend in nibh.
-      Duis orci ex, accumsan ornare viverra id, tristique facilisis felis.
+  - dialogSource: {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
+    messageText: Donec et lorem quis erat porta suscipit. Curabitur molestie velit
+      orci, in volutpat quam sodales et.
     skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}

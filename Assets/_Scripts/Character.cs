@@ -21,7 +21,7 @@ namespace Gnosronpa
 			return result;
 		}
 
-		private void Update()
+		private void LateUpdate()
 		{
 			UpdateRotation();
 		}

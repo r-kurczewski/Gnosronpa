@@ -202,6 +202,9 @@ MonoBehaviour:
   inputShowMenu: {fileID: -217501561462601132, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   inputHideMenu: {fileID: -1071899101131143589, guid: f2e323d11dd987f429eea9e73e7a427c, type: 3}
   bulletDescriptionPanel: {fileID: 182817678}
+  obtainedAnimationPrefab: {fileID: 431038001658333755, guid: d161084c1eccf9f47ac95ccc08c170a0, type: 3}
+  bulletObtainedDialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
+  canvas: {fileID: 220746915}
   cursor: {fileID: 1874376606}
   bulletsParent: {fileID: 462967593}
   paused: 0
@@ -477,8 +480,8 @@ RectTransform:
   m_Children:
   - {fileID: 1681735287}
   - {fileID: 78969552}
-  - {fileID: 1073098761}
   - {fileID: 1874376605}
+  - {fileID: 1073098761}
   - {fileID: 182817675}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1695,6 +1698,7 @@ MonoBehaviour:
   messageLoadSound: {fileID: 8300000, guid: 0990ef82a832e8540baf5b9ee461b441, type: 3}
   messageContentDisplayed: 0
   messagesEnded: 0
+  _ignoreUserInput: 0
   currentMessage:
     dialogSource: {fileID: 0}
     messageText: 
@@ -3301,36 +3305,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 220746912}
     m_Modifications:
-    - target: {fileID: 190350294221152295, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 1548177784167639367, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_Color.b
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_text
-      value: We're all supposed to gather in the main console.
-      objectReference: {fileID: 0}
-    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_fontStyle
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_isRichText
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_overrideHtmlColors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 499850272997520741, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_enableVertexGradient
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1548177784167639367, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_Color.a
+      propertyPath: m_Color.g
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3456003521483479244, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 1548177784167639367, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
+      propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4153192063383369015, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
@@ -3340,10 +3324,6 @@ PrefabInstance:
     - target: {fileID: 4153192063383369015, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4153192063383369015, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_RootOrder
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4153192063383369015, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3428,10 +3408,6 @@ PrefabInstance:
     - target: {fileID: 6332363437147780324, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7331202964038640617, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 39.999992
       objectReference: {fileID: 0}
     - target: {fileID: 8797736233739044815, guid: 68bcfddc757368f48964371b7932ad76, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5448,7 +5424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2893662083967953998, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_Pivot.x
@@ -5549,6 +5525,10 @@ PrefabInstance:
     - target: {fileID: 4120778785547361943, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4678062049170741785, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8020041756199209042, guid: cf588854d3311a945b129b1f4563fd54, type: 3}
       propertyPath: m_Sprite

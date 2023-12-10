@@ -7,11 +7,11 @@ namespace Gnosronpa.Scriptables
 	{
 		public override string SourceName => "";
 
-		public override bool ShowTitle => true;
+		public override bool ShowTitle => false;
 
 		public override string FormatText(string text)
 		{
-			return $"<color=#093>{text}</color>";
+			return $"<style=\"narrator\">{text}</style>";
 		}
 	}
 }

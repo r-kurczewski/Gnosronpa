@@ -15,7 +15,7 @@ namespace Gnosronpa.Scriptables
 
 		public override string FormatText(string text)
 		{
-			return $"<color=#059>{text}</color>";
+			return $"<style=\"innervoice\">{text}</style>";
 		}
 	}
 }

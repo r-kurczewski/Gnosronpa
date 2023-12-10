@@ -12,9 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b16a9d816fe2b45a0ea2eeab7381b1, type: 3}
   m_Name: Discussion 1
   m_EditorClassIdentifier: 
-  nextGameplaySegment: {fileID: 11400000, guid: 71e613d531c6594439da3bdef7b354c5, type: 2}
+  nextGameplaySegment: {fileID: 11400000, guid: c78e89cdf5c61ed4685340f41152f65d, type: 2}
   segmentMusic: {fileID: 8300000, guid: 1818598d0b8b5c842833e38e97176e5c, type: 3}
   messages:
+  - dialogSource: {fileID: 11400000, guid: cf4a726fe019b2d47bd2ddbc25b7b6ae, type: 2}
+    messageText: Duis nec nunc ut erat semper consequat et non neque. Maecenas consequat
+      purus ac tellus cursus sollicitudin.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
   - dialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
     messageText: Vestibulum laoreet tempus mi, eu vulputate nunc condimentum varius.
     skipAnimation: 0
@@ -36,20 +47,9 @@ MonoBehaviour:
       startRotation: {x: -10, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
-  - dialogSource: {fileID: 11400000, guid: cf4a726fe019b2d47bd2ddbc25b7b6ae, type: 2}
-    messageText: Duis nec nunc ut erat semper consequat et non neque. Maecenas consequat
-      purus ac tellus cursus sollicitudin.
-    skipAnimation: 0
-    cameraAnimation:
-      startPosition: {x: 0, y: 0, z: 10}
-      endPosition: {x: 0, y: 0, z: 0}
-      moveDuration: 0
-      startRotation: {x: -10, y: 0, z: 0}
-      endRotation: {x: 0, y: 0, z: 0}
-      rotationDuration: 0
   - dialogSource: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
-    messageText: 'Mauris auctor ligula sit amet dolor lobortis, et vestibulum neque
-      tincidunt. '
+    messageText: 'Mauris auctor ligula <style="emphasis">sit amet dolor</style> lobortis,
+      et vestibulum neque tincidunt. '
     skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
