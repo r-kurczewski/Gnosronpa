@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Jonas
   avatar: {fileID: 21300000, guid: 58d39e2080d3d3844ac32682274143b1, type: 3}
+  chibiAvatar: {fileID: 764553069, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

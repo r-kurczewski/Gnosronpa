@@ -157,7 +157,6 @@ namespace Gnosronpa.Controllers
 					if (!developerMode)
 					{
 						await cameraFade.DOFade(show).SetEase(Ease.InOutFlash);
-						//customCursor.gameObject.SetActive(true);
 						await debateAnimation.PlayDebateStartAnimation();
 					}
 					return loadingBullets;

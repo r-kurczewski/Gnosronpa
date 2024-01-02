@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Comet
   avatar: {fileID: 21300000, guid: b0e6209b94f77764087f741c13bfb188, type: 3}
+  chibiAvatar: {fileID: -831605119, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

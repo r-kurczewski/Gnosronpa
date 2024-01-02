@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Stella
   avatar: {fileID: 21300000, guid: 286d4502ff6194444859ade3b31a45fe, type: 3}
+  chibiAvatar: {fileID: 1114997751, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

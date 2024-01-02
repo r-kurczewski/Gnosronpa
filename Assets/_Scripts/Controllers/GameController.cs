@@ -120,25 +120,28 @@ namespace Gnosronpa.Controllers
 			}
 			else if (mechanic is BulletObtained obtained)
 			{
-				var animation = Instantiate(obtainedAnimationPrefab, canvas.transform, false)
-					.GetComponent<BulletObtainedAnimation>();
+				foreach (var bullet in obtained.bullets)
+				{
+					var animation = Instantiate(obtainedAnimationPrefab, canvas.transform, false)
+						.GetComponent<BulletObtainedAnimation>();
 
-				animation.name = obtained.bullet.bulletName;
+					animation.name = bullet.bulletName;
 
-				var bulletObtainedMessage = new DialogMessage(obtained.GetMessage(obtained.bullet), bulletObtainedDialogSource);
-				bulletObtainedMessage.skipAnimation = true;
+					var bulletObtainedMessage = new DialogMessage(obtained.GetMessage(bullet), bulletObtainedDialogSource);
+					bulletObtainedMessage.skipAnimation = true;
 
-				DialogController.instance.IgnoreUserInput = true;
-				await animation.PlayStartingAnimation(obtained.bullet);
-				DialogController.instance.IgnoreUserInput = false;
+					DialogController.instance.IgnoreUserInput = true;
+					await animation.PlayStartingAnimation(bullet);
+					DialogController.instance.IgnoreUserInput = false;
 
-				DialogController.instance.AddMessage(bulletObtainedMessage);
-				DialogController.instance.LoadNextMessage(playSound: false);
+					DialogController.instance.AddMessage(bulletObtainedMessage);
+					DialogController.instance.LoadNextMessage(playSound: false);
 
-				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+					await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
 
-				await animation.PlayEndingAnimation();
-				Destroy(animation.gameObject);
+					await animation.PlayEndingAnimation();
+					Destroy(animation.gameObject);
+				}
 			}
 			return mechanic.nextGameplaySegment;
 		}

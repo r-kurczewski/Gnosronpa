@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextGameplaySegment: {fileID: 11400000, guid: f5be09bc4756a70459e83bb6c9478461, type: 2}
   segmentMusic: {fileID: 0}
-  bullet: {fileID: 11400000, guid: d265ef19b985c0d4eb895a3d634e4225, type: 2}
+  bullets:
+  - {fileID: 11400000, guid: d265ef19b985c0d4eb895a3d634e4225, type: 2}
+  - {fileID: 11400000, guid: 4fdfdb3921dcb994b8fbcbf26b34fb14, type: 2}

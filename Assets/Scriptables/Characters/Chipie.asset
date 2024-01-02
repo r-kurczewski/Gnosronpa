@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Chipie
   avatar: {fileID: 21300000, guid: 98cbb5edeb398d94dba3e0ffd478bda7, type: 3}
+  chibiAvatar: {fileID: 500638192, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

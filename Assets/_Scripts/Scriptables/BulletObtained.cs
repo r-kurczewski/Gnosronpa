@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gnosronpa.Scriptables
 {
@@ -7,7 +8,7 @@ namespace Gnosronpa.Scriptables
 	{
 		public const string messageTemplate = "<style=\"emphasis\">{0}</style> information has been added to your Silver Key knowledge section.";
 
-		public TruthBulletData bullet;
+		public List<TruthBulletData> bullets;
 
 		public string GetMessage(TruthBulletData bullet)
 		{

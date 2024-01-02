@@ -9,6 +9,8 @@ namespace Gnosronpa.Scriptables
 
 		public Sprite avatar;
 
+		public Sprite chibiAvatar;
+
 		public override string SourceName => characterName;
 
 		public override GameObject CameraTarget => Character.TryGet(this).gameObject;
