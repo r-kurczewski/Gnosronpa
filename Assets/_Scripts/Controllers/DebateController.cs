@@ -145,6 +145,7 @@ namespace Gnosronpa.Controllers
 					bulletDescriptionPanel.Init(data.bullets);
 					AddUserInputEvents(disabled: true);
 
+					timeSlider.SetPosition(0, instant: true);
 					debateGUI.SetActive(false);
 					rightPanel.SetActive(false);
 					DialogController.instance.SetVisibility(false);

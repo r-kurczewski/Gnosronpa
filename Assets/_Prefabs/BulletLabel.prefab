@@ -35,7 +35,6 @@ RectTransform:
   m_Children:
   - {fileID: 4843584940705860225}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -109,7 +108,7 @@ MonoBehaviour:
   data: {fileID: 0}
   defaultColor: {r: 0.34509805, g: 0.34509805, b: 0.34509805, a: 1}
   selectedColor: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
-  selectedScale: 1.05
+  selectedScale: 1.15
   label: {fileID: 7744672947227154255}
   labelBg: {fileID: 4906400955063757628}
 --- !u!225 &3504571152438484665
@@ -155,7 +154,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7104132095075164846}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

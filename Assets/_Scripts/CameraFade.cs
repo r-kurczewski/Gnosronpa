@@ -12,6 +12,8 @@ namespace Gnosronpa
 		[SerializeField]
 		private Image image;
 
+		public bool FadeActive => image.color.a == 1;
+
 		public TweenerCore<float, float, FloatOptions> DOFade(float endFade, float duration = defaultFadeTime)
 		{
 			return DOTween.To(

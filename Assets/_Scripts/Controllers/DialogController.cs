@@ -95,7 +95,7 @@ namespace Gnosronpa.Controllers
 				return;
 			}
 
-			if (playSound) AudioController.instance.PlaySound(messageLoadSound);
+			if (playSound) _ = AudioController.instance.PlaySound(messageLoadSound);
 
 			currentMessage = messages.Dequeue();
 
@@ -131,6 +131,13 @@ namespace Gnosronpa.Controllers
 		public void SetSpeakingCharacter(CharacterData characterData)
 		{
 			characterInfo.SetCharacter(characterData);
+		}
+
+		public void ClearDialogBox(bool showTitle)
+		{
+			SetTitle(string.Empty);
+			SetMessage(string.Empty);
+			titleBox.SetActive(showTitle);
 		}
 
 		private void OnNextDialogMessage(CallbackContext context = default)

@@ -106,7 +106,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollBox: {fileID: 5093189567244732078}
   slotImagesPrefab: {fileID: 4310960598636487501, guid: 21bf59df104ea9a43ba7c568e7f104dc, type: 3}
-  stop: 0
+  slotImages: []
+  _visibleIndex: 0
+  stopValue: {fileID: 0}
+  rotate: 0
 --- !u!1 &6513390552423619400
 GameObject:
   m_ObjectHideFlags: 0

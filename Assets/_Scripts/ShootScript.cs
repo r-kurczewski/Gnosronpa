@@ -63,6 +63,6 @@ public class ShootScript : MonoBehaviour
 		bullet.Init(bulletData);
 		var dynamicSpeed = bulletSpeed * canvas.planeDistance;
 		bullet.Shoot(srcWorldPos, dstWorldPos, dynamicSpeed);
-		AudioController.instance.PlaySound(shootSound);
+		_ = AudioController.instance.PlaySound(shootSound);
 	}
 }

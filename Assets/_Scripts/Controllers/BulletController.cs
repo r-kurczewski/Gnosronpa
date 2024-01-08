@@ -195,7 +195,7 @@ namespace Gnosronpa.Controllers
 			hideMenuTimer = 0;
 
 			var bulletsData = debateData.bullets;
-			
+
 			foreach (Transform bullet in bulletLabelsParent)
 			{
 				Destroy(bullet.gameObject);
@@ -265,7 +265,7 @@ namespace Gnosronpa.Controllers
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				await bulletLabels[i].transform.DOLocalMoveX(moveLeftTo, moveLeftDuration);
-				AudioController.instance.PlaySound(bulletLoadSound);
+				_ = AudioController.instance.PlaySound(bulletLoadSound);
 
 				var tasks = new List<UniTask>();
 

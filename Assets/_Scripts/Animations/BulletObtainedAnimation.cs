@@ -40,7 +40,7 @@ namespace Gnosronpa.Animations
 			imageGroup.transform.localPosition += Vector3.up * imageMoveY;
 			bulletImage.sprite = bullet.bulletIcon;
 
-			AudioController.instance.PlaySound(bulletObtainedSound);
+			_ = AudioController.instance.PlaySound(bulletObtainedSound);
 
 			var fade = DOTween.To(() => dimScreen.alpha, (v) => dimScreen.alpha = v, dimScreenAlpha, imageAnimationTime).ToUniTask();
 			var showImage = DOTween.To(() => imageGroup.alpha, (v) => imageGroup.alpha = v, show, imageAnimationTime).ToUniTask();

@@ -12,23 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b16a9d816fe2b45a0ea2eeab7381b1, type: 3}
   m_Name: Discussion 3
   m_EditorClassIdentifier: 
-  nextGameplaySegment: {fileID: 11400000, guid: 709bbdba48d415a439638c07469cdb25, type: 2}
+  nextGameplaySegment: {fileID: 11400000, guid: 307e8bf12a9648b4c9f4e703360d37bf, type: 2}
   segmentMusic: {fileID: 8300000, guid: 46d127e29503f7a4bab74fdddcdf357d, type: 3}
+  playFirstMessageSound: 0
   messages:
-  - dialogSource: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
-    messageText: Praesent laoreet nunc vestibulum venenatis euismod. Ut ut urna et
-      sapien porta dignissim a id nibh.
-    skipAnimation: 0
-    cameraAnimation:
-      startPosition: {x: 0, y: 0, z: 10}
-      endPosition: {x: 0, y: 0, z: 0}
-      moveDuration: 0
-      startRotation: {x: -10, y: 0, z: 0}
-      endRotation: {x: 0, y: 0, z: 0}
-      rotationDuration: 0
-  - dialogSource: {fileID: 11400000, guid: dddf2eebdcb2dd848b7bf4753c0d1958, type: 2}
-    messageText: Nulla imperdiet nisi quis mollis tincidunt. In vestibulum leo eu
-      mauris tincidunt ultricies.
+  - dialogSource: {fileID: 11400000, guid: b3807ff927022844095d2e8becc33567, type: 2}
+    messageText: Pellentesque interdum, metus blandit tempus fringilla, lacus ex
+      sollicitudin nibh, non finibus orci elit nec eros.
     skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}
@@ -38,8 +28,19 @@ MonoBehaviour:
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
   - dialogSource: {fileID: 11400000, guid: ace4b58769a0de849b0f491106a0fcc4, type: 2}
-    messageText: Donec velit ligula, ultrices at condimentum vitae, eleifend in nibh.
-      Duis orci ex, accumsan ornare viverra id, tristique facilisis felis.
+    messageText: Nulla placerat leo purus, vulputate faucibus odio sagittis sed.
+      Maecenas accumsan cursus lobortis.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: a66612415747e51459bb15275710c125, type: 2}
+    messageText: Vestibulum dui libero, blandit tristique ex eget, interdum bibendum
+      mi. Phasellus enim nibh, tincidunt a mollis eu,
     skipAnimation: 0
     cameraAnimation:
       startPosition: {x: 0, y: 0, z: 10}

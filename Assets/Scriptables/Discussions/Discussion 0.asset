@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b16a9d816fe2b45a0ea2eeab7381b1, type: 3}
+  m_Name: Discussion 0
+  m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: 2200a825ffd233a4a8fa2ec274dce519, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 46d127e29503f7a4bab74fdddcdf357d, type: 3}
+  playFirstMessageSound: 0
+  messages:
+  - dialogSource: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
+    messageText: Aenean sollicitudin eget eros nec mollis. Praesent dictum enim nulla,
+      eget iaculis justo viverra eu.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+    messageText: Nam id quam tincidunt, pellentesque mauris ac, pellentesque eros.
+      Ut dignissim, urna finibus faucibus eleifend, augue tellus tristique ipsum,
+      a hendrerit neque mauris vitae tellus.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0

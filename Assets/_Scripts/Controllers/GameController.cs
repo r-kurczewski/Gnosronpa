@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 using static Gnosronpa.Common.AnimationConsts;
+using static Gnosronpa.Common.AudioConsts;
 using Gnosronpa.Animations;
 using Gnosronpa.Common;
+using DG.Tweening;
 
 namespace Gnosronpa.Controllers
 {
@@ -34,6 +36,12 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private GameObject obtainedAnimationPrefab;
+
+		[SerializeField]
+		private GameObject votingAnimationPrefab;
+
+		[SerializeField]
+		private Transform votingAnimationParent;
 
 		[SerializeField]
 		private DialogSource bulletObtainedDialogSource;
@@ -82,7 +90,7 @@ namespace Gnosronpa.Controllers
 
 		public async UniTask Init()
 		{
-			currentSegment = startingSegment ?? startingSegmentFallback;	
+			currentSegment = startingSegment ?? startingSegmentFallback;
 			Cursor.visible = false;
 
 			await RunGameLoop();
@@ -116,6 +124,12 @@ namespace Gnosronpa.Controllers
 				discussion.messages.ForEach(message => DialogController.instance.AddMessage(message));
 				DialogController.instance.LoadNextMessage(discussion.playFirstMessageSound);
 
+				if (CameraFade.instance.FadeActive)
+				{
+					await CameraFade.instance.DOFade(hide).SetEase(Ease.InOutFlash);
+					await UniTask.Delay(500);
+				}
+
 				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
 			}
 			else if (mechanic is BulletObtained obtained)
@@ -127,8 +141,10 @@ namespace Gnosronpa.Controllers
 
 					animation.name = bullet.bulletName;
 
-					var bulletObtainedMessage = new DialogMessage(obtained.GetMessage(bullet), bulletObtainedDialogSource);
-					bulletObtainedMessage.skipAnimation = true;
+					var bulletObtainedMessage = new DialogMessage(obtained.GetMessage(bullet), bulletObtainedDialogSource)
+					{
+						skipAnimation = true
+					};
 
 					DialogController.instance.IgnoreUserInput = true;
 					await animation.PlayStartingAnimation(bullet);
@@ -142,6 +158,27 @@ namespace Gnosronpa.Controllers
 					await animation.PlayEndingAnimation();
 					Destroy(animation.gameObject);
 				}
+			}
+			else if (mechanic is Voting voting)
+			{
+				var fadeDuration = 2f;
+
+				var fadeMusic = AudioController.instance.FadeMusic(off, fadeDuration);
+				var fadeScreen = CameraFade.instance.DOFade(show, fadeDuration).SetEase(Ease.InOutFlash).ToUniTask();
+				await UniTask.WhenAll(fadeMusic, fadeScreen);
+
+				DialogController.instance.SetVisibility(false);
+
+				var animation = Instantiate(votingAnimationPrefab, votingAnimationParent, false)
+						.GetComponent<VotingAnimation>();
+
+				await UniTask.Delay(1000);
+
+				await animation.PlayAnimation(voting);
+				await CameraFade.instance.DOFade(show).SetEase(Ease.InOutFlash);
+
+				Destroy(animation.gameObject);
+				_ = AudioController.instance.FadeMusic(on);
 			}
 			return mechanic.nextGameplaySegment;
 		}
