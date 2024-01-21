@@ -1,14 +1,13 @@
 ﻿using Cysharp.Threading.Tasks;
-using Gnosronpa.Scriptables;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
-using static Gnosronpa.Common.AnimationConsts;
-using static Gnosronpa.Common.AudioConsts;
 using Gnosronpa.Animations;
 using Gnosronpa.Common;
-using DG.Tweening;
+using Gnosronpa.Scriptables;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using static Gnosronpa.Common.AudioConsts;
+using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
 {
@@ -51,6 +50,9 @@ namespace Gnosronpa.Controllers
 
 		[SerializeField]
 		private CustomCursor cursor;
+
+		[SerializeField]
+		private CutsceneView cutscene;
 
 		[SerializeField]
 		private GameObject bulletsParent;
@@ -102,16 +104,20 @@ namespace Gnosronpa.Controllers
 			{
 				currentSegment = await LoadGameMechanic(currentSegment);
 			}
-			while (currentSegment != null);
+			while (currentSegment);
 
+			await OnScenarioEnd();
+		}
+
+		private async Task OnScenarioEnd()
+		{
 			cursor.gameObject.SetActive(false);
-			await CameraFade.instance.DOFade(show, 1.5f);
-			SceneController.instance.LoadMenu();
+			await CameraFade.Instance.FadeOut(1.5f);
+			SceneController.Instance.LoadMenu();
 		}
 
 		private async UniTask<GameplaySegmentData> LoadGameMechanic(GameplaySegmentData mechanic)
 		{
-			if (mechanic.segmentMusic) AudioController.instance.PlayMusic(mechanic.segmentMusic);
 			if (mechanic is NonstopDebate debate)
 			{
 				await debateController.ResetMachineState();
@@ -120,17 +126,40 @@ namespace Gnosronpa.Controllers
 			}
 			else if (mechanic is Discussion discussion)
 			{
-				DialogController.instance.SetVisibility(true);
-				discussion.messages.ForEach(message => DialogController.instance.AddMessage(message));
-				DialogController.instance.LoadNextMessage(discussion.playFirstMessageSound);
-
-				if (CameraFade.instance.FadeActive)
+				// enter cutscene
+				if (!cutscene.Data && discussion.cutscene)
 				{
-					await CameraFade.instance.DOFade(hide).SetEase(Ease.InOutFlash);
-					await UniTask.Delay(500);
+					await CameraFade.Instance.FadeOut();
+
+					DialogController.Instance.SetVisibility(false);
+					if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
+
+					cutscene.SetCutscene(discussion.cutscene);
+					cutscene.Show();
+
+					await CameraFade.Instance.FadeIn();
+				}
+				// exit cutscene
+				else if (cutscene.Data && !discussion.cutscene)
+				{
+					await CameraFade.Instance.FadeOut();
+
+					cutscene.SetCutscene(null);
+					cutscene.Hide();
+					if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
+				}
+				else
+				{
+					if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
 				}
 
-				await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+				DialogController.Instance.SetVisibility(true);
+				discussion.messages.ForEach(message => DialogController.Instance.AddMessage(message));
+				DialogController.Instance.LoadNextMessage(discussion.playFirstMessageSound);
+
+				await CameraFade.Instance.FadeIn();
+
+				await UniTask.WaitUntil(() => DialogController.Instance.MessagesEnded);
 			}
 			else if (mechanic is BulletObtained obtained)
 			{
@@ -146,14 +175,15 @@ namespace Gnosronpa.Controllers
 						skipAnimation = true
 					};
 
-					DialogController.instance.IgnoreUserInput = true;
-					await animation.PlayStartingAnimation(bullet);
-					DialogController.instance.IgnoreUserInput = false;
+					using (new DialogController.PlayerInputLock())
+					{
+						await animation.PlayStartingAnimation(bullet);
+					}
 
-					DialogController.instance.AddMessage(bulletObtainedMessage);
-					DialogController.instance.LoadNextMessage(playSound: false);
+					DialogController.Instance.AddMessage(bulletObtainedMessage);
+					DialogController.Instance.LoadNextMessage(playSound: false);
 
-					await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+					await UniTask.WaitUntil(() => DialogController.Instance.MessagesEnded);
 
 					await animation.PlayEndingAnimation();
 					Destroy(animation.gameObject);
@@ -163,11 +193,11 @@ namespace Gnosronpa.Controllers
 			{
 				var fadeDuration = 2f;
 
-				var fadeMusic = AudioController.instance.FadeMusic(off, fadeDuration);
-				var fadeScreen = CameraFade.instance.DOFade(show, fadeDuration).SetEase(Ease.InOutFlash).ToUniTask();
+				var fadeMusic = AudioController.Instance.FadeOutMusic(off, fadeDuration);
+				var fadeScreen = CameraFade.Instance.FadeOut(fadeDuration);
 				await UniTask.WhenAll(fadeMusic, fadeScreen);
 
-				DialogController.instance.SetVisibility(false);
+				DialogController.Instance.SetVisibility(false);
 
 				var animation = Instantiate(votingAnimationPrefab, votingAnimationParent, false)
 						.GetComponent<VotingAnimation>();
@@ -175,10 +205,10 @@ namespace Gnosronpa.Controllers
 				await UniTask.Delay(1000);
 
 				await animation.PlayAnimation(voting);
-				await CameraFade.instance.DOFade(show).SetEase(Ease.InOutFlash);
+				await CameraFade.Instance.FadeOut();
 
 				Destroy(animation.gameObject);
-				_ = AudioController.instance.FadeMusic(on);
+				_ = AudioController.Instance.FadeOutMusic(on);
 			}
 			return mechanic.nextGameplaySegment;
 		}

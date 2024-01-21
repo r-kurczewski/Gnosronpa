@@ -2,7 +2,7 @@
 
 namespace Gnosronpa.Scriptables
 {
-	[CreateAssetMenu(fileName = nameof(InnerVoice), menuName = "Dialog/InnerVoice")]
+	[CreateAssetMenu(fileName = nameof(InnerVoice), menuName = "Dialog/" + nameof(InnerVoice))]
 	public class InnerVoice : DialogSource
 	{
 		public CharacterData mainCharacter;

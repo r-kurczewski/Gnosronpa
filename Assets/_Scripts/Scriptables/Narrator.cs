@@ -2,7 +2,7 @@
 
 namespace Gnosronpa.Scriptables
 {
-	[CreateAssetMenu(fileName = nameof(Narrator), menuName = "Dialog/Narrator")]
+	[CreateAssetMenu(fileName = nameof(Narrator), menuName = "Dialog/" + nameof(Narrator))]
 	public class Narrator : DialogSource
 	{
 		public override string SourceName => "";

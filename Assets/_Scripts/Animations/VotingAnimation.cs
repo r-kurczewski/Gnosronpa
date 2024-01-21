@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using Gnosronpa.Controllers;
 using Gnosronpa.Scriptables;
 using System.Collections.Generic;
@@ -48,13 +47,13 @@ namespace Gnosronpa
 				slots[i].Init(randomizedCharacters, data.voteResults[i]);
 			}
 
-			await AudioController.instance.PlaySound(slotStartedSound);
+			await AudioController.Instance.PlaySound(slotStartedSound);
 			await UniTask.Delay(500);
 
 			slots.ForEach(x => x.StartRotating());
-			AudioController.instance.PlayAmbient(votingLoopSound, 0.5f);
+			AudioController.Instance.PlayAmbient(votingLoopSound, 0.5f);
 
-			await CameraFade.instance.DOFade(hide, 2 * defaultFadeTime).SetEase(Ease.InOutFlash);
+			await CameraFade.Instance.FadeIn(2 * defaultFadeTime);
 
 			await UniTask.Delay(rotationDurationMilliseconds);
 
@@ -64,15 +63,15 @@ namespace Gnosronpa
 
 				if (i == slots.Count - 1) // if last slot
 				{
-					AudioController.instance.StopAmbient();
-					await AudioController.instance.PlaySound(slotStoppedSound);
+					AudioController.Instance.StopAmbient();
+					await AudioController.Instance.PlaySound(slotStoppedSound);
 				}
 				else
 				{
-					_ = AudioController.instance.PlaySound(slotStoppedSound);
+					_ = AudioController.Instance.PlaySound(slotStoppedSound);
 				}
 			}
-			await AudioController.instance.PlaySound(data.voteSuccess ? votingFinishedSuccessSound : votingFinishedFailureSound);
+			await AudioController.Instance.PlaySound(data.voteSuccess ? votingFinishedSuccessSound : votingFinishedFailureSound);
 		}
 
 		private void SetHalfSlotCharacter(List<CharacterData> charactersList, Voting.VotingResult votingResult)

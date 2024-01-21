@@ -7,10 +7,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Gnosronpa.StateMachines;
-using static UnityEngine.InputSystem.InputAction;
-using static Gnosronpa.Common.AnimationConsts;
-using DG.Tweening;
 using Gnosronpa.Animations;
+using static UnityEngine.InputSystem.InputAction;
 
 namespace Gnosronpa.Controllers
 {
@@ -108,7 +106,7 @@ namespace Gnosronpa.Controllers
 		[SerializeField]
 		private float time;
 
-		private bool Paused => GameController.instance.Paused;
+		private bool Paused => GameController.Instance.Paused;
 
 		[SerializeField]
 		private bool developerMode;
@@ -148,7 +146,9 @@ namespace Gnosronpa.Controllers
 					timeSlider.SetPosition(0, instant: true);
 					debateGUI.SetActive(false);
 					rightPanel.SetActive(false);
-					DialogController.instance.SetVisibility(false);
+
+					DialogController.Instance.SetVisibility(false);
+					AudioController.Instance.PlayMusic(data.segmentMusic);
 
 					return UniTask.CompletedTask;
 				},
@@ -157,7 +157,7 @@ namespace Gnosronpa.Controllers
 				{
 					if (!developerMode)
 					{
-						await cameraFade.DOFade(show).SetEase(Ease.InOutFlash);
+						await cameraFade.FadeOut();
 						await debateAnimation.PlayDebateStartAnimation();
 					}
 					return loadingBullets;
@@ -247,7 +247,7 @@ namespace Gnosronpa.Controllers
 
 					rightPanel.SetActive(true);
 					customCursor.SetCursor(resetPosition: true);
-					DialogController.instance.SetSpeakingCharacter(null);
+					DialogController.Instance.SetSpeakingCharacter(null);
 
 					return UniTask.CompletedTask;
 				},
@@ -314,23 +314,23 @@ namespace Gnosronpa.Controllers
 						await UniTask.Delay(TimeSpan.FromSeconds(showHintDelay), true);
 
 						debateGUI.SetActive(false);
-						DialogController.instance.SetVisibility(true);
+						DialogController.Instance.SetVisibility(true);
 
-						data.debateHints.ForEach((msg) => DialogController.instance.AddMessage(msg));
+						data.debateHints.ForEach((msg) => DialogController.Instance.AddMessage(msg));
 
-						DialogController.instance.LoadNextMessage(playSound: false);
+						DialogController.Instance.LoadNextMessage(playSound: false);
 					},
 
 				OnExecute = async () =>
 						{
-							await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+							await UniTask.WaitUntil(() => DialogController.Instance.MessagesEnded);
 							return preDebateLoop;
 						},
 
 				OnExit = () =>
 				{
 					debateGUI.SetActive(true);
-					DialogController.instance.SetVisibility(false);
+					DialogController.Instance.SetVisibility(false);
 
 					ResetDebateLoop();
 					return UniTask.CompletedTask;
@@ -343,24 +343,24 @@ namespace Gnosronpa.Controllers
 				{
 
 					debateGUI.SetActive(false);
-					DialogController.instance.SetVisibility(true);
+					DialogController.Instance.SetVisibility(true);
 
-					hitStatement.Data.statement.hitDialogs.ForEach((msg) => DialogController.instance.AddMessage(msg));
-					DialogController.instance.LoadNextMessage(playSound: false);
+					hitStatement.Data.statement.hitDialogs.ForEach((msg) => DialogController.Instance.AddMessage(msg));
+					DialogController.Instance.LoadNextMessage(playSound: false);
 
 					return UniTask.CompletedTask;
 				},
 
 				OnExecute = async () =>
 				{
-					await UniTask.WaitUntil(() => DialogController.instance.MessagesEnded);
+					await UniTask.WaitUntil(() => DialogController.Instance.MessagesEnded);
 					return preDebateLoop;
 				},
 
 				OnExit = () =>
 				{
 					debateGUI.SetActive(true);
-					DialogController.instance.SetVisibility(false);
+					DialogController.Instance.SetVisibility(false);
 
 					ResetDebateLoop();
 
@@ -394,9 +394,7 @@ namespace Gnosronpa.Controllers
 					await counterAnimation.PlayAnimation();
 					await speakingCharacterLieAnimation.PlayAnimation();
 
-					await cameraFade.DOFade(show)
-						.SetEase(Ease.InOutFlash)
-						.SetUpdate(true);
+					await cameraFade.FadeOut(ignoreTimeScale: true);
 
 					return FinalState;
 				},
@@ -409,11 +407,10 @@ namespace Gnosronpa.Controllers
 			{
 				DisableUserInputEvents();
 				ClearSpawnedBullets();
+				data = null;
+				time = 0;
 
-				var fade = cameraFade.DOFade(hide)
-						.SetEase(Ease.InOutFlash)
-						.SetUpdate(true)
-						.ToUniTask();
+				var fade = cameraFade.FadeIn(ignoreTimeScale: true);
 
 				await UniTask.WhenAll(fade, bulletController.ResetMachineState());
 			};
@@ -446,7 +443,7 @@ namespace Gnosronpa.Controllers
 			if (statementData.statement)
 			{
 				LoadStatement(statementData);
-				DialogController.instance.SetSpeakingCharacter(statementData.statement.speakingCharacter);
+				DialogController.Instance.SetSpeakingCharacter(statementData.statement.speakingCharacter);
 			}
 		}
 
@@ -558,19 +555,19 @@ namespace Gnosronpa.Controllers
 		private void SetDebateNormalSpeed()
 		{
 			Time.timeScale = defaultSpeed;
-			AudioController.instance.SetPitch(defaultPitch);
+			AudioController.Instance.SetPitch(defaultPitch);
 		}
 
 		private void SetDebateRewindSpeed()
 		{
 			Time.timeScale = rewindSpeed;
-			AudioController.instance.SetPitch(rewindPitch);
+			AudioController.Instance.SetPitch(rewindPitch);
 		}
 
 		private void SetDebateSlowdownSpeed()
 		{
 			Time.timeScale = slowdownSpeed;
-			AudioController.instance.SetPitch(slowdownPitch);
+			AudioController.Instance.SetPitch(slowdownPitch);
 		}
 
 		private void PauseDebate()

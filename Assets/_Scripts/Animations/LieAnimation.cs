@@ -37,7 +37,7 @@ namespace Gnosronpa.Animations
 		public async UniTask PlayAnimation()
 		{
 			ResetAnimationProgress();
-			_ = AudioController.instance.PlaySound(lieSound);
+			_ = AudioController.Instance.PlaySound(lieSound);
 
 			await DOTween.To(
 				() => LieMaterial.GetFloat(AnimationProgressField),

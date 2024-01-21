@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gnosronpa.Scriptables
 {
-	[CreateAssetMenu(fileName = nameof(BulletObtained), menuName = "Dialog/BulletObtained")]
+	[CreateAssetMenu(fileName = nameof(BulletObtained), menuName = "Dialog/" + nameof(BulletObtained))]
 	public class BulletObtained : GameplaySegmentData
 	{
 		public const string messageTemplate = "<style=\"emphasis\">{0}</style> information has been added to your Silver Key knowledge section.";

@@ -140,7 +140,7 @@ namespace Gnosronpa
 		{
 			if (bullet.HitObject) return;
 
-			_ = AudioController.instance.PlaySound(statementHitSound);
+			_ = AudioController.Instance.PlaySound(statementHitSound);
 			transform.BlendableShake(Vector3.one * 8, 1f, 5, true);
 
 			bullet.HitObject = true;
@@ -174,7 +174,7 @@ namespace Gnosronpa
 
 			IEnumerator IOnIncorrectHit(TruthBullet bullet, DebateStatement statement)
 			{
-				_ = AudioController.instance.PlaySound(incorrectHitSound);
+				_ = AudioController.Instance.PlaySound(incorrectHitSound);
 				OnIncorrectBulletHit?.Invoke(bullet, statement);
 
 				yield return new WaitForSecondsRealtime(incorrectHitSound.length);

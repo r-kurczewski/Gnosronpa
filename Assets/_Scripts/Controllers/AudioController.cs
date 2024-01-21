@@ -42,7 +42,7 @@ namespace Gnosronpa.Controllers
 			ambientSource.Stop();
 		}
 
-		public async UniTask FadeMusic(float targetValue, float duration = 1)
+		public async UniTask FadeOutMusic(float targetValue, float duration = 1)
 		{
 			await DOTween.To(() => musicSource.volume, (v) => musicSource.volume = v, targetValue, duration);
 		}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gnosronpa.Scriptables
 {
-	[CreateAssetMenu(fileName = nameof(Voting), menuName = "NonstopDebate/Voting")]
+	[CreateAssetMenu(fileName = nameof(Voting), menuName = "NonstopDebate/" + nameof(Voting))]
 	public class Voting : GameplaySegmentData
 	{
 		public List<CharacterData> possibleVotes;

@@ -8,6 +8,8 @@ namespace Gnosronpa.Scriptables
 	[CreateAssetMenu(fileName = nameof(NonstopDebate), menuName = "NonstopDebate/Debate")]
 	public class NonstopDebate : GameplaySegmentData
 	{
+		public AudioClip segmentMusic;
+
 		public int visibleBullets;
 
 		public List<TruthBulletData> bullets;

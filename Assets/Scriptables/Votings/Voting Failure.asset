@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Voting Failure
   m_EditorClassIdentifier: 
   nextGameplaySegment: {fileID: 11400000, guid: afa83aa277b6db64b886283e1e9dfbb9, type: 2}
-  segmentMusic: {fileID: 0}
   possibleVotes:
   - {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}
   - {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
@@ -24,9 +23,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
   voteResults:
   - primaryResult: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
-    secondaryHalfResult: {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
-  - primaryResult: {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
-    secondaryHalfResult: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+    secondaryHalfResult: {fileID: 0}
+  - primaryResult: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+    secondaryHalfResult: {fileID: 0}
   - primaryResult: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
     secondaryHalfResult: {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
   voteSuccess: 0

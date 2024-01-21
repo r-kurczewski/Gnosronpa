@@ -2,7 +2,7 @@
 
 namespace Gnosronpa.Scriptables
 {
-	[CreateAssetMenu(fileName = "TruthBullet", menuName = "NonstopDebate/TruthBullet")]
+	[CreateAssetMenu(fileName = nameof(TruthBulletData), menuName = "NonstopDebate/TruthBullet")]
 	public class TruthBulletData : ScriptableObject
 	{
 		public string bulletName;

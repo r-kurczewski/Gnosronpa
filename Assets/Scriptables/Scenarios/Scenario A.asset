@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Scenario A
   m_EditorClassIdentifier: 
   scenarioName: Scenario A
-  startSegment: {fileID: 11400000, guid: 18927b903167be141b0275113bbc966a, type: 2}
+  startSegment: {fileID: 11400000, guid: 0bbdc149ac401d94b96f8a2869e03a76, type: 2}

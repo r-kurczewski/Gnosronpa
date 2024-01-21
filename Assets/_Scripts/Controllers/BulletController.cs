@@ -265,7 +265,7 @@ namespace Gnosronpa.Controllers
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				await bulletLabels[i].transform.DOLocalMoveX(moveLeftTo, moveLeftDuration);
-				_ = AudioController.instance.PlaySound(bulletLoadSound);
+				_ = AudioController.Instance.PlaySound(bulletLoadSound);
 
 				var tasks = new List<UniTask>();
 

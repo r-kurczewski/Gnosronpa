@@ -31,15 +31,15 @@ namespace Gnosronpa.Animations
 			cp.transform.localRotation = Quaternion.identity;
 			ct.transform.localRotation = Quaternion.Euler(2 * skew);
 
-			_ = cameraFade.DOFade(hide, fadeTime).SetEase(Ease.InOutFlash);
+			_ = cameraFade.FadeIn(fadeTime);
 			_ = ct.DOLocalRotate(spin + 2 * skew, spin1Time, RotateMode.FastBeyond360).SetEase(Ease.Linear);
 			await UniTask.Delay((int)((spin1Time - fadeTime) * 1000));
-			await cameraFade.DOFade(show, fadeTime).SetEase(Ease.InOutFlash);
+			await cameraFade.FadeOut(fadeTime);
 
 			// Second spin
 			ct.transform.SetLocalPositionAndRotation(zoom, Quaternion.Euler(-skew));
 
-			_ = cameraFade.DOFade(hide, fadeTime).SetEase(Ease.InOutFlash);
+			_ = cameraFade.FadeIn(fadeTime);
 			await ct.DOLocalRotate(-skew, instant);
 
 			// infinite spin until bullet is chosen - transform changed to avoid killing by CameraController

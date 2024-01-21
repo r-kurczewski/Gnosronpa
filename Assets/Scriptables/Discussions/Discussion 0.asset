@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextGameplaySegment: {fileID: 11400000, guid: 2200a825ffd233a4a8fa2ec274dce519, type: 2}
   segmentMusic: {fileID: 8300000, guid: 46d127e29503f7a4bab74fdddcdf357d, type: 3}
+  cutscene: {fileID: 0}
   playFirstMessageSound: 0
   messages:
   - dialogSource: {fileID: 11400000, guid: a944ecec8fc810644b841a61e64bccb8, type: 2}

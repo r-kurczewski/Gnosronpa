@@ -95,7 +95,7 @@ namespace Gnosronpa.Controllers
 				return;
 			}
 
-			if (playSound) _ = AudioController.instance.PlaySound(messageLoadSound);
+			if (playSound) _ = AudioController.Instance.PlaySound(messageLoadSound);
 
 			currentMessage = messages.Dequeue();
 
@@ -111,7 +111,7 @@ namespace Gnosronpa.Controllers
 
 			if (currentMessage.dialogSource.CameraTarget is GameObject target && !currentMessage.skipAnimation)
 			{
-				CameraController.instance.PlayCameraAnimation(currentMessage.cameraAnimation, target);
+				CameraController.Instance.PlayCameraAnimation(currentMessage.cameraAnimation, target);
 			}
 
 
@@ -183,6 +183,19 @@ namespace Gnosronpa.Controllers
 		private void SetMessage(string message)
 		{
 			this.message.text = message;
+		}
+
+		public class PlayerInputLock : IDisposable
+		{
+            public PlayerInputLock()
+            {
+				Instance.IgnoreUserInput = true;
+            }
+
+			public void Dispose()
+			{
+				Instance.IgnoreUserInput = false;
+			}
 		}
 	}
 }
