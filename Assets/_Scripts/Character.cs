@@ -18,23 +18,8 @@ namespace Gnosronpa
 				.Select(x => x.GetComponent<Character>())
 				.FirstOrDefault(x => x.Data == characterData);
 
+			if (result == null) Debug.LogWarning($"Could not get Character script for {characterData.name}");
 			return result;
-		}
-
-		private void LateUpdate()
-		{
-			UpdateRotation();
-		}
-
-		public void Load(CharacterData data)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void UpdateRotation()
-		{
-			var cameraRotation = Camera.main.transform.rotation.eulerAngles;
-			transform.localRotation = Quaternion.Euler(0, cameraRotation.y, 0);
 		}
 	}
 }

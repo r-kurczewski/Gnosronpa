@@ -3,6 +3,7 @@ using DG.Tweening;
 using Gnosronpa.Common;
 using Gnosronpa.Controllers;
 using Gnosronpa.Scriptables;
+using Gnosronpa.Scriptables.Models;
 using System;
 using System.Collections;
 using TMPro;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gnosronpa.Scriptables
 {
@@ -6,6 +7,11 @@ namespace Gnosronpa.Scriptables
 	public class Scenario : ScriptableObject
 	{
 		public string scenarioName;
+
 		public GameplaySegmentData startSegment;
+
+		public List<CharacterData> startCharacters;
+
+		public float roomSizeScale;
 	}
 }

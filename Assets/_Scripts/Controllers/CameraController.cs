@@ -13,34 +13,30 @@ namespace Gnosronpa.Controllers
 		private Transform cameraTransform;
 
 		[SerializeField]
-		private bool transitions;
+		private float defaultDistanceFromCharacter;
 
 		[SerializeField]
-		private float defaultTransitionDuration = 0.1f;
+		private float defaultCameraHeight;
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="animationData">AnimationData applied in relation to target</param>
-		/// <param name="target">Target on which the camera will focus</param>
-		public void PlayCameraAnimation(Animation3DData animationData, GameObject target)
+		[SerializeField]
+		private float defaultCameraRotationX;
+
+
+		public void PlayCameraAnimation(CameraAnimationData animationData, GameObject target)
 		{
 			StopCurrentAnimations();
 
 			var baseRotation = GetBaseRotation(target);
 			var seq = DOTween.Sequence(transform);
 
-			if (transitions)
-			{
-				seq.Append(transform.DOLocalRotate(baseRotation, defaultTransitionDuration))
-					.Join(cameraTransform.DOLocalMove(cameraTransform.InverseTransformDirection(animationData.startPosition), defaultTransitionDuration))
-					.Join(cameraTransform.DOLocalRotate(animationData.startRotation, defaultTransitionDuration));
-			}
-			else
-			{
-				transform.localRotation = Quaternion.Euler(baseRotation);
-				cameraTransform.SetLocalPositionAndRotation(animationData.startPosition, Quaternion.Euler(animationData.startRotation));
-			}
+			transform.SetLocalPositionAndRotation(
+				new Vector3(transform.localPosition.x, defaultCameraHeight, transform.position.z),
+				Quaternion.Euler(baseRotation));
+
+			var startPosition = GetCameraPosition(target, animationData.startPosition);
+
+			cameraTransform.position = startPosition;
+			cameraTransform.transform.localRotation = Quaternion.Euler(animationData.startRotation);
 
 			if (animationData.moveDuration > 0)
 			{
@@ -53,18 +49,34 @@ namespace Gnosronpa.Controllers
 			}
 		}
 
-		public void ResetCamera()
-		{
-			transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-			cameraTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-		}
-
-		public void SetLastStateOfAnimation(Animation3DData animationData, GameObject target = null)
+		public void SetLastStateOfAnimation(CameraAnimationData animationData, GameObject target = null)
 		{
 			var baseRotation = GetBaseRotation(target);
 
+			Vector3 cameraLastPosition;
+			if (target != null && animationData != null)
+			{
+				cameraLastPosition = GetCameraPosition(target, animationData.startPosition) + animationData.endPosition;
+			}
+			else
+			{
+				cameraLastPosition = Vector3.zero;
+			}
+
 			transform.localRotation = Quaternion.Euler(baseRotation);
-			cameraTransform.SetLocalPositionAndRotation(animationData?.endPosition ?? Vector3.zero, Quaternion.Euler(animationData?.endRotation ?? Vector3.zero));
+			cameraTransform.transform.position = cameraLastPosition;
+			cameraTransform.transform.localRotation = Quaternion.Euler(animationData?.endRotation ?? Vector3.zero);
+		}
+
+		private Vector3 GetCameraPosition(GameObject target, Vector3 offset)
+		{
+			var distanceFromTarget = target.transform.forward * defaultDistanceFromCharacter;
+			var cameraOffset = transform.right * offset.x + transform.up * offset.y + transform.forward * offset.z;
+
+			var defaultCameraPosition = target.transform.position + distanceFromTarget;
+			defaultCameraPosition.y = defaultCameraHeight;
+
+			return defaultCameraPosition + cameraOffset;
 		}
 
 		private void StopCurrentAnimations()
@@ -74,7 +86,14 @@ namespace Gnosronpa.Controllers
 			if (killCount == 0) return;
 		}
 
-		private Vector3 GetBaseRotation(GameObject target) => target ? Quaternion.LookRotation(target.transform.position).eulerAngles : Vector3.zero;
+		private Vector3 GetBaseRotation(GameObject target)
+		{
+			if (!target) return Vector3.zero;
+
+			var rotation = Quaternion.LookRotation(target.transform.position).eulerAngles;
+			rotation.x = defaultCameraRotationX;
+			return rotation;
+		}
 
 		private void OnDrawGizmos()
 		{

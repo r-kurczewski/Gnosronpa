@@ -16,7 +16,7 @@ namespace Gnosronpa.Controllers
 		private const string NonstopDebateActionMapKey = "Nonstop Debate";
 		private const string MenuActionMapKey = "Menu";
 
-		public static GameplaySegmentData startingSegment;
+		public static Scenario currentScenario;
 
 		[SerializeField]
 		private PlayerInput playerInput;
@@ -52,10 +52,16 @@ namespace Gnosronpa.Controllers
 		private CustomCursor cursor;
 
 		[SerializeField]
-		private CutsceneView cutscene;
+		private CutsceneView cutsceneView;
 
 		[SerializeField]
 		private GameObject bulletsParent;
+
+		[SerializeField]
+		private CharactersController characterPositioning;
+
+		[SerializeField]
+		private GameObject debateTable;
 
 		[SerializeField]
 		private bool paused = false;
@@ -64,7 +70,10 @@ namespace Gnosronpa.Controllers
 		private float previousTimeScale = 1;
 
 		[SerializeField]
-		private GameplaySegmentData startingSegmentFallback;
+		private Scenario scenarioFallback;
+
+		[SerializeField]
+		private GameplaySegmentData startSegmentFallback;
 
 		[SerializeField]
 		private GameplaySegmentData currentSegment;
@@ -92,7 +101,17 @@ namespace Gnosronpa.Controllers
 
 		public async UniTask Init()
 		{
-			currentSegment = startingSegment ?? startingSegmentFallback;
+			var selectedScenario = currentScenario ?? scenarioFallback;
+			currentSegment = currentScenario?.startSegment ?? startSegmentFallback ?? scenarioFallback.startSegment;
+
+			characterPositioning.Distance = characterPositioning.DefaultDistance * selectedScenario.roomSizeScale;
+			characterPositioning.SetCharacters(selectedScenario.startCharacters);
+
+			debateTable.transform.localScale = new Vector3(
+				selectedScenario.roomSizeScale,
+				debateTable.transform.localScale.y,
+				selectedScenario.roomSizeScale);
+
 			Cursor.visible = false;
 
 			await RunGameLoop();
@@ -124,43 +143,24 @@ namespace Gnosronpa.Controllers
 				debateController.Init(debate);
 				await UniTask.WaitUntil(() => debateController.CurrentState == debateController.FinalState);
 			}
+			// must be before discussion
+			else if (mechanic is Cutscene cutscene)
+			{
+				await CameraFade.Instance.FadeOut();
+
+				cutsceneView.SetCutscene(cutscene);
+				cutsceneView.Show();
+
+				await ProcessDiscussion(cutscene);
+
+				await CameraFade.Instance.FadeOut();
+				cutsceneView.Hide();
+			}
 			else if (mechanic is Discussion discussion)
 			{
-				// enter cutscene
-				if (!cutscene.Data && discussion.cutscene)
-				{
-					await CameraFade.Instance.FadeOut();
-
-					DialogController.Instance.SetVisibility(false);
-					if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
-
-					cutscene.SetCutscene(discussion.cutscene);
-					cutscene.Show();
-
-					await CameraFade.Instance.FadeIn();
-				}
-				// exit cutscene
-				else if (cutscene.Data && !discussion.cutscene)
-				{
-					await CameraFade.Instance.FadeOut();
-
-					cutscene.SetCutscene(null);
-					cutscene.Hide();
-					if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
-				}
-				else
-				{
-					if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
-				}
-
-				DialogController.Instance.SetVisibility(true);
-				discussion.messages.ForEach(message => DialogController.Instance.AddMessage(message));
-				DialogController.Instance.LoadNextMessage(discussion.playFirstMessageSound);
-
-				await CameraFade.Instance.FadeIn();
-
-				await UniTask.WaitUntil(() => DialogController.Instance.MessagesEnded);
+				await ProcessDiscussion(discussion);
 			}
+
 			else if (mechanic is BulletObtained obtained)
 			{
 				foreach (var bullet in obtained.bullets)
@@ -210,7 +210,28 @@ namespace Gnosronpa.Controllers
 				Destroy(animation.gameObject);
 				_ = AudioController.Instance.FadeOutMusic(on);
 			}
+			else if (mechanic is CharactersChange change)
+			{
+				characterPositioning.SetCharacters(change.characters);
+			}
+			else
+			{
+				Debug.LogWarning($"Bahviour for [{mechanic.GetType().Name}] is not implemented");
+			}
 			return mechanic.nextGameplaySegment;
+		}
+
+		private static async Task ProcessDiscussion(Discussion discussion)
+		{
+			if (discussion.segmentMusic) AudioController.Instance.PlayMusic(discussion.segmentMusic);
+
+			DialogController.Instance.SetVisibility(true);
+			discussion.messages.ForEach(message => DialogController.Instance.AddMessage(message));
+			DialogController.Instance.LoadNextMessage(discussion.playFirstMessageSound);
+
+			await CameraFade.Instance.FadeIn();
+
+			await UniTask.WaitUntil(() => DialogController.Instance.MessagesEnded);
 		}
 
 		private async void ToggleMenu(CallbackContext ctx = default)

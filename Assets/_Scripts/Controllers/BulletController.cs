@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gnosronpa.Scriptables;
 using Gnosronpa.StateMachines;
-using Gnosronpa.StateMachines.Common;
+using Gnosronpa.StateMachines.Core;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;

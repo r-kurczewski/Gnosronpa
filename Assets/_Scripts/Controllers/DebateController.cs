@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Gnosronpa.Scriptables;
-using Gnosronpa.StateMachines.Common;
+using Gnosronpa.StateMachines.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using Gnosronpa.StateMachines;
 using Gnosronpa.Animations;
 using static UnityEngine.InputSystem.InputAction;
+using Gnosronpa.Scriptables.Models;
 
 namespace Gnosronpa.Controllers
 {
@@ -246,7 +247,7 @@ namespace Gnosronpa.Controllers
 					inputPickBullet.action.Enable();
 
 					rightPanel.SetActive(true);
-					customCursor.SetCursor(resetPosition: true);
+					customCursor.SetCursorVisible();
 					DialogController.Instance.SetSpeakingCharacter(null);
 
 					return UniTask.CompletedTask;

@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b16a9d816fe2b45a0ea2eeab7381b1, type: 3}
+  m_Name: Discussion 1
+  m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: c78e89cdf5c61ed4685340f41152f65d, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 1818598d0b8b5c842833e38e97176e5c, type: 3}
+  playFirstMessageSound: 0
+  messages:
+  - dialogSource: {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
+    messageText: Duis nec nunc ut erat semper consequat et non neque. Maecenas consequat
+      purus ac tellus cursus sollicitudin.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
+    messageText: Vestibulum laoreet tempus mi, eu vulputate nunc condimentum varius.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
+    messageText: Sed ac lacinia dui, nec ornare sapien. Donec efficitur erat in volutpat
+      pellentesque.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dddf2eebdcb2dd848b7bf4753c0d1958, type: 2}
+    messageText: 'Mauris auctor ligula <style="emphasis">sit amet dolor</style> lobortis,
+      et vestibulum neque tincidunt. '
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: Vivamus sed elit auctor, tempor dui vel, pellentesque mi. Duis viverra
+      quam eu libero tincidunt fermentum.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: Nunc vel feugiat eros. Duis interdum orci sit amet turpis cursus
+      bibendum. Suspendisse eleifend orci nec justo porttitor condimentum.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
+    messageText: Pellentesque ipsum nunc, sollicitudin eu porta in, mollis vel ante.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      movement: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0

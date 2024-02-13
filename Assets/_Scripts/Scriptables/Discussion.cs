@@ -1,5 +1,6 @@
 ﻿using Gnosronpa.Common;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gnosronpa.Scriptables
@@ -8,8 +9,6 @@ namespace Gnosronpa.Scriptables
 	public class Discussion : GameplaySegmentData
 	{
 		public AudioClip segmentMusic;
-
-		public CutsceneData cutscene;
 
 		public bool playFirstMessageSound = false;
 

@@ -13,14 +13,14 @@ namespace Gnosronpa
 		private Image image;
 
 		[SerializeField]
-		private CutsceneData _data;
+		private Cutscene _data;
 
-		public CutsceneData Data => _data;
+		public Cutscene Data => _data;
 
-		public void SetCutscene(CutsceneData data)
+		public void SetCutscene(Cutscene cutscene)
 		{
-			_data = data;
-			image.sprite = data?.sprite;
+			_data = cutscene;
+			image.sprite = cutscene?.cutsceneSprite;
 		}
 
 		public void Show()

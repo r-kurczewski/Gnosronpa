@@ -13,7 +13,7 @@ namespace Gnosronpa.Scriptables
 
 		public Sprite VoteSprite => chibiAvatar;
 
-        public override string SourceName => characterName;
+		public override string SourceName => characterName;
 
 		public override GameObject CameraTarget => Character.TryGet(this).gameObject;
 

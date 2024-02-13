@@ -12,6 +12,7 @@ namespace Gnosronpa.Scriptables
 
 		public StatementType statementType;
 
+		[TextArea(1,3)]
 		public string textTemplate;
 
 		public string weakSpotText;

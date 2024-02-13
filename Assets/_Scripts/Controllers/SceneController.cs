@@ -10,7 +10,7 @@ namespace Gnosronpa.Controllers
 
 		public void LoadScenario(Scenario scenario)
 		{
-			GameController.startingSegment = scenario.startSegment;
+			GameController.currentScenario = scenario;
 			LoadScene(DebateSceneId);
 		}
 

@@ -1,5 +1,5 @@
 ﻿using Gnosronpa.Controllers;
-using Gnosronpa.StateMachines.Common;
+using Gnosronpa.StateMachines.Core;
 using System;
 
 namespace Gnosronpa.StateMachines

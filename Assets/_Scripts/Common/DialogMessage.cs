@@ -20,7 +20,7 @@ namespace Gnosronpa.Common
 
 		public bool skipAnimation;
 
-		public Animation3DData cameraAnimation;
+		public CameraAnimationData cameraAnimation;
 
 		public string FormatedMessage => dialogSource.FormatText(messageText);
 

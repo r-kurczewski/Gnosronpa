@@ -39,7 +39,7 @@ public class CustomCursor : MonoBehaviour
 		}
 	}
 
-	public void SetCursor(bool resetPosition = false)
+	public void SetCursorVisible(bool resetPosition = false)
 	{
 		customCursorVisible = true;
 		if (resetPosition) ResetCursorPosition();
