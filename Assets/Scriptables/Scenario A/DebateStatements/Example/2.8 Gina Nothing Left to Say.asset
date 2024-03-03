@@ -18,8 +18,8 @@ MonoBehaviour:
   weakSpotText: 
   correctBullet: {fileID: 0}
   textCollider:
-    center: {x: 5.5, y: -6}
-    size: {x: 990, y: 40}
+    center: {x: 0, y: 0}
+    size: {x: 1050, y: 150}
   weakSpotCollider:
     center: {x: 0, y: 0}
     size: {x: 0, y: 0}

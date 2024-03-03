@@ -22,7 +22,7 @@ MonoBehaviour:
   correctBullet: {fileID: 0}
   textCollider:
     center: {x: 0, y: 0}
-    size: {x: 420, y: 55}
+    size: {x: 1200, y: 150}
   weakSpotCollider:
     center: {x: 0, y: 0}
     size: {x: 0, y: 0}

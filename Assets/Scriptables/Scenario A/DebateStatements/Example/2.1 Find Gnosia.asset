@@ -19,10 +19,10 @@ MonoBehaviour:
   correctBullet: {fileID: 11400000, guid: 51c5440d2a59f6842b3cdc8b48afc3b7, type: 2}
   textCollider:
     center: {x: 5.5, y: -6}
-    size: {x: 990, y: 40}
+    size: {x: 1375, y: 40}
   weakSpotCollider:
-    center: {x: -95, y: -6}
-    size: {x: 230, y: 40}
+    center: {x: -270, y: -6}
+    size: {x: 250, y: 40}
   hitDialogs:
   - dialogSource: {fileID: 11400000, guid: d899c0f6af3a01344b5ad428284d1368, type: 2}
     messageText: Setsu, what is your goal? It's not the same as mine...

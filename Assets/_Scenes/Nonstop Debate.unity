@@ -218,7 +218,6 @@ MonoBehaviour:
   bulletsParent: {fileID: 462967593}
   characterPositioning: {fileID: 1642844071}
   debateTable: {fileID: 1462366679}
-  building: {fileID: 386480274}
   paused: 0
   previousTimeScale: 1
   scenarioFallback: {fileID: 11400000, guid: 030e4f212d51a4c448e7cdc551568382, type: 2}
