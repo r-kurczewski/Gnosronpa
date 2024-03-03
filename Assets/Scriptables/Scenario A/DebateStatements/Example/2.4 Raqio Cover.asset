@@ -24,4 +24,24 @@ MonoBehaviour:
   weakSpotCollider:
     center: {x: -310, y: 45}
     size: {x: 440, y: 55}
-  hitDialogs: []
+  hitDialogs:
+  - dialogSource: {fileID: 11400000, guid: 195bec1237b5f434f9cffc60186cf785, type: 2}
+    messageText: You're trying so hard, Setsu. But, you're all wrong, haha.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 5}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 4
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 10, z: 0}
+      rotationDuration: 4
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: "I guess\u2026 I failed again\u2026 "
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 3, z: 5}
+      endPosition: {x: 0, y: 3, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0

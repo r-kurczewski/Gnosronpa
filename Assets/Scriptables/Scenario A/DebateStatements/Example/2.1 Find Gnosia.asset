@@ -28,9 +28,9 @@ MonoBehaviour:
     messageText: Setsu, what is your goal? It's not the same as mine...
     skipAnimation: 0
     cameraAnimation:
-      startPosition: {x: 0, y: 15, z: 20}
-      endPosition: {x: 0, y: 15, z: 20}
-      moveDuration: 0
+      startPosition: {x: 0, y: 0, z: 5}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 4
       startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 10, z: 0}
       rotationDuration: 4
@@ -38,9 +38,9 @@ MonoBehaviour:
     messageText: I'll try harder...
     skipAnimation: 0
     cameraAnimation:
-      startPosition: {x: 0, y: 8, z: 20}
-      endPosition: {x: 0, y: 8, z: 25}
-      moveDuration: 0.5
-      startRotation: {x: -15, y: 0, z: 0}
+      startPosition: {x: 0, y: 3, z: 5}
+      endPosition: {x: 0, y: 3, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0

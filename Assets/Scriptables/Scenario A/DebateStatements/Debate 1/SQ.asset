@@ -26,19 +26,21 @@ MonoBehaviour:
   hitDialogs:
   - dialogSource: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
     messageText: What are you saying...? No one reported anything like that.
+    skipAnimation: 0
     cameraAnimation:
-      startPosition: {x: 0, y: 10, z: 25}
-      endPosition: {x: 0, y: 0, z: 0}
-      moveDuration: 0
-      startRotation: {x: -10, y: 0, z: 0}
-      endRotation: {x: -10, y: 10, z: 0}
+      startPosition: {x: 0, y: 0, z: 5}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 4
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 10, z: 0}
       rotationDuration: 4
   - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
     messageText: " I\u2019ll try harder... "
+    skipAnimation: 0
     cameraAnimation:
-      startPosition: {x: 0, y: 8, z: 20}
-      endPosition: {x: 0, y: 8, z: 25}
-      moveDuration: 0.5
-      startRotation: {x: -15, y: 0, z: 0}
+      startPosition: {x: 0, y: 3, z: 5}
+      endPosition: {x: 0, y: 3, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
       endRotation: {x: 0, y: 0, z: 0}
       rotationDuration: 0
