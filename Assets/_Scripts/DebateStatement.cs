@@ -2,12 +2,13 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gnosronpa.Common;
 using Gnosronpa.Controllers;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
+using Gnosronpa.Scriptables.Models;
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using static Gnosronpa.ScriptableObjects.DebateStatementData;
+using static Gnosronpa.Scriptables.DebateStatementData;
 
 namespace Gnosronpa
 {
@@ -140,7 +141,7 @@ namespace Gnosronpa
 		{
 			if (bullet.HitObject) return;
 
-			AudioController.instance.PlaySound(statementHitSound);
+			_ = AudioController.Instance.PlaySound(statementHitSound);
 			transform.BlendableShake(Vector3.one * 8, 1f, 5, true);
 
 			bullet.HitObject = true;
@@ -174,7 +175,7 @@ namespace Gnosronpa
 
 			IEnumerator IOnIncorrectHit(TruthBullet bullet, DebateStatement statement)
 			{
-				AudioController.instance.PlaySound(incorrectHitSound);
+				_ = AudioController.Instance.PlaySound(incorrectHitSound);
 				OnIncorrectBulletHit?.Invoke(bullet, statement);
 
 				yield return new WaitForSecondsRealtime(incorrectHitSound.length);

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Kukrushka
   avatar: {fileID: 21300000, guid: 53cd161930c543e439a9834c9e5a01db, type: 3}
+  chibiAvatar: {fileID: -1967397260, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

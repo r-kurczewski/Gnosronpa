@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
+  m_Name: SQ
+  m_EditorClassIdentifier: 
+  speakingCharacter: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+  statementType: 1
+  textTemplate: 'Hm, so we have like, {0} then? '
+  weakSpotText: zero leads
+  correctBullet: {fileID: 11400000, guid: a1f0dfde382e1704d95bf3e78a3ac15a, type: 2}
+  textCollider:
+    center: {x: 0, y: -5}
+    size: {x: 1250, y: 55}
+  weakSpotCollider:
+    center: {x: 225, y: 0}
+    size: {x: 350, y: 55}
+  hitDialogs:
+  - dialogSource: {fileID: 11400000, guid: 7ff687c6835eeeb4d9ec264404a3728c, type: 2}
+    messageText: What are you saying...? No one reported anything like that.
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 5}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 4
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 10, z: 0}
+      rotationDuration: 4
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: " I\u2019ll try harder... "
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 3, z: 5}
+      endPosition: {x: 0, y: 3, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0

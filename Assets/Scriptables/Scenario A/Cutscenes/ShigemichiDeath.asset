@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b9fcf3138e5e24abb6d48b6647f8d4, type: 3}
+  m_Name: ShigemichiDeath
+  m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: cd38f2a9b865a414eb36e6797c685b96, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 30d8cae7d2b112d46ac7168cfd2ca2c2, type: 3}
+  playFirstMessageSound: 0
+  messages:
+  - dialogSource: {fileID: 11400000, guid: 07348d06a8f7d73439c0c1c86e838f86, type: 2}
+    messageText: Last night Shigemichi disappeared.
+    skipAnimation: 1
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: Sed euismod nulla nec aliquet eleifend. Curabitur condimentum dolor
+      enim, vel pulvinar odio tincidunt sodales.
+    skipAnimation: 1
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: Cras est nibh, convallis non accumsan ut, lobortis ac urna. Aliquam
+      erat volutpat.
+    skipAnimation: 1
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  cutsceneSprite: {fileID: 21300000, guid: 61276755e17dc9a4dbd9bc351b26c3d8, type: 3}

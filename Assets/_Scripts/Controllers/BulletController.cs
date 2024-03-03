@@ -1,18 +1,16 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Gnosronpa.ScriptableObjects;
+using Gnosronpa.Scriptables;
 using Gnosronpa.StateMachines;
-using Gnosronpa.StateMachines.Common;
+using Gnosronpa.StateMachines.Core;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
 
 namespace Gnosronpa.Controllers
 {
 	public class BulletController : StateMachine<BulletController, BulletMenuState>, IRefreshable
 	{
-		
 		private const float startHideMenuTime = 10f;
 		private const float defaultHideMenuTime = 1.25f;
 
@@ -50,9 +48,7 @@ namespace Gnosronpa.Controllers
 		private float hideMenuTimer = 0;
 
 		[SerializeField]
-		private List<BulletLabel> bulletLabels;
-
-		private CancellationTokenSource hideMenuAferTimeCancellationTokenSource;
+		private List<BulletLabel> bulletLabels = new();
 
 		public TruthBulletData SelectedBullet => bulletLabels[selectedIndex].Data;
 
@@ -79,7 +75,7 @@ namespace Gnosronpa.Controllers
 				}
 			};
 
-			Loaded = new(nameof(Loading))
+			Loaded = new(nameof(Loaded))
 			{
 				OnEnter = () =>
 				{
@@ -107,7 +103,6 @@ namespace Gnosronpa.Controllers
 				OnEnter = () =>
 				{
 					hideMenuTimer = 0;
-					hideMenuAferTimeCancellationTokenSource?.Cancel();
 					ShowSelectedBulletPanel();
 					Refresh();
 					return UniTask.CompletedTask;
@@ -187,19 +182,28 @@ namespace Gnosronpa.Controllers
 			};
 		}
 
+		#endregion
+
 		private void UpdateHideMenuTimeCounter()
 		{
 			if (Time.timeScale != 0) hideMenuTimer -= Time.unscaledDeltaTime;
 		}
 
-		#endregion
-
-		public void Init(DebateData debateData)
+		public void Init(NonstopDebate debateData)
 		{
 			visibleBullets = debateData.visibleBullets;
+			hideMenuTimer = 0;
 
 			var bulletsData = debateData.bullets;
-			bulletLabels = new List<BulletLabel>();
+
+			foreach (Transform bullet in bulletLabelsParent)
+			{
+				Destroy(bullet.gameObject);
+			}
+			bulletLabels.Clear();
+			bulletLabelsParent.gameObject.SetActive(true);
+			selectedBulletLabel.gameObject.SetActive(false);
+
 			foreach (var bulletData in bulletsData)
 			{
 				var bulletLabel = LoadBulletLabel(bulletData);
@@ -207,7 +211,7 @@ namespace Gnosronpa.Controllers
 			}
 			selectedIndex = bulletLabels.Count - visibleBullets / 2 - 1;
 
-			_ = InitStateMachine();
+			InitStateMachine();
 		}
 
 		public async UniTask OpenBulletMenu()
@@ -261,7 +265,7 @@ namespace Gnosronpa.Controllers
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{
 				await bulletLabels[i].transform.DOLocalMoveX(moveLeftTo, moveLeftDuration);
-				AudioController.instance.PlaySound(bulletLoadSound);
+				_ = AudioController.Instance.PlaySound(bulletLoadSound);
 
 				var tasks = new List<UniTask>();
 
@@ -331,7 +335,6 @@ namespace Gnosronpa.Controllers
 			var seq = DOTween.Sequence(transform).SetUpdate(true);
 
 			var firstVisibleIndexUnclamped = selectedIndex - visibleBullets / 2;
-			//var lastVisibleIndex = (firstVisibleIndexUnclamped + maxVisibleBullets + bulletLabels.Count) % bulletLabels.Count;
 
 			for (int i = 0; i < bulletLabels.Count; i++)
 			{

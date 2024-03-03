@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Sha-ming
   avatar: {fileID: 21300000, guid: 78d5ed6414636924bbe3e4c8ce763ee6, type: 3}
+  chibiAvatar: {fileID: 1022707338, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

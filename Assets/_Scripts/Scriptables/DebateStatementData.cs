@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gnosronpa.ScriptableObjects
+namespace Gnosronpa.Scriptables
 {
 	[CreateAssetMenu(fileName = "Statement", menuName = "NonstopDebate/Statement")]
 	public class DebateStatementData : ScriptableObject
@@ -12,6 +12,7 @@ namespace Gnosronpa.ScriptableObjects
 
 		public StatementType statementType;
 
+		[TextArea(1,3)]
 		public string textTemplate;
 
 		public string weakSpotText;

@@ -1,0 +1,287 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0c77e43b2a8af45b9965ff59859150, type: 3}
+  m_Name: Debate 1
+  m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: 6242b7495bd818e4680a297b71cc7cd6, type: 2}
+  segmentMusic: {fileID: 8300000, guid: 1e1341cc4dbc3c34a884183ec2435870, type: 3}
+  visibleBullets: 2
+  bullets:
+  - {fileID: 11400000, guid: 4fdfdb3921dcb994b8fbcbf26b34fb14, type: 2}
+  - {fileID: 11400000, guid: a1f0dfde382e1704d95bf3e78a3ac15a, type: 2}
+  - {fileID: 11400000, guid: d265ef19b985c0d4eb895a3d634e4225, type: 2}
+  debateHints:
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: We're missing something. Let's take our time and figure out who
+      could be the Gnosia...
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 3, z: 5}
+      endPosition: {x: 0, y: 3, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  debateSequence:
+  - delay: 2
+    statement: {fileID: 11400000, guid: f1e418cfbe3c5e349ace64158cc66ca9, type: 2}
+    statementAnimation:
+      startPosition: {x: -80, y: 0}
+      move: {x: 40, y: 0}
+      moveDuration: 1
+      startRotation: 0
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.7, y: 0.7}
+      scale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 2
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: -5, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - delay: 4
+    statement: {fileID: 11400000, guid: 9a31ba520ccb8174899e166bce2c7759, type: 2}
+    statementAnimation:
+      startPosition: {x: -180, y: 0}
+      move: {x: 40, y: 0}
+      moveDuration: 1
+      startRotation: 0
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.6, y: 0.6}
+      scale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 4
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: -5, y: 0, z: 0}
+      rotationDuration: 1
+  - delay: 2
+    statement: {fileID: 11400000, guid: 01b900a1a7d1ce341981660a5d5481c6, type: 2}
+    statementAnimation:
+      startPosition: {x: 150, y: -80}
+      move: {x: -20, y: 0}
+      moveDuration: 1
+      startRotation: 0
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.6, y: 0.6}
+      scale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 2.5
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 1
+      startRotation: {x: -5, y: 0, z: 0}
+      endRotation: {x: -10, y: 0, z: 5}
+      rotationDuration: 1
+  - delay: 6
+    statement: {fileID: 11400000, guid: cc0b68b6045bf2b49a54c01ccdd23417, type: 2}
+    statementAnimation:
+      startPosition: {x: -80, y: 0}
+      move: {x: 0, y: -40}
+      moveDuration: 1
+      startRotation: 0
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.6, y: 0.6}
+      scale: {x: 0.2, y: 0.2}
+      scaleDuration: 1
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 2
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 0}
+      endPosition: {x: 0, y: 0, z: 5}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 5}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - delay: 4
+    statement: {fileID: 11400000, guid: 356189ab73da4b44da46c1fc5cc476c7, type: 2}
+    statementAnimation:
+      startPosition: {x: -80, y: -20}
+      move: {x: 0, y: -60}
+      moveDuration: 1
+      startRotation: 0
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.6, y: 0.6}
+      scale: {x: 0.2, y: 0.2}
+      scaleDuration: 1
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 1
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 5}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 5}
+      endRotation: {x: -5, y: 0, z: 15}
+      rotationDuration: 1
+  - delay: 4
+    statement: {fileID: 11400000, guid: b4e1948f3ded6ce4caa422797d2612c2, type: 2}
+    statementAnimation:
+      startPosition: {x: -40, y: -10}
+      move: {x: 0, y: -20}
+      moveDuration: 3
+      startRotation: -5
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.8, y: 0.8}
+      scale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 2
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: -5, z: 0}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: -10, y: 0, z: 6}
+      rotationDuration: 2
+  - delay: 6
+    statement: {fileID: 11400000, guid: 48468bcc1a9fd6d478192c0f53b88327, type: 2}
+    statementAnimation:
+      startPosition: {x: -40, y: -110}
+      move: {x: 0, y: 20}
+      moveDuration: 2
+      startRotation: -5
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.8, y: 0.8}
+      scale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 2
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: -5, z: 0}
+      endPosition: {x: 0, y: -5, z: 10}
+      moveDuration: 2
+      startRotation: {x: -10, y: 0, z: 6}
+      endRotation: {x: -20, y: 0, z: 0}
+      rotationDuration: 2
+  - delay: 7
+    statement: {fileID: 11400000, guid: 770c317fb4261934b86de48863e31583, type: 2}
+    statementAnimation:
+      startPosition: {x: -40, y: -60}
+      move: {x: 0, y: 0}
+      moveDuration: 1
+      startRotation: 5
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.3, y: 0.3}
+      scale: {x: 0.4, y: 0.4}
+      scaleDuration: 2
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 1
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 5, z: 0}
+      endRotation: {x: -10, y: 5, z: -3}
+      rotationDuration: 1
+  - delay: 4
+    statement: {fileID: 11400000, guid: 8bf076120056e764a8f2100c6164b632, type: 2}
+    statementAnimation:
+      startPosition: {x: -40, y: -60}
+      move: {x: 0, y: 0}
+      moveDuration: 0
+      startRotation: 5
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.3, y: 0.3}
+      scale: {x: 0.4, y: 0.4}
+      scaleDuration: 1
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 3
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 18}
+      moveDuration: 1
+      startRotation: {x: -10, y: 5, z: -3}
+      endRotation: {x: -10, y: 10, z: -6}
+      rotationDuration: 1
+  - delay: 6
+    statement: {fileID: 11400000, guid: eb3f13ef564feb14d9619e38a5922663, type: 2}
+    statementAnimation:
+      startPosition: {x: -60, y: -80}
+      move: {x: 0, y: 20}
+      moveDuration: 1
+      startRotation: 5
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.65, y: 0.65}
+      scale: {x: 0, y: 0}
+      scaleDuration: 0
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 5
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: -10, y: 0, z: 0}
+      endRotation: {x: -10, y: 6, z: 0}
+      rotationDuration: 1
+  - delay: 7
+    statement: {fileID: 11400000, guid: d5fe867033d5f104293e9bfec38a1dbd, type: 2}
+    statementAnimation:
+      startPosition: {x: -60, y: 0}
+      move: {x: -6.8, y: -39.2}
+      moveDuration: 2
+      startRotation: -10
+      rotation: 0
+      rotationDuration: 0
+      startScale: {x: 0.55, y: 0.55}
+      scale: {x: 0.1, y: 0.1}
+      scaleDuration: 1
+    statementTransition:
+      appearTime: 0.5
+      waitingTime: 4
+      disappearTime: 0.5
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 12}
+      endPosition: {x: 0, y: 0, z: 15}
+      moveDuration: 2
+      startRotation: {x: 0, y: -5, z: 10}
+      endRotation: {x: 0, y: 10, z: 10}
+      rotationDuration: 2

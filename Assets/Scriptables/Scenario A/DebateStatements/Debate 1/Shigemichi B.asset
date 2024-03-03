@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7712e9bb32eb3d439eec1d070275879, type: 3}
+  m_Name: Shigemichi B
+  m_EditorClassIdentifier: 
+  speakingCharacter: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
+  statementType: 1
+  textTemplate: "Wh-what the hell?! {0}\u2026"
+  weakSpotText: I'm human
+  correctBullet: {fileID: 0}
+  textCollider:
+    center: {x: 0, y: 0}
+    size: {x: 1000, y: 55}
+  weakSpotCollider:
+    center: {x: 310, y: 0}
+    size: {x: 335, y: 55}
+  hitDialogs:
+  - dialogSource: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
+    messageText: Hey, wait a sec! Nobody reported nothin' about me bein' Gnosia,
+      right?!
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 5}
+      endPosition: {x: 0, y: 0, z: 10}
+      moveDuration: 4
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 10, z: 0}
+      rotationDuration: 4
+  - dialogSource: {fileID: 11400000, guid: ad5414d1bb38cdf4d813d8fe391e51a2, type: 2}
+    messageText: That's what I thought! C'mon, Setsu, get it together!
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 0, z: 10}
+      endPosition: {x: 0, y: 0, z: 0}
+      moveDuration: 0
+      startRotation: {x: 0, y: 10, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0
+  - dialogSource: {fileID: 11400000, guid: dfecf1cb15c58794d91d28aa5014e534, type: 2}
+    messageText: "I guess\u2026 I failed again\u2026 "
+    skipAnimation: 0
+    cameraAnimation:
+      startPosition: {x: 0, y: 3, z: 5}
+      endPosition: {x: 0, y: 3, z: 10}
+      moveDuration: 1
+      startRotation: {x: 0, y: 0, z: 0}
+      endRotation: {x: 0, y: 0, z: 0}
+      rotationDuration: 0

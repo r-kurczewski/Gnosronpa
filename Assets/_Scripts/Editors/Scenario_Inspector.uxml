@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:TextField picking-mode="Ignore" label="Scenario Name" name="ScenarioName" />
+        <uie:ObjectField label="Start Segment" type="Gnosronpa.Scriptables.GameplaySegmentData, Gnosronpa" />
+        <ui:ListView focusable="true" show-border="true" view-data-key="a" binding-path="strings" />
+    </ui:VisualElement>
+</ui:UXML>

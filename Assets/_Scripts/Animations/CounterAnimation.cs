@@ -39,8 +39,8 @@ namespace Gnosronpa.Animations
 
 				.AppendCallback(() =>
 				{
-					AudioController.instance.PlaySound(sound);
-					AudioController.instance.PlaySound(dialogue);
+					_ = AudioController.Instance.PlaySound(sound);
+					_ = AudioController.Instance.PlaySound(dialogue);
 				})
 
 				.Append(transform.DOLocalMove(animationEndPos, 0.15f).SetEase(Ease.OutFlash))

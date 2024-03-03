@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: SQ
   avatar: {fileID: 21300000, guid: a42ff2cfd78a6094b82b60d30f5c765a, type: 3}
+  chibiAvatar: {fileID: 185862020, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

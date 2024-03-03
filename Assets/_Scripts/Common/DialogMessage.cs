@@ -1,4 +1,4 @@
-﻿using Gnosronpa.ScriptableObjects;
+﻿using Gnosronpa.Scriptables;
 using System;
 using UnityEngine;
 
@@ -7,12 +7,22 @@ namespace Gnosronpa.Common
 	[Serializable]
 	public class DialogMessage
 	{
-		public CharacterData speakingCharacter;
+		public DialogSource dialogSource;
+
+		public DialogMessage(string messageText, DialogSource dialogSource)
+		{
+			this.dialogSource = dialogSource;
+			this.messageText = messageText;
+		}
 
 		[TextArea]
 		public string messageText;
 
-		public Animation3DData cameraAnimation;
+		public bool skipAnimation;
+
+		public CameraAnimationData cameraAnimation;
+
+		public string FormatedMessage => dialogSource.FormatText(messageText);
 
 	}
 }

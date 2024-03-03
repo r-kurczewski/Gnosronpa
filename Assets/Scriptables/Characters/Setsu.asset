@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Setsu
   avatar: {fileID: 21300000, guid: 85c4a3249922e3c4a89b56532e9948c0, type: 3}
+  chibiAvatar: {fileID: 76806449, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

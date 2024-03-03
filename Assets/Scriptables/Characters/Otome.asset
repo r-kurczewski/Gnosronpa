@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Otome
   avatar: {fileID: 21300000, guid: 0f6002d8f3c2da94bab5061eebadd439, type: 3}
+  chibiAvatar: {fileID: 1675657076, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

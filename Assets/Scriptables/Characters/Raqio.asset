@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Raqio
   avatar: {fileID: 21300000, guid: 8b22949b8d9ad29419d9db031390f368, type: 3}
+  chibiAvatar: {fileID: -1015054194, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

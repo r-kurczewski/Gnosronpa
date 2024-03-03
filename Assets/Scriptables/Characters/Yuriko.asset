@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Yuriko
   avatar: {fileID: 21300000, guid: 1a874143225a3e74b92b0b9cebfcb3e1, type: 3}
+  chibiAvatar: {fileID: -1218784170, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

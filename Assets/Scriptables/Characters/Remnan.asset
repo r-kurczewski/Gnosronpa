@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Remnan
   avatar: {fileID: 21300000, guid: b440e785d16368e4b8106e954461fd2e, type: 3}
+  chibiAvatar: {fileID: -852973799, guid: 9a20e56ef601e254b8d287d9c895c52a, type: 3}

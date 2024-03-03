@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c821013d82a2f454aa31e770690da0b0, type: 3}
+  m_Name: BulletObtained
+  m_EditorClassIdentifier: 
+  nextGameplaySegment: {fileID: 11400000, guid: f5be09bc4756a70459e83bb6c9478461, type: 2}
+  segmentMusic: {fileID: 0}
+  bullets:
+  - {fileID: 11400000, guid: d265ef19b985c0d4eb895a3d634e4225, type: 2}
+  - {fileID: 11400000, guid: 4fdfdb3921dcb994b8fbcbf26b34fb14, type: 2}
